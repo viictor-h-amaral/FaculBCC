@@ -1,9 +1,23 @@
 package model;
 public class Musica {
     
+    private static void ValidarParametrosMusica(String titulo, String artista, int duracaoSegundos) {
+        if (titulo == null || titulo.isEmpty()) {
+            throw new IllegalArgumentException("Ops. Título inválido! O título não deve ser vazio.");
+        }
+        else if (artista == null || artista.isEmpty()) {
+            throw new IllegalArgumentException("Ops. Artista inválido! O artista não deve ser vazio.");
+        }
+        else if (duracaoSegundos <= 0) {
+            throw new IllegalArgumentException("Ops. Duração inválida! A duração deve não deve ser negativa.");
+        }
+    }
+
     private static int proximoId = 1;
 
     public Musica(String titulo, String artista, int duracaoSegundos) {
+        ValidarParametrosMusica(titulo, artista, duracaoSegundos);
+
         this.id = proximoId;
         Musica.proximoId++;
 

@@ -19,10 +19,12 @@ public class Plataforma {
     }
 
     public boolean cadastrarUsuario(Usuario usuario){
-        if(usuario == null) return false;
+        if(usuario == null) 
+            throw new IllegalArgumentException("Ops. Usuário inválido! O usuário não deve ser nulo.");
 
         int proximoIndexDisponivel = proximoIndexUsuariosVazio();
-        if(proximoIndexDisponivel >= usuarios.length) return false;
+        if(proximoIndexDisponivel >= usuarios.length) 
+            return false;
 
         usuarios[proximoIndexDisponivel] = usuario;
         return true;
@@ -48,10 +50,12 @@ public class Plataforma {
     }
 
     public boolean cadastrarMusica(Musica musica){
-        if(musica == null) return false;
+        if(musica == null) 
+            throw new IllegalArgumentException("Ops. Música inválida! A música não deve ser nula.");
 
         int proximoIndexDisponivel = proximoIndexMusicasVazio();
-        if(proximoIndexDisponivel >= musicas.length) return false;
+        if(proximoIndexDisponivel >= musicas.length) 
+            return false;
 
         musicas[proximoIndexDisponivel] = musica;
         return true;
