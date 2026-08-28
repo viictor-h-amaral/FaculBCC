@@ -3,7 +3,7 @@ import model.Plataforma;
 import model.Playlist;
 import model.Usuario;
 
-public class TestesSonora {
+public class TestesSonora_fase1 {
     public static void main(String[] args) {
         testarIdentificadoresUnicos();
         testarDuracaoFormatada();

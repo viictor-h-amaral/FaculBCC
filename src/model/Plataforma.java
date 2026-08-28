@@ -18,7 +18,7 @@ public class Plataforma {
         return quantidadeUsuarios;
     }
 
-    public boolean cadastrarUsuario(Usuario usuario){
+    public boolean cadastrarUsuario(Usuario usuario) throws IllegalArgumentException {
         if(usuario == null) 
             throw new IllegalArgumentException("Ops. Usuário inválido! O usuário não deve ser nulo.");
 
@@ -49,7 +49,7 @@ public class Plataforma {
         return quantidadeMusicas;
     }
 
-    public boolean cadastrarMusica(Musica musica){
+    public boolean cadastrarMusica(Musica musica) throws IllegalArgumentException {
         if(musica == null) 
             throw new IllegalArgumentException("Ops. Música inválida! A música não deve ser nula.");
 

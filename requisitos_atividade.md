@@ -1,276 +1,218 @@
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-Projeto Sonora - Fase 01: Fundamentos de POO 
-1. A ideia geral (leia com atenção, isto vale para o semestre inteiro) 
-A partir de agora você vai construir um sistema só, que cresce a cada aula. Este é o 
-Sonora, uma plataforma de streaming de músicas (pense num Spotify bem enxuto, 
-sem a parte bonita, só o motor por baixo). 
-Cada nova fase do projeto chega como um enunciado novo, e sempre funciona assim: 
-1. 
-2. 
-3. 
-Você clona a pasta/projeto da fase anterior para uma pasta/projeto novo (ex.: 
-sonora-fase01 vira sonora-fase02). 
-A fase nova é um projeto/repositório independente (a fase anterior fica intacta, 
-congelada). 
-Você implementa o que o novo enunciado pede, sem quebrar o que já 
-funcionava. 
-Ou seja: o que você entregar mal feito hoje vai te perseguir nas próximas fases. 
-Capriche na base. 
-Esta é a Fase 01, então não há o que clonar ainda: você começa do zero. Nome da 
-pasta: sonora-fase01. 
-Nesta fase o foco é montar a estrutura do sistema com classes bem feitas. As 
-validações de dados e o tratamento de erros virão na Fase 02, quando estudarmos 
-exceções, e você vai voltar nestas mesmas classes para deixá-las robustas. 
-2. O que você PODE e o que você NÃO PODE usar nesta fase 
-Esta fase é proposital: ela obriga você a resolver tudo sem coleções e sem herança, 
-porque esses assuntos ainda não foram vistos. Isso não é limitação, é treino. 
-Pode usar (e vai precisar): 
-• Classes, atributos encapsulados (private), construtores, this 
-• Getters e setters 
-• Membros de classe (static) para gerar identificadores 
-• Sobrecarga de métodos 
-• vetores de tamanho fixo para armazenar os dados 
-• Scanner para ler do teclado 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-NÃO pode usar nesta fase: 
-• ArrayList, List, Map, Set ou qualquer coleção do java.util para guardar os 
-dados (use arrays) 
-• Herança (extends) ou interfaces (implements), isso vem nas próximas 
-unidades 
-• Leitura ou escrita de arquivos, isso vem na unidade de Persistência 
-• Bibliotecas externas 
-Ainda não precisa usar: throw, try, catch, finally. Exceções são o assunto da Fase 
-02. Aqui, quando uma operação não puder ser concluída (por exemplo, adicionar 
-numa estrutura cheia), você sinaliza isso pelo valor de retorno do método, como 
-descrito na seção 3. 
-3. As classes do sistema 
-Você vai implementar cinco classes. As assinaturas abaixo são obrigatórias (vou 
-corrigir chamando esses métodos). Você pode criar métodos auxiliares privados à 
-vontade. 
-3.1. Classe Musica 
-Representa uma faixa do acervo. 
-Atributo 
-Tipo 
-Significado 
-id 
-titulo 
-artista 
-int 
-Gerado automaticamente, sequencial e único, via 
-contador static. O primeiro cadastro é 1. 
-String Título da faixa. 
-String Nome do artista. 
-duracaoSegundos int 
-reproducoes 
-int 
-Métodos obrigatórios: 
-Duração em segundos. 
-Quantas vezes foi tocada. Começa em 0. Só aumenta, 
-nunca é definido de fora. 
-public Musica(String titulo, String artista, int duracaoSegundos) 
-public int getId() 
-public String getTitulo() 
-public String getArtista() 
-public int getDuracaoSegundos() 
-public int getReproducoes() 
-public void reproduzir()             
-// incrementa reproducoes em 1 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-public String getDuracaoFormatada()  // devolve "mm:ss", ex.: 354 
-segundos vira "05:54" 
-Regras de projeto: 
-• O id é atribuído sozinho no momento em que a música é criada, usando um 
-contador static da classe. Não existe setId público. 
-• reproducoes começa em 0 e só muda através de reproduzir(). Não existe 
-setReproducoes público. 
-• getDuracaoFormatada() deve devolver minutos e segundos com dois dígitos 
-cada, com zero à esquerda quando necessário (por exemplo, 65 segundos vira 
-“01:05”). 
-3.2. Classe Usuario 
-Quem usa a plataforma. 
-Atributo Tipo 
-Significado 
-id 
-nome 
-email 
-int 
-Sequencial e único, com contador static próprio (independente 
-do de Musica). 
-String Nome do usuário. 
-String E-mail do usuário. 
-Métodos obrigatórios: construtor Usuario(String nome, String email), os getters 
-correspondentes, e nenhum setId. 
-3.3. Classe Playlist 
-Uma lista de músicas de um usuário. Capacidade fixa de 100 músicas (array). 
-Métodos obrigatórios: 
-public Playlist(String nome, Usuario dono) 
-public String getNome() 
-public Usuario getDono() 
-public int getQuantidade()                  
-public boolean adicionar(Musica musica)     
-de retorno 
-public Musica getNaPosicao(int indice)      
-posição; ver regra de retorno 
-// quantas músicas tem agora 
-// adiciona no fim; ver regra 
-// devolve a música da 
-public boolean removerNaPosicao(int indice) // remove e reorganiza; ver 
-regra de retorno 
-public int getDuracaoTotalSegundos()        
-músicas 
-// soma das durações das 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-public void reproduzirTudo()                
-música 
-// chama reproduzir() em cada 
-Regras de projeto (sinalização por valor de retorno, sem exceções nesta fase): 
-• adicionar devolve true se a música foi adicionada e false se não foi possível 
-(música nula ou playlist cheia). 
-• getNaPosicao devolve a música daquela posição, ou null se o índice estiver 
-fora do intervalo válido. 
-• removerNaPosicao devolve true se removeu e false se o índice era inválido. 
-Ao remover, não deixe “buraco” no array: reorganize para os itens ficarem 
-contíguos. 
-• Uma mesma música pode aparecer em playlists diferentes (é a mesma 
-referência). 
-3.4. Classe Plataforma 
-A gerenciadora central. Guarda o acervo de músicas e os usuários, cada um em seu 
-array de capacidade fixa 500. 
-Métodos obrigatórios: 
-public boolean cadastrarMusica(Musica musica)   // false se nula ou 
-acervo cheio 
-public boolean cadastrarUsuario(Usuario usuario) // false se nulo ou 
-acervo cheio 
-public Musica buscarMusicaPorId(int id)          
-null se não encontrar 
-public Musica buscarMusica(String titulo)        
-null se não encontrar 
-public int getTotalMusicas() 
-public int getTotalUsuarios() 
-// sobrecarga (int); 
-// sobrecarga (String); 
-Repare que buscarMusicaPorId(int) e buscarMusica(String) têm o mesmo nome 
-de intenção mas listas de parâmetros diferentes. Isso é sobrecarga, e é obrigatório 
-fazer assim (não invente buscarMusicaPorTitulo). 
-3.5. Classe App 
-A classe com o public static void main. É o cliente do sistema: um menu de 
-console que integra tudo. 
-Como ainda não há leitura de arquivo, para conseguir testar rápido você pode criar 
-algumas músicas na mão no início do main (chamando o construtor de Musica e 
-cadastrarMusica). Isso é só para popular o acervo de teste. 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-Menu mínimo (você pode enriquecer): 
-=== Sonora === 
-1 - Cadastrar música manualmente 
-2 - Cadastrar usuário 
-3 - Criar playlist e adicionar músicas 
-4 - Buscar música por id 
-5 - Buscar música por título 
-6 - Reproduzir uma música 
-7 - Listar acervo 
-0 - Sair 
-Dica de robustez: leia a opção do menu de forma segura usando 
-Scanner.hasNextInt() antes de nextInt(), para o programa não parar se o usuário 
-digitar um texto. O tratamento completo de entrada inválida (com try/catch) é 
-justamente um dos assuntos da Fase 02. 
-4. Comportamentos que precisam funcionar (e onde está a cobrança) 
-Isto aqui é o que separa um “compilou” de um trabalho bem feito: 
-• Identificadores únicos por classe. Cadastre três músicas e os ids devem sair 
-1, 2, 3. Cadastre dois usuários e os ids devem sair 1, 2 (contador próprio, 
-independente do de música). Se os ids repetirem ou “vazarem” entre as classes, 
-o static está errado. 
-• Encapsulamento de verdade. Todos os atributos private. Nada de titulo 
-público acessado direto de fora. id e reproducoes sem setter público. 
-• Duração formatada. getDuracaoFormatada() de 354 devolve “05:54”; de 65 
-devolve “01:05”; de 600 devolve “10:00”. 
-• Array contíguo. Depois de remover uma música do meio da playlist, 
-getQuantidade() diminui em 1 e não sobra “buraco”: as músicas seguintes 
-andam uma posição para trás. 
-• Sinalização correta. Adicionar numa playlist cheia devolve false e não 
-estoura o programa. Buscar algo que não existe devolve null. 
-• Sobrecarga. As duas buscas coexistem com o mesmo nome e parâmetros 
-diferentes. 
-5. Roteiro de demonstração (você tem que conseguir reproduzir tudo isto) 
-Prepare seu App para que, numa demonstração, você consiga mostrar cada um destes 
-comportamentos: 
-1. 
-2. 
-Cadastrar três músicas e listar o acervo, mostrando os ids saindo 1, 2, 3. 
-Reproduzir uma música três vezes e mostrar getReproducoes() retornando 3. 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-3. 
-4. 
-5. 
-6. 
-7. 
-8. 
-9. 
-Mostrar getDuracaoFormatada() para 354, 65 e 600 segundos. 
-Cadastrar um usuário, criar uma playlist para ele, adicionar músicas e mostrar 
-getQuantidade() e getDuracaoTotalSegundos(). 
-Encher uma playlist até 100 músicas e tentar adicionar a 101ª, mostrando que 
-adicionar devolve false e a quantidade continua 100. 
-Remover uma música do meio da playlist e mostrar que não ficou buraco (as 
-posições seguintes andaram para trás). 
-Buscar uma música por um id que existe e por um id que não existe (o segundo 
-devolve null). 
-Buscar uma música por título (a versão sobrecarregada). 
-Chamar reproduzirTudo() e mostrar que a contagem de reproduções de todas 
-as músicas da playlist subiu. 
-Sugestão forte: coloque esses passos como um roteiro no seu README. Na correção eu 
-vou seguir mais ou menos essa lista. 
-6. Entregáveis 
-1. 
-2. 
-Código-fonte na pasta sonora-fase01, 
-Um diagrama de classes simples das cinco classes (atributos e métodos 
-principais, com a visibilidade em UML: sinal de menos para privado, sinal de 
-mais para público). Pode ser feito em ferramenta ou desenhado à mão e 
-fotografado, desde que legível. 
-7. O que vem na Fase 02 (semana que vem) 
-Guarde bem este projeto, porque a Fase 02 começa clonando ele. Lá você vai: 
-• Adicionar validação nos construtores e setters (título não pode ser vazio, 
-duração precisa estar num intervalo válido, e assim por diante), usando throw 
-para impedir que um objeto nasça em estado inválido. 
-• Trocar parte da sinalização por valor de retorno por lançamento de exceções, e 
-discutir o que faz sentido continuar como retorno e o que vira exceção. 
-• Deixar o menu do App à prova de digitação errada com try/catch. 
-Ou seja: o que você construir bem agora vai facilitar muito a sua Fase 02. 
-8. Erros comuns que vão te dar dor de cabeça (evite) 
-• Esquecer o static no contador de id: os ids saem errados ou repetidos. 
-• Deixar atributos públicos ou criar setId e setReproducoes públicos. 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-• Deixar “buraco” no array ao remover uma música da playlist. 
-• Estourar o programa ao adicionar numa playlist cheia, em vez de devolver 
-false. 
-• Criar dois métodos de busca com nomes diferentes em vez de usar sobrecarga. 
-• getDuracaoFormatada sem o zero à esquerda (mostrando “5:54” em vez de 
-“05:54”). 
+UNIVERSIDADE REGIONAL DE BLUMENAU
+CENTRO DE CIÊNCIAS EXATAS E NATURAIS
+DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
+PROFESSOR ANDRÉ FELIPE BÜRGER
+PROGRAMAÇÃO ORIENTADA A OBJETOS
+Projeto Sonora - Fase 02: Tratamento de exceções
+O Sonora, funciona, compila, faz o cadastro rodar. Mas ele é ingênuo: se você mandar criar uma música com
+duração negativa, ele obedece. Se o usuário digitar letra onde era para digitar número, o programa explode na
+cara dele com aquela pilha de vermelho no console. Nesta fase a gente resolve isso.
+O combinado continua o mesmo de sempre:
+1. Você clona a pasta da fase anterior para uma nova (o sonora-fase01 vira sonora-fase02).
+2. A Fase 01 fica congelada, intacta. Você não mexe mais nela.
+3. Você evolui as mesmas classes aplicando o que aprendeu sobre exceções, sem quebrar o que já
+funcionava.
+Ou seja: se a sua Fase 01 estava bem feita, esta fase vai fluir. Se estava torta, agora é a hora de endireitar. Nome
+da pasta nova: sonora-fase02.
+O foco desta fase é deixar o sistema robusto: impedir que objetos nasçam em estado inválido, transformar
+parte da sinalização por valor de retorno em lançamento de exceção, e blindar o menu contra digitação errada.
+Nada de coleção, nada de herança ainda; esses assuntos continuam guardados para as próximas unidades.
+2. O que você PODE e o que você NÃO PODE usar nesta fase
+Pode usar (e vai precisar):
+• Tudo que você já usava na Fase 01 (classes, private, construtores, static, sobrecarga, arrays, Scanner).
+• throw para lançar exceções.
+• As exceções prontas da própria linguagem: IllegalArgumentException, IllegalStateException,
+NumberFormatException, ArithmeticException, ArrayIndexOutOfBoundsException e afins.
+• try, catch (inclusive múltiplos catch e catch por superclasse) e finally.
+NÃO pode usar nesta fase:
+• ArrayList, List, Map, Set ou qualquer coleção do java.util para guardar dados (continua tudo em
+array).
+• Herança (extends) ou interfaces (implements). Isso ainda não foi visto.
+• Criar suas próprias classes de exceção (subclasses de Exception). Nesta fase você usa só as exceções
+prontas da linguagem.
+• Leitura ou escrita de arquivos e bibliotecas externas.
+Sobre a cláusula throws: os slides mostram que ela serve para delegar ao método chamador o tratamento de
+exceções verificadas (as que o compilador obriga a tratar, como as de arquivo). Como nesta fase você só vai
+lançar exceções não verificadas (as subclasses de RuntimeException, como IllegalArgumentException),
+você não precisa escrever throws nas assinaturas. É bom saber que ela existe e para que serve; usá-la aqui é
+opcional.
+3. Blindando os construtores e setters (lançamento de exceção)
+UNIVERSIDADE REGIONAL DE BLUMENAU
+CENTRO DE CIÊNCIAS EXATAS E NATURAIS
+DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
+PROFESSOR ANDRÉ FELIPE BÜRGER
+PROGRAMAÇÃO ORIENTADA A OBJETOS
+Na Fase 01, um objeto podia nascer zoado e ninguém reclamava. Agora não. A regra de ouro desta seção é: um
+objeto não pode existir em estado inválido. Se os dados que chegam no construtor não fazem sentido, o
+construtor lança uma exceção e o objeto simplesmente não nasce.
+O padrão é o mesmo do exemplo do setSalario que vimos em aula: valida primeiro, lança se estiver errado,
+e só então atribui.
+public void setSalario(double novoSalario) {
+ if (novoSalario < 0) {
+ throw new IllegalArgumentException("Salário incorreto");
+ }
+ salario = novoSalario;
+}
+Aplique essa mesma ideia no Sonora. As validações obrigatórias são estas:
+3.1. Classe Musica
+• titulo não pode ser null nem vazio (nem só espaços). Se for, lance IllegalArgumentException com
+uma mensagem clara.
+• artista não pode ser null nem vazio, mesma regra.
+• duracaoSegundos precisa ser maior que zero. Música de 0 segundo ou de duração negativa não existe.
+• Essas validações valem no construtor. Como não há setter público para esses campos, o construtor é o
+único portão de entrada, e é ele que tem que barrar.
+3.2. Classe Usuario
+• nome não pode ser null nem vazio.
+• email não pode ser null nem vazio, e precisa conter um @. Não precisa validar e-mail de verdade (isso é
+um mundo à parte); basta checar que não está vazio e que tem um @ no meio.
+3.3. Classe Playlist
+• nome não pode ser null nem vazio.
+• dono não pode ser null. Playlist sem dono não faz sentido no nosso modelo.
+Detalhe importante sobre a mensagem. A mensagem da exceção não é decoração: ela é a informação que
+descreve o erro (como visto em aula, o objeto de exceção carrega dados sobre o que deu errado). Escreva
+mensagens que ajudem a entender o problema. "Duração inválida: -30. A duração deve ser maior
+que zero." é muito melhor que um seco "erro".
+4. Trocando sinalização por retorno por lançamento de exceção
+Na Fase 01, vários métodos avisavam que algo deu errado devolvendo um valor: adicionar devolvia false,
+as buscas devolviam null. Aquilo funcionava, mas nem todo problema tem o mesmo peso. Parte dessas
+situações vira exceção agora, parte continua como retorno. E entender o que vira o quê é justamente o
+aprendizado desta seção.
+4.1. O que VIRA exceção
+UNIVERSIDADE REGIONAL DE BLUMENAU
+CENTRO DE CIÊNCIAS EXATAS E NATURAIS
+DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
+PROFESSOR ANDRÉ FELIPE BÜRGER
+PROGRAMAÇÃO ORIENTADA A OBJETOS
+Situações que representam uso indevido da classe (o programador chamou o método com um argumento que
+nunca deveria ter passado) merecem exceção. Ajuste a classe Playlist:
+• getNaPosicao(int indice): se o índice estiver fora do intervalo válido, em vez de devolver null, lance
+IndexOutOfBoundsException. Pedir a posição 50 de uma playlist que tem 3 músicas é um erro de quem
+chamou, não uma resposta normal.
+• removerNaPosicao(int indice): mesma coisa. Índice inválido agora lança
+IndexOutOfBoundsException em vez de devolver false.
+4.2. O que CONTINUA como retorno
+Nem tudo vira exceção. Situações que são um resultado esperado e legítimo da operação continuam sinalizadas
+por retorno:
+• adicionar(Musica musica) na Playlist: adicionar numa playlist cheia continua devolvendo false.
+Playlist cheia é um estado normal e previsível do sistema, não um erro de programação. (Já passar uma
+música null para adicionar é uso indevido: esse caso vira IllegalArgumentException.)
+• buscarMusicaPorId(int) e buscarMusica(String) na Plataforma: não achar continua devolvendo
+null. Procurar e não encontrar é uma resposta válida de uma busca, não uma anomalia.
+A regra prática: se é o programador usando a classe errado, é exceção. Se é uma resposta possível e prevista
+do fluxo normal, é retorno. Guarde essa distinção; ela vale para muito além do Sonora.
+5. Blindando o menu do App (try/catch, múltiplos catch e finally)
+Aqui é onde o usuário digita coisa errada e o programa não pode morrer por causa disso. Na Fase 01 a dica era
+usar hasNextInt() como paliativo. Agora você faz do jeito certo, com tratamento de exceção.
+5.1. Leitura de opções e de números
+Leia a entrada do usuário como texto e converta com Integer.parseInt dentro de um try. Se vier "abc"
+onde era para vir um número, o parseInt lança NumberFormatException, e o seu catch avisa o usuário e
+deixa ele tentar de novo, sem derrubar o programa. É o mesmo padrão do laço que vimos em aula:
+Scanner teclado = new Scanner(System.in);
+int opcao;
+while (true) {
+ try {
+ System.out.print("Escolha uma opcao: ");
+ opcao = Integer.parseInt(teclado.nextLine());
+ break;
+ } catch (NumberFormatException e) {
+ System.out.println("Valor invalido. Digite um numero.");
+ }
+}
+5.2. Capturando as exceções que as suas classes agora lançam
+Como os construtores e alguns métodos passaram a lançar exceção, as chamadas a eles dentro do menu
+precisam estar protegidas. Quando o usuário cadastra uma música com duração negativa, o catch deve
+UNIVERSIDADE REGIONAL DE BLUMENAU
+CENTRO DE CIÊNCIAS EXATAS E NATURAIS
+DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
+PROFESSOR ANDRÉ FELIPE BÜRGER
+PROGRAMAÇÃO ORIENTADA A OBJETOS
+mostrar a mensagem da exceção (e não deixar o programa cair). Uma forma limpa de mostrar a mensagem é
+usar e.getMessage():
+try {
+ Musica m = new Musica(titulo, artista, duracao);
+ plataforma.cadastrarMusica(m);
+ System.out.println("Musica cadastrada!");
+} catch (IllegalArgumentException e) {
+ System.out.println("Nao foi possivel cadastrar: " + e.getMessage());
+}
+5.3. Pelo menos um bloco com múltiplos catch
+Em pelo menos um ponto do App (a operação de reproduzir ou remover por posição é uma boa candidata),
+monte um try com mais de um catch, tratando exceções diferentes de formas diferentes. Lembre da regra
+que vimos em aula: as cláusulas catch são testadas na ordem, então uma exceção mais específica
+(NumberFormatException) vem antes de uma mais genérica (Exception). Colocar a superclasse primeiro é
+erro de compilação.
+try {
+ int pos = Integer.parseInt(teclado.nextLine());
+ Musica m = playlist.getNaPosicao(pos);
+ m.reproduzir();
+ System.out.println("Tocando: " + m.getTitulo());
+} catch (NumberFormatException e) {
+ System.out.println("A posicao precisa ser um numero.");
+} catch (IndexOutOfBoundsException e) {
+ System.out.println("Essa posicao nao existe na playlist.");
+}
+5.4. Um finally para fechar
+Use finally em pelo menos um try do seu App, para praticar o conceito. Como vimos, o finally roda
+sempre, dando erro ou não, e costuma ser usado para liberar recursos. Um uso honesto aqui é imprimir uma
+linha de separação ou uma mensagem de "operacao finalizada" que deve aparecer independentemente
+de ter dado certo ou não. Não force um finally inútil em todo lugar; um bem colocado já mostra que você
+entendeu para que serve.
+6. Comportamentos que precisam funcionar (e onde está a cobrança)
+De novo, o que separa um "compilou" de um trabalho bem feito. Na correção eu vou testar cada um destes:
+• Objeto não nasce inválido. Tentar criar new Musica("", "X", 100) ou new Musica("Y", "Z", -5)
+lança IllegalArgumentException. O objeto não é criado.
+• A mensagem descreve o erro. A exceção carrega uma mensagem que faz sentido, não um "erro"
+genérico.
+• Exceção onde é uso indevido. getNaPosicao e removerNaPosicao com índice fora do intervalo lançam
+IndexOutOfBoundsException.
+UNIVERSIDADE REGIONAL DE BLUMENAU
+CENTRO DE CIÊNCIAS EXATAS E NATURAIS
+DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
+PROFESSOR ANDRÉ FELIPE BÜRGER
+PROGRAMAÇÃO ORIENTADA A OBJETOS
+• Retorno onde é fluxo normal. adicionar numa playlist cheia ainda devolve false; buscar algo
+inexistente ainda devolve null.
+• O menu não morre. Digitar texto onde se espera número não derruba o programa: o catch avisa e o
+menu segue rodando.
+• Múltiplos catch na ordem certa. Existe pelo menos um try com mais de um catch, do mais específico
+para o mais genérico.
+• Um finally presente e com propósito. Existe pelo menos um finally, e ele faz algo que se justifica.
+7. Roteiro de demonstração (você tem que conseguir reproduzir tudo isto)
+Prepare seu App para, numa demonstração, mostrar cada um destes comportamentos. Na correção eu sigo
+mais ou menos esta lista:
+1. Tentar cadastrar uma música com título vazio e mostrar que a IllegalArgumentException foi lançada
+e tratada (o programa avisa e continua vivo).
+2. Tentar cadastrar uma música com duração zero ou negativa e mostrar o mesmo comportamento.
+3. Tentar cadastrar um usuário com e-mail sem @ e mostrar a exceção sendo tratada.
+4. Pedir getNaPosicao de uma posição que não existe e mostrar que agora vem
+IndexOutOfBoundsException (tratada), e não null.
+5. Encher a playlist e tentar adicionar a 101a, mostrando que adicionar ainda devolve false (isto continua
+sendo retorno, não exceção).
+6. Buscar uma música por um id que não existe e mostrar que ainda vem null (também continua retorno).
+7. No menu, digitar uma letra onde se espera um número e mostrar que o programa avisa e pede de novo,
+sem cair.
+8. Disparar um bloco com múltiplos catch e provocar duas exceções diferentes para mostrar cada catch
+agindo.
+9. Mostrar o finally executando tanto num caso de sucesso quanto num caso de erro.
+Sugestão forte: coloque esses passos como um roteiro no seu README, igual você fez (ou deveria ter feito) na
+Fase 01.
+8. Erros comuns que vão te dar dor de cabeça (evite)
+• Validar no construtor mas atribuir antes de validar. Valide primeiro, atribua depois; senão o objeto chega
+a segurar o valor inválido por um instante.
+• Trocar tudo por exceção, inclusive a playlist cheia e a busca sem resultado. Reler a seção 4: isso é fluxo
+normal, continua sendo retorno.
+• Colocar catch (Exception e) antes de um catch mais específico. Isso nem compila: a superclasse tem
+que vir por último.
+• Engolir a exceção com um catch vazio. Um catch que não faz nada esconde o erro e é pior que não ter
+catch. No mínimo, mostre a mensagem.
+UNIVERSIDADE REGIONAL DE BLUMENAU
+CENTRO DE CIÊNCIAS EXATAS E NATURAIS
+DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
+PROFESSOR ANDRÉ FELIPE BÜRGER
+PROGRAMAÇÃO ORIENTADA A OBJETOS
+• Deixar o construtor lançar exceção mas não proteger a chamada no menu. Aí o objeto não nasce, mas o
+programa cai do mesmo jeito, porque a exceção subiu até o main sem ninguém tratar (propagação,
+lembra?).
+• Escrever throws achando que resolve. throws só delega o tratamento para quem chamou; alguém, em
+algum ponto da cadeia, ainda precisa tratar com try/catch.
+• Mensagem de exceção inútil ("erro", "deu ruim"). A mensagem é informação, use-a.

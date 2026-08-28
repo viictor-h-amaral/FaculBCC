@@ -2,7 +2,7 @@ package model;
 
 public class Playlist {
 
-    private static void ValidarParametrosPlaylist(String nome, Usuario dono) {
+    private static void ValidarParametrosPlaylist(String nome, Usuario dono) throws IllegalArgumentException {
         if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("Ops. Nome inválido! O nome não deve ser vazio.");
         }
@@ -11,7 +11,7 @@ public class Playlist {
         }
     }
 
-    public Playlist(String nome, Usuario dono) {
+    public Playlist(String nome, Usuario dono) throws IllegalArgumentException {
         ValidarParametrosPlaylist(nome, dono);
 
         this.nome = nome;

@@ -1,7 +1,7 @@
 package model;
 public class Musica {
     
-    private static void ValidarParametrosMusica(String titulo, String artista, int duracaoSegundos) {
+    private static void ValidarParametrosMusica(String titulo, String artista, int duracaoSegundos) throws IllegalArgumentException {
         if (titulo == null || titulo.isEmpty()) {
             throw new IllegalArgumentException("Ops. Título inválido! O título não deve ser vazio.");
         }
@@ -15,7 +15,7 @@ public class Musica {
 
     private static int proximoId = 1;
 
-    public Musica(String titulo, String artista, int duracaoSegundos) {
+    public Musica(String titulo, String artista, int duracaoSegundos) throws IllegalArgumentException {
         ValidarParametrosMusica(titulo, artista, duracaoSegundos);
 
         this.id = proximoId;
