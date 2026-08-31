@@ -20,17 +20,18 @@ public class App {
 
         int opcao = -1;
         while (opcao != 0) {
-            Writer.EscreverNovaLinha("===== Sonora =====");
-            Writer.EscreverNovaLinha("1 - Cadastrar música manualmente");
-            Writer.EscreverNovaLinha("2 - Cadastrar usuário");
-            Writer.EscreverNovaLinha("3 - Criar playlist e adicionar músicas");
-            Writer.EscreverNovaLinha("4 - Buscar música por id");
-            Writer.EscreverNovaLinha("5 - Buscar música por título");
-            Writer.EscreverNovaLinha("6 - Reproduzir uma música");
-            Writer.EscreverNovaLinha("7 - Listar acervo");
-            Writer.EscreverNovaLinha("0 - Sair");
+            Writer.escreverNovaLinha("===== Sonora =====");
+            Writer.escreverNovaLinha("1 - Cadastrar música manualmente");
+            Writer.escreverNovaLinha("2 - Cadastrar usuário");
+            Writer.escreverNovaLinha("3 - Criar playlist e adicionar músicas");
+            Writer.escreverNovaLinha("4 - Buscar música por id");
+            Writer.escreverNovaLinha("5 - Buscar música por título");
+            Writer.escreverNovaLinha("6 - Reproduzir uma música");
+            Writer.escreverNovaLinha("7 - Listar acervo");
+            Writer.escreverNovaLinha("8 - Listar usuários");
+            Writer.escreverNovaLinha("0 - Sair");
 
-            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 7);
+            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 8);
 
             switch (opcao) {
                 case 1:
@@ -54,11 +55,14 @@ public class App {
                 case 7:
                     listarAcervo();
                     break;
+                case 8:
+                    listarUsuarios();
+                    break;
                 case 0:
-                    Writer.EscreverNovaLinha("Ok! Encerrando ... ");
+                    Writer.escreverNovaLinha("Ok! Encerrando ... ");
                     break;
                 default:
-                    Writer.EscreverNovaLinha("Ops, opção inválida! Tente novamente ...");
+                    Writer.escreverNovaLinha("Ops, opção inválida! Tente novamente ...");
                     break;
             }
         }
@@ -66,80 +70,83 @@ public class App {
     }
 
     private static void cadastrarMusicaManual() {
-        Writer.EscreverNovaLinha("== Iniciado cadastro de nova música ==");
+        Writer.escreverNovaLinha("== Iniciado cadastro de nova música ==");
 
         String titulo = scannerHelper.lerLinha("Título: ");
         String artista = scannerHelper.lerLinha("Artista: ");
-        int duracao = scannerHelper.lerInt("Duração em segundos: ", 1);
+        int duracao = scannerHelper.lerInt("Duração em segundos: "); //removido valor minimo para testar Validação no construtor
 
         try {
             Musica musica = new Musica(titulo, artista, duracao);
             if (cadastrarMusicaNaPlataforma(musica)) {
-                Writer.EscreverNovaLinha("Música cadastrada com sucesso e com id " + musica.getId());
+                Writer.escreverNovaLinha("Música cadastrada com sucesso e com id " + musica.getId());
             } else {
-                Writer.EscreverNovaLinha("Não foi possível cadastrar a música. Acervo cheio ou dados inválidos.");
+                Writer.escreverNovaLinha("Não foi possível cadastrar a música. Acervo cheio ou dados inválidos.");
             }
         } catch (IllegalArgumentException e) {
-            Writer.EscreverNovaLinha("Erro ao cadastrar música: " + e.getMessage());
+            Writer.escreverErro("Erro ao cadastrar música: " + e.getMessage());
         } catch (Exception e) {
-            Writer.EscreverNovaLinha("Erro! stack em: " + e.getMessage());
+            Writer.escreverErro("Erro! stack em: " + e.getMessage());
         }
     }
 
     private static void cadastrarUsuarioManual() {
-        Writer.EscreverNovaLinha("== Início do cadastro de novo usuário ==");
+        Writer.escreverNovaLinha("== Início do cadastro de novo usuário ==");
         String nome = scannerHelper.lerLinha("Nome: ");
         String email = scannerHelper.lerLinha("Email: ");
 
         try {
             Usuario usuario = new Usuario(nome, email);
             if(cadastrarUsuarioNaPlataforma(usuario)) {
-                Writer.EscreverNovaLinha("Usuário cadastrado com sucesso e com id " + usuario.getId());
+                Writer.escreverNovaLinha("Usuário cadastrado com sucesso e com id " + usuario.getId());
             } else {
-                Writer.EscreverNovaLinha("Não foi possível cadastrar o usuário pois a base está cheia.");
+                Writer.escreverNovaLinha("Não foi possível cadastrar o usuário pois a base está cheia.");
             }
         } catch (IllegalArgumentException e) {
-            Writer.EscreverNovaLinha("Erro ao cadastrar usuário: " + e.getMessage());
+            Writer.escreverErro("Erro ao cadastrar usuário: " + e.getMessage());
         } catch (Exception e) {
-            Writer.EscreverNovaLinha("Erro! stack em: " + e.getMessage());
+            Writer.escreverErro("Erro! stack em: " + e.getMessage());
         }
     }
 
     private static void criarPlaylist() {
-        Writer.EscreverNovaLinha("== Início de criação de playlist ==");
+        Writer.escreverNovaLinha("== Início de criação de playlist ==");
         try{
             ValidarCriacaoPlaylist();
 
             String nome = scannerHelper.lerLinha("Nome da playlist: ");
+
+            listarUsuarios();
+
             int donoId = scannerHelper.lerInt("Id do dono da playlist", 0); 
 
             Usuario dono = plataforma.buscarUsuario(donoId);
             if (dono == null) {
-                throw new IllegalArgumentException("Usuário com id " + donoId + " não encontrado.");
+                throw new NullPointerException("Usuário com id " + donoId + " não encontrado.");
             }
 
             Playlist playlist = new Playlist(nome, dono);
 
             cadastrarMusicasNaPlaylist(playlist);
 
-            Writer.EscreverNovaLinha("Playlist " + playlist.getNome() + " de " + playlist.getDono().getNome() + " criada com " + playlist.getQuantidade() + " músicas.");
-            Writer.EscreverNovaLinha("Músicas na playlist:");
+            Writer.escreverNovaLinha("Playlist " + playlist.getNome() + " de " + playlist.getDono().getNome() + " criada com " + playlist.getQuantidade() + " músicas.");
+            Writer.escreverNovaLinha("Músicas na playlist:");
             for (int i = 0; i < playlist.getQuantidade(); i++) {
                 Musica musica = playlist.getNaPosicao(i);
-                Writer.EscreverNovaLinha("ID" + musica.getId() + " - " + musica.getTitulo() + " de " + musica.getArtista() + ", " + musica.getDuracaoFormatada());
+                Writer.escreverNovaLinha("ID" + musica.getId() + " - " + musica.getTitulo() + " de " + musica.getArtista() + ", " + musica.getDuracaoFormatada());
             }
         }
         catch (IllegalStateException e){
-            Writer.EscreverNovaLinha("Dados da plataforma insuficientes! Detalhamento: " + e.getMessage());
+            Writer.escreverErro("Dados da plataforma insuficientes! Detalhamento: " + e.getMessage());
         }
-        catch (IllegalArgumentException e){
-            Writer.EscreverNovaLinha("Algum valor fornecido estava inválido! Detalhamento: " + e.getMessage());
+        catch (NullPointerException e){
+            Writer.escreverErro("Algum valor fornecido estava inválido! Detalhamento: " + e.getMessage());
         }
         catch (Exception e){
-            Writer.EscreverNovaLinha("Erro! Stack: " + e.getMessage());
+            Writer.escreverErro("Erro! Stack: " + e.getMessage());
         }
         finally{
-            Writer.EscreverNovaLinha("Finalização do processo de criação de playlist.");
+            Writer.escreverNovaLinha("Finalização do processo de criação de playlist.");
         }
     }
 
@@ -155,8 +162,11 @@ public class App {
     }
 
     private static void cadastrarMusicasNaPlaylist(Playlist playlist) {
-        Writer.EscreverNovaLinha("== Adicionando músicas à playlist ==");
-        Writer.EscreverNovaLinha("Digite os títulos das músicas para adicionar na playlist ou 'fim' para finalizar essa etapa:");
+        Writer.escreverNovaLinha("== Adicionando músicas à playlist ==");
+
+        listarAcervo();
+
+        Writer.escreverNovaLinha("Digite os títulos das músicas para adicionar na playlist ou 'fim' para finalizar essa etapa:");
 
         while (true) {
             try {
@@ -167,81 +177,105 @@ public class App {
 
                 Musica musica = buscarMusicaNaPlataformaPorTitulo(titulo);
 
-                if (musica == null) 
-                    throw new IllegalArgumentException("Música com o título informado não foi encontrada!");
+                if (musica == null) {
+                    Writer.escreverErro("Música não encontrada.");
+                    return;
+                }         
 
                 if (playlist.adicionar(musica)) {
-                    Writer.EscreverNovaLinha("Música adicionada: " + musica.getTitulo());
+                    Writer.escreverNovaLinha("Música adicionada: " + musica.getTitulo());
                 } 
                 else {
-                    Writer.EscreverNovaLinha("Não é possível adicionar mais músicas nesta playlist.");
+                    Writer.escreverNovaLinha("Não é possível adicionar mais músicas nesta playlist.");
                     break;
                 }
             } catch (IllegalArgumentException e) {
-                Writer.EscreverNovaLinha("Algum valor informado estava inválido! Detalhamento: " + e.getMessage());
+                Writer.escreverErro("Algum valor informado estava inválido! Detalhamento: " + e.getMessage());
             }
             catch (Exception e){
-                Writer.EscreverNovaLinha("Erro! Stack em: " + e.getMessage());
+                Writer.escreverErro("Erro! Stack em: " + e.getMessage());
             }
         }
-        Writer.EscreverNovaLinha("Finalizando processo de adição de músicas.");
+        Writer.escreverNovaLinha("Finalizando processo de adição de músicas.");
     }
 
     private static void buscarMusicaPorId() {
         try{
-            Musica musica = buscarMusicaPorIdInternal();
-            Writer.EscreverNovaLinha("(id" + musica.getId() + ") Música encontrada: " + musica.getTitulo() + " do artista '" + musica.getArtista() + "' e duração de " + musica.getDuracaoFormatada());
-        }
-        catch (NullPointerException e){
-            Writer.EscreverNovaLinha("Id informado não corresponde à nenhuma música.");
+            int id = scannerHelper.lerInt("Digite o ID da música: ", 0);
+            Musica musica = buscarMusicaNaPlataformaPorId(id);
+
+            if (musica == null) {
+                Writer.escreverErro("Música não encontrada.");
+                return;
+            }
+
+            Writer.escreverNovaLinha("(id" + musica.getId() + ") Música encontrada: " + musica.getTitulo() + " do artista '" + musica.getArtista() + "' e duração de " + musica.getDuracaoFormatada());
         }
         catch (Exception e){
-            Writer.EscreverNovaLinha("Erro! Stack em: " + e.getMessage());
+            Writer.escreverErro("Erro! Stack em: " + e.getMessage());
         }
-    }
-
-    private static Musica buscarMusicaPorIdInternal() {
-        int id = scannerHelper.lerInt("Digite o ID da música: ", 0);
-        return buscarMusicaNaPlataformaPorId(id);
     }
 
     private static void buscarMusicaPorTitulo() {
         try{
             String titulo = scannerHelper.lerLinha("Digite o título da música: ");
             Musica musica = buscarMusicaNaPlataformaPorTitulo(titulo);
-            Writer.EscreverNovaLinha("(id" + musica.getId() + ") Música encontrada: " + musica.getTitulo() + " do artista '" + musica.getArtista() + "'' e duração de " + musica.getDuracaoFormatada());
-        }
-        catch (NullPointerException e){
-            Writer.EscreverNovaLinha("Título informado não corresponde à nenhuma música.");
+
+            if (musica == null) {
+                Writer.escreverErro("Música não encontrada.");
+                return;
+            }
+
+            Writer.escreverNovaLinha("(id" + musica.getId() + ") Música encontrada: " + musica.getTitulo() + " do artista '" + musica.getArtista() + "' e duração de " + musica.getDuracaoFormatada());
         }
         catch (Exception e){
-            Writer.EscreverNovaLinha("Erro! Stack em: " + e.getMessage());
+            Writer.escreverErro("Erro! Stack em: " + e.getMessage());
         }
     }
 
     private static void reproduzirMusica() {
+
+        listarAcervo();
+
         try{
-            Musica musica = buscarMusicaPorIdInternal();
+            String titulo = scannerHelper.lerLinha("Digite o título da música: ");
+            Musica musica = buscarMusicaNaPlataformaPorTitulo(titulo);
+
+            if (musica == null) {
+                Writer.escreverErro("Música não encontrada.");
+                return;
+            }
+
             musica.reproduzir();
-            Writer.EscreverNovaLinha("Música reproduzida: " + musica.getTitulo() + " do artista '" + musica.getArtista() + "'' e duração de " + musica.getDuracaoFormatada());
-            Writer.EscreverNovaLinha("Total de reproduções: " + musica.getReproducoes());
-        }
-        catch (NullPointerException e){
-            Writer.EscreverNovaLinha("Título informado não corresponde à nenhuma música.");
+            Writer.escreverNovaLinha("Música reproduzida: " + musica.getTitulo() + " do artista '" + musica.getArtista() + "'' e duração de " + musica.getDuracaoFormatada());
+            Writer.escreverNovaLinha("Total de reproduções: " + musica.getReproducoes());
         }
         catch (Exception e){
-            Writer.EscreverNovaLinha("Erro! Stack em: " + e.getMessage());
+            Writer.escreverErro("Erro! Stack em: " + e.getMessage());
+        }
+        finally {
+            Writer.escreverNovaLinha("Operação de reprodução finalizada.");
         }
     }
 
     private static void listarAcervo() {
-        Writer.EscreverNovaLinha("== Início da listagem de músicas do acervo ==");
+        Writer.escreverNovaLinha("== Início da listagem de músicas do acervo ==");
         for(Musica musica : plataforma.getMusicas()){
             if(musica != null){
-                Writer.EscreverNovaLinha("(id" + musica.getId() + ") " + musica.getTitulo() + " do artista '" + musica.getArtista() + "' e duração de " + musica.getDuracaoFormatada());
+                Writer.escreverNovaLinha("(id" + musica.getId() + ") " + musica.getTitulo() + " do artista '" + musica.getArtista() + "' e duração de " + musica.getDuracaoFormatada());
             }
         }
-        Writer.EscreverNovaLinha("== Fim da listagem com " + plataforma.getTotalMusicas() + " músicas ==");
+        Writer.escreverNovaLinha("== Fim da listagem com " + plataforma.getTotalMusicas() + " músicas ==");
+    }
+
+    private static void listarUsuarios() {
+        Writer.escreverNovaLinha("== Início da listagem de usuários ==");
+        for(var usuario : plataforma.getUsuarios()){
+            if(usuario != null){
+                Writer.escreverNovaLinha("(id" + usuario.getId() + ") " + usuario.getNome() + " com email " + usuario.getEmail());
+            }
+        }
+        Writer.escreverNovaLinha("== Fim da listagem com " + plataforma.getTotalUsuarios() + " usuários ==");
     }
 
     private static boolean cadastrarMusicaNaPlataforma(Musica musica) throws IllegalArgumentException {

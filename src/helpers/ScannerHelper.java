@@ -39,7 +39,7 @@ public class ScannerHelper {
         var result = 0;
         while(true){
             try{
-                Writer.EscreverNovaLinha(mensagemEntrada);
+                Writer.escreverNovaLinha(mensagemEntrada);
                 result = this.lerIntInternal();
 
                 if(result > maximo || result < minimo)
@@ -48,13 +48,13 @@ public class ScannerHelper {
                 break;
             }
             catch(NumberFormatException e){
-                Writer.EscreverNovaLinha("Ops .. Valor inválido! Digite um número ... (stack: " + e.getMessage() + ")");
+                Writer.escreverErro("Valor inválido! Digite um número ... (stack: " + e.getMessage() + ")");
             }
             catch(IllegalArgumentException e){
-                Writer.EscreverNovaLinha("Ops .. Valor inválido! " + e.getMessage());
+                Writer.escreverErro("Valor inválido! " + e.getMessage());
             }
             catch(Exception e){
-                Writer.EscreverNovaLinha("Ops .. Valor inválido! Tente novamente ... (stack: " + e.getMessage() + ")");
+                Writer.escreverErro("Erro! Stack: " + e.getStackTrace());
                 this.passarProximaLinha();
             }
         }
@@ -66,7 +66,7 @@ public class ScannerHelper {
     }
 
     public String lerLinha(String mensagem){
-        Writer.EscreverNovaLinha(mensagem);
+        Writer.escreverNovaLinha(mensagem);
         return scanner.nextLine();
     }
 

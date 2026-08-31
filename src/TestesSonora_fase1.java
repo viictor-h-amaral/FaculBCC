@@ -107,8 +107,13 @@ public class TestesSonora_fase1 {
         verificar(playlist.getNaPosicao(0) == m2 && playlist.getNaPosicao(1) == m3,
                 "Elementos após remoção devem ficar contíguos");
 
-        verificar(!playlist.removerNaPosicao(99), "Índice fora do intervalo deve retornar false");
-        verificar(playlist.getNaPosicao(-1) == null, "Índice negativo deve devolver null");
+        try {
+            playlist.removerNaPosicao(99);
+            throw new IllegalStateException("Índice fora do intervalo deve lançar exceção");
+        } catch (IndexOutOfBoundsException e) {
+            verificar(e.getMessage() != null && !e.getMessage().trim().isEmpty(),
+                    "Mensagem da exceção de índice inválido deve ser clara");
+        }
     }
 
     private static void testarPlaylistCheia() {

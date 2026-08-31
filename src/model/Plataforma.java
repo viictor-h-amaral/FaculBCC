@@ -10,17 +10,22 @@ public class Plataforma {
         return musicas;
     }
 
+    public Usuario[] getUsuarios(){
+        return usuarios;
+    }
+
     public int getTotalUsuarios() {
         int quantidadeUsuarios = 0;
         for(int i = 0; i < usuarios.length; i++){
             if(usuarios[i] != null) quantidadeUsuarios++;
+            else break;
         }
         return quantidadeUsuarios;
     }
 
     public boolean cadastrarUsuario(Usuario usuario) throws IllegalArgumentException {
         if(usuario == null) 
-            throw new IllegalArgumentException("Ops. Usuário inválido! O usuário não deve ser nulo.");
+            throw new IllegalArgumentException("Usuário inválido! O usuário não deve ser nulo.");
 
         int proximoIndexDisponivel = proximoIndexUsuariosVazio();
         if(proximoIndexDisponivel >= usuarios.length) 
@@ -51,7 +56,7 @@ public class Plataforma {
 
     public boolean cadastrarMusica(Musica musica) throws IllegalArgumentException {
         if(musica == null) 
-            throw new IllegalArgumentException("Ops. Música inválida! A música não deve ser nula.");
+            throw new IllegalArgumentException("Música inválida! A música não deve ser nula.");
 
         int proximoIndexDisponivel = proximoIndexMusicasVazio();
         if(proximoIndexDisponivel >= musicas.length) 
@@ -75,7 +80,7 @@ public class Plataforma {
     public Musica buscarMusicaPorId(int id){
         Musica musicaProcurada = null;
 
-        for(int i = 0; i < musicas.length; i++){
+        for(int i = 0; i < getTotalMusicas(); i++){
             if(musicas[i] != null && musicas[i].getId() == id) {
                 musicaProcurada = musicas[i];
                 break;
@@ -88,7 +93,7 @@ public class Plataforma {
     public Musica buscarMusica(String titulo){
         Musica musicaProcurada = null;
 
-        for(int i = 0; i < musicas.length; i++){
+        for(int i = 0; i < getTotalMusicas(); i++){
             if(musicas[i] != null && musicas[i].getTitulo().equalsIgnoreCase(titulo)) {
                 musicaProcurada = musicas[i];
                 break;
@@ -101,7 +106,7 @@ public class Plataforma {
     public Usuario buscarUsuario(int id){
         Usuario usuarioProcurado = null;
 
-        for(int i = 0; i < usuarios.length; i++){
+        for(int i = 0; i < getTotalUsuarios(); i++){
             if(usuarios[i] != null && usuarios[i].getId() == id) {
                 usuarioProcurado = usuarios[i];
                 break;
@@ -114,7 +119,7 @@ public class Plataforma {
     public Usuario buscarUsuario(String nome){
         Usuario usuarioProcurado = null;
 
-        for(int i = 0; i < usuarios.length; i++){
+        for(int i = 0; i < getTotalUsuarios(); i++){
             if(usuarios[i] != null && usuarios[i].getNome().equalsIgnoreCase(nome)) {
                 usuarioProcurado = usuarios[i];
                 break;
@@ -123,6 +128,4 @@ public class Plataforma {
 
         return usuarioProcurado;
     }
-
-
 }

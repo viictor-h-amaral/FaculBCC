@@ -2,17 +2,17 @@ package model;
 
 public class Playlist {
 
-    private static void ValidarParametrosPlaylist(String nome, Usuario dono) throws IllegalArgumentException {
-        if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Ops. Nome inválido! O nome não deve ser vazio.");
+    private static void validarParametrosPlaylist(String nome, Usuario dono) throws IllegalArgumentException {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome inválido! O nome não deve ser vazio.");
         }
         else if (dono == null) {
-            throw new IllegalArgumentException("Ops. Dono inválido! O dono não deve ser nulo.");
+            throw new IllegalArgumentException("Dono inválido! O dono não deve ser nulo.");
         }
     }
 
     public Playlist(String nome, Usuario dono) throws IllegalArgumentException {
-        ValidarParametrosPlaylist(nome, dono);
+        validarParametrosPlaylist(nome, dono);
 
         this.nome = nome;
         this.dono = dono;
@@ -38,13 +38,16 @@ public class Playlist {
             if (musica != null) {
                 quantidadeElementosNaoNulos++;
             }
+            else{
+                break;
+            }
         }
         return quantidadeElementosNaoNulos;
     }
 
     public Musica getNaPosicao(int indice){
-        if(indice < 0 || indice >= musicas.length){
-            throw new IndexOutOfBoundsException("Ops. Índice inválido! O índice deve estar entre 0 e " + (musicas.length - 1) + ". Índice solicitado: " + indice);
+        if(indice < 0 || indice > getQuantidade() - 1){
+            throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (getQuantidade() - 1) + ". Índice solicitado: " + indice);
         }
 
         return musicas[indice];
@@ -53,7 +56,7 @@ public class Playlist {
     public boolean adicionar(Musica musica){
 
         if(musica == null)
-            throw new IllegalArgumentException("Ops. Música inválida! A música não deve ser nula.");
+            throw new IllegalArgumentException("Música inválida! A música não deve ser nula.");
 
         int index = this.proximoIndexVazio();
 
@@ -76,19 +79,17 @@ public class Playlist {
     }
 
     public boolean removerNaPosicao(int indice){
-        if(indice < 0 || indice >= musicas.length)
-            throw new IndexOutOfBoundsException("Ops. Índice inválido! O índice deve estar entre 0 e " + (musicas.length - 1) + ". Índice solicitado: " + indice);
-
-        if(musicas[indice] == null)
-            return false;
+        int quantidade = getQuantidade();
+        if(indice < 0 || indice >= quantidade)
+            throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (quantidade - 1) + ". Índice solicitado: " + indice);
 
         // reordena playlist E remove música na posição por meio de sobrescrita dos indices, indo até o penultimo
-        for (int i = indice; i < musicas.length - 1; i++) {
+        for (int i = indice; i < quantidade - 1; i++) {
             musicas[i] = musicas[i + 1];
         }
 
         //finaliza anulando a musica da ultima posição
-        musicas[musicas.length - 1] = null;
+        musicas[quantidade - 1] = null;
         return true;
     }
 
