@@ -60,20 +60,20 @@ public class PlaylistTest {
     @Test
     @DisplayName("Index negativo deve ser rejeitado")
     public void IndexNegativo_DeveLancarExcecao(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.getNaPosicao(-1));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.getNaPosicao(-1));
     }
 
     @Test
     @DisplayName("Index de posição não preenchida deve ser rejeitado")
     public void IndexPosicaoNaoPreenchida_DeveLancarExcecao(){
         carregarPlaylistComMusicas(10);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.getNaPosicao(50));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.getNaPosicao(50));
     }
 
     @Test
     @DisplayName("Index maior que tamanho do array deve ser rejeitado")
     public void IndexMaiorQueTamanhoDoArray_DeveLancarExcecao(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.getNaPosicao(Integer.MAX_VALUE));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.getNaPosicao(Integer.MAX_VALUE));
     }
 
     @Test
@@ -100,20 +100,20 @@ public class PlaylistTest {
     @Test
     @DisplayName("Remover index negativo deve ser rejeitado")
     public void RemoverIndexNegativo_DeveLancarExcecao(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.removerNaPosicao(-1));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.removerNaPosicao(-1));
     }
 
     @Test
     @DisplayName("Remover index de posição não preenchida deve ser rejeitado")
     public void RemoverIndexPosicaoNaoPreenchida_DeveLancarExcecao(){
         carregarPlaylistComMusicas(10);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.removerNaPosicao(50));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.removerNaPosicao(50));
     }
 
     @Test
     @DisplayName("Remover index maior que tamanho do array deve ser rejeitado")
     public void RemoverIndexMaiorQueTamanhoDoArray_DeveLancarExcecao(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.removerNaPosicao(Integer.MAX_VALUE));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.removerNaPosicao(Integer.MAX_VALUE));
     }
 
     @Test
