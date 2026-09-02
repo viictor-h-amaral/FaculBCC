@@ -1,0 +1,10 @@
+{
+  "java.project.sourcePaths": [
+    "src", "tests"
+  ],
+  "java.project.outputPath": "bin",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar"
+  ]
+}

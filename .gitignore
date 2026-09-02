@@ -1,4 +1,6 @@
 out/
 *.puml
 *.class
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
