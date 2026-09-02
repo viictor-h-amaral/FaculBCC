@@ -35,6 +35,16 @@ public class Plataforma {
         return true;
     }
 
+    public boolean cadastrarUsuarios(Usuario[] usuarios) throws IllegalArgumentException {
+        if (this.getTotalUsuarios() + usuarios.length > this.usuarios.length)
+            return false;
+
+        for(var usuario : usuarios){
+            cadastrarUsuario(usuario);
+        }
+        return true;
+    }
+
     private int proximoIndexUsuariosVazio(){
         int proximoIndex = usuarios.length;
         for (int i = 0; i < usuarios.length; i++){
@@ -63,6 +73,16 @@ public class Plataforma {
             return false;
 
         musicas[proximoIndexDisponivel] = musica;
+        return true;
+    }
+
+    public boolean cadastrarMusicas(Musica[] musicas) throws IllegalArgumentException {
+        if (this.getTotalMusicas() + musicas.length > this.musicas.length)
+            return false;
+
+        for(var musica : musicas){
+            cadastrarMusica(musica);
+        }
         return true;
     }
 

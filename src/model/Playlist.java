@@ -32,6 +32,23 @@ public class Playlist {
 
     private Musica[] musicas = new Musica[100];
 
+    public Musica[] getArrayMusicas(){ 
+        return musicas; 
+    }
+
+    public Musica buscarMusicaPorId(int id){
+        Musica musicaProcurada = null;
+
+        for(int i = 0; i < getQuantidade(); i++){
+            if(musicas[i] != null && musicas[i].getId() == id) {
+                musicaProcurada = musicas[i];
+                break;
+            }
+        }
+
+        return musicaProcurada;
+    }
+
     public int getQuantidade(){
         int quantidadeElementosNaoNulos = 0;
         for (Musica musica : musicas) {
