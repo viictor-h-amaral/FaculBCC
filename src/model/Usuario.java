@@ -15,6 +15,9 @@ public class Usuario {
     }
 
     private static int proximoId = 1;
+    public static int getProximoId() {
+        return proximoId;
+    }
 
     public Usuario(String nome, String email) throws IllegalArgumentException {
         validarParametrosUsuario(nome, email);

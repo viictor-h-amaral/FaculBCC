@@ -14,6 +14,9 @@ public class Musica {
     }
 
     private static int proximoId = 1;
+    public static int getProximoId() {
+        return proximoId;
+    }
 
     public Musica(String titulo, String artista, int duracaoSegundos) throws IllegalArgumentException {
         validarParametrosMusica(titulo, artista, duracaoSegundos);
