@@ -9,35 +9,35 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Duração com minutos e segundos")
-    public void DuracaoComMunitosESegundos_FormatadaCorretamente() {
+    public void duracaoComMunitosESegundos_formatadaCorretamente() {
         var musica125seg = new Musica("M1", "A1", 125);
         Assertions.assertEquals("02:05", musica125seg.getDuracaoFormatada());
     }
 
     @Test
     @DisplayName("Duração redonda em minutos")
-    public void DuracaoRedondaEmMinutos_FormatadaCorretamente() {
+    public void duracaoRedondaEmMinutos_formatadaCorretamente() {
         var musica90seg = new Musica("M1", "A1", 90);
         Assertions.assertEquals("01:30", musica90seg.getDuracaoFormatada());
     }
 
     @Test
     @DisplayName("Menos de um minuto, com zero a esquerda")
-    public void DuracaoMenosDeUmMinuto_FormatadaCorretamente() {
+    public void duracaoMenosDeUmMinuto_formatadaCorretamente() {
         var musica5seg = new Musica("M1", "A1", 5);
         Assertions.assertEquals("00:05", musica5seg.getDuracaoFormatada());
     } 
 
     @Test
     @DisplayName("Dois dígitos nos minutos")
-    public void DuracaoDoisDigitosNosMinutos_FormatadaCorretamente() {
+    public void duracaoDoisDigitosNosMinutos_formatadaCorretamente() {
         var musica600seg = new Musica("M1", "A1", 600);
         Assertions.assertEquals("10:00", musica600seg.getDuracaoFormatada());
     } 
 
     @Test
     @DisplayName("Valor logo abaixo de dez minutos")
-    public void DuracaoLogoAbaixoDeDezMinutos_FormatadaCorretamente() {
+    public void duracaoLogoAbaixoDeDezMinutos_formatadaCorretamente() {
         var musica599seg = new Musica("M1", "A1", 599);
         Assertions.assertEquals("09:59", musica599seg.getDuracaoFormatada());
     }
@@ -47,7 +47,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Título vazio deve ser rejeitado")
-    public void TituloVazio_DeveSerRejeitado() {
+    public void tituloVazio_deveSerRejeitado() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Musica(" ", "Queen", 355);
         });
@@ -55,7 +55,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Título nulo deve ser rejeitado")
-    public void TituloNulo_DeveSerRejeitado() {
+    public void tituloNulo_deveSerRejeitado() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Musica(null, "Queen", 355);
         });
@@ -63,7 +63,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Artista vazio deve ser rejeitado")
-    public void ArtistaVazio_DeveSerRejeitado() {
+    public void artistaVazio_deveSerRejeitado() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Musica("Bohemian Rhapsody", " ", 355);
         });
@@ -71,7 +71,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Duração zero deve ser rejeitada")
-    public void DuracaoZero_DeveSerRejeitada() {
+    public void duracaoZero_deveSerRejeitada() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Musica("Bohemian Rhapsody", "Queen", 0);
         });
@@ -79,7 +79,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Duração negativa deve ser rejeitada")
-    public void DuracaoNegativa_DeveSerRejeitada() {
+    public void duracaoNegativa_deveSerRejeitada() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Musica("Bohemian Rhapsody", "Queen", -10);
         });
@@ -87,7 +87,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Dados validos criam a música")
-    public void DadosValidos_CriamAMusica() {
+    public void dadosValidos_criamAMusica() {
         var musica = new Musica("Bohemian Rhapsody", "Queen", 355);
         Assertions.assertNotNull(musica);
         Assertions.assertEquals("Bohemian Rhapsody", musica.getTitulo());
@@ -101,7 +101,7 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Reproduzir música deve incrementar contador de reproduções")
-    public void ReproduzirMusica_IncrementaContadorReproduzoes(){
+    public void reproduzirMusica_incrementaContadorReproducoes(){
         var musica = new Musica("titulo", "artista", 100);
 
         var qntReproducoesDesejadas = 10;
@@ -116,14 +116,14 @@ public class MusicaTest {
 
     @Test
     @DisplayName("Criar nova música gera ID válido e novo (sequencial)")
-    public void CriarNovaMusica_GeraIdValidoENaSequencia(){
-        int ultimoId = 0;
+    public void criarNovaMusica_geraIdValidoENaSequencia(){
+        int proximoIdEsperado = Musica.getProximoId();
         int qntRepeticoes = 4;
 
         for (int i = 1; i <= qntRepeticoes; i++){
             var novaMusica = new Musica("titulo "+i, "artista "+i, 100+i);
-            Assertions.assertEquals(novaMusica.getId(), ultimoId+1);
-            ultimoId++;
+            Assertions.assertEquals(proximoIdEsperado, novaMusica.getId());
+            proximoIdEsperado++;
         }
     }
 

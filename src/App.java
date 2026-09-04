@@ -112,7 +112,7 @@ public class App {
     private static void criarPlaylist() {
         Writer.escreverNovaLinha("== Início de criação de playlist ==");
         try{
-            ValidarCriacaoPlaylist();
+            validarCriacaoPlaylist();
 
             String nome = scannerHelper.lerLinha("Nome da playlist: ");
 
@@ -151,7 +151,7 @@ public class App {
     }
 
     //lançamento de illegalstateexception sinaliza que a criação da playlist foi feita em um estado ruim/inconsistente da plataforma
-    private static void ValidarCriacaoPlaylist() throws IllegalStateException {
+    private static void validarCriacaoPlaylist() throws IllegalStateException {
         if(plataforma.getTotalUsuarios() == 0){
             throw new IllegalStateException("Nenhum usuário cadastrado na plataforma. A criação de playlists exige um usuário dono.");
         }

@@ -12,7 +12,7 @@ public class PlaylistTest {
     public Playlist playlistBase = new Playlist("playlistBase", new Usuario("donoBase", "dono@gmail.com"));
 
     @BeforeEach
-    public void GerarObjetoPlaylistBase(){
+    public void gerarObjetoPlaylistBase(){
         playlistBase = new Playlist("playlistBase", new Usuario("donoBase", "dono@gmail.com"));
     }
 
@@ -21,7 +21,7 @@ public class PlaylistTest {
 
     @Test
     @DisplayName("Parametro null deve ser rejeitado")
-    public void ParametroNull_DeveSerRejeitado(){
+    public void parametroNull_deveSerRejeitado(){
         Musica musica = null;
         Assertions.assertThrows(IllegalArgumentException.class, () -> playlistBase.adicionar(musica));
     }
@@ -34,7 +34,7 @@ public class PlaylistTest {
 
     @Test
     @DisplayName("Playlist cheia não deve adicionar a música")
-    public void PlaylistCheia_NaoDeveAdicionarMusica(){
+    public void playlistCheia_naoDeveAdicionarMusica(){
         carregarPlaylistComMusicas(100);
 
         var musica101 = new Musica("titulo101", "artista101", 101);
@@ -45,7 +45,7 @@ public class PlaylistTest {
 
     @Test
     @DisplayName("Playlist com espaço deve adicionar a música")
-    public void PlaylistComEspaco_DeveAdicionarMusica(){
+    public void playlistComEspaco_deveAdicionarMusica(){
         carregarPlaylistComMusicas(10);
 
         var novaMusica = new Musica("titulo11", "artista11", 11);
@@ -59,26 +59,26 @@ public class PlaylistTest {
 
     @Test
     @DisplayName("Index negativo deve ser rejeitado")
-    public void IndexNegativo_DeveLancarExcecao(){
+    public void indexNegativo_deveLancarExcecao(){
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.getNaPosicao(-1));
     }
 
     @Test
     @DisplayName("Index de posição não preenchida deve ser rejeitado")
-    public void IndexPosicaoNaoPreenchida_DeveLancarExcecao(){
+    public void indexPosicaoNaoPreenchida_deveLancarExcecao(){
         carregarPlaylistComMusicas(10);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.getNaPosicao(50));
     }
 
     @Test
     @DisplayName("Index maior que tamanho do array deve ser rejeitado")
-    public void IndexMaiorQueTamanhoDoArray_DeveLancarExcecao(){
+    public void indexMaiorQueTamanhoDoArray_deveLancarExcecao(){
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.getNaPosicao(Integer.MAX_VALUE));
     }
 
     @Test
     @DisplayName("Index válido deve retornar música esperada")
-    public void IndexValido_DeveRetornarMusicaEsperada(){
+    public void indexValido_deveRetornarMusicaEsperada(){
         int qntMusicasCarregarPorLote = 10; //adicionar 10 musicas faz com que o indice da decima seja 9
         int indiceProcurado = qntMusicasCarregarPorLote; //logo, o proximo indice eh o proprio 10
 
@@ -99,26 +99,26 @@ public class PlaylistTest {
 
     @Test
     @DisplayName("Remover index negativo deve ser rejeitado")
-    public void RemoverIndexNegativo_DeveLancarExcecao(){
+    public void removerIndexNegativo_deveLancarExcecao(){
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.removerNaPosicao(-1));
     }
 
     @Test
     @DisplayName("Remover index de posição não preenchida deve ser rejeitado")
-    public void RemoverIndexPosicaoNaoPreenchida_DeveLancarExcecao(){
+    public void removerIndexPosicaoNaoPreenchida_deveLancarExcecao(){
         carregarPlaylistComMusicas(10);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.removerNaPosicao(50));
     }
 
     @Test
     @DisplayName("Remover index maior que tamanho do array deve ser rejeitado")
-    public void RemoverIndexMaiorQueTamanhoDoArray_DeveLancarExcecao(){
+    public void removerIndexMaiorQueTamanhoDoArray_deveLancarExcecao(){
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> playlistBase.removerNaPosicao(Integer.MAX_VALUE));
     }
 
     @Test
     @DisplayName("Index válido deve remover música esperada")
-    public void IndexValido_DeveRemoverMusicaEsperada(){
+    public void indexValido_deveRemoverMusicaEsperada(){
         int qntMusicasCarregarPorLote = 10; //adicionar 10 musicas faz com que o indice da decima seja 9
         int indiceRemover = qntMusicasCarregarPorLote; //logo, o proximo indice eh o proprio 10
 
@@ -149,7 +149,7 @@ public class PlaylistTest {
 
     @Test
     @DisplayName("Remover música deve reordenar as outras, deixando nenhum 'buraco'")
-    public void RemoverMusica_DeveRemoverReordenarMusicas(){
+    public void removerMusica_deveRemoverReordenarMusicas(){
         int qntMusicasCargaInicial = 60;
         carregarPlaylistComMusicas(qntMusicasCargaInicial);
         var indicesRemover = new int[]{59, 57, 20, 5, 1}; //itens únicos, em ordem decrescente
