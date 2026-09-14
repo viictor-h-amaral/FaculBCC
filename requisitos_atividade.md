@@ -4,162 +4,82 @@ DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO
 PROFESSOR ANDRÉ FELIPE BÜRGER 
 PROGRAMAÇÃO ORIENTADA A OBJETOS 
 Contexto 
-Até agora, você testou o Sonora manualmente: executava o menu, digitava algumas entradas e verificava se a 
-saída parecia correta. Isso funciona no início, mas não acompanha o crescimento do projeto. Conforme o 
-sistema evolui, repetir todos os testes à mão a cada alteração se torna trabalhoso, e um erro antigo pode 
-voltar sem ser percebido. 
-Teste unitário e o checklist antes de lançar o foguete: um conjunto de verificações automáticas que roda em 
-segundos e te avisa na hora se alguma coisa quebrou. Nesta fase você vai transformar aquele testar no olho 
-em testes de verdade, escritos em JUnit 6, que comprovam o comportamento das suas classes, incluindo as 
-exceções que você adicionou na Fase 02. 
-E tem um detalhe honesto: se algum teste seu falhar, pode ser que ele tenha achado um bug que estava 
-escondido na sua Fase 02. Ótimo. Era exatamente para isso que ele serve. 
-Objetivo 
-1. Clonar o projeto sonora-fase02 para uma pasta nova sonora-fase03. 
-2. Documentar planos de teste no formato de tabela (modelo mais abaixo). 
-3. Implementar esses planos como testes automatizados em JUnit 6. 
-4. Deixar todos os testes passando (verde). 
-Você não vai reescrever as classes do Sonora. O trabalho aqui e por cima do que ja existe: adicionar as classes 
-de teste e, se algum teste revelar um bug, corrigir a classe de produção. 
-Contrato da Fase 02 (confira antes de começar) 
-Os planos de teste desta fase assumem o seguinte comportamento, que é o que voce implementou na Fase 
-02. Se o seu projeto ficou diferente em algum ponto, ajuste a saída esperada do plano correspondente. 
-Situação 
-Comportamento esperado 
-Construtor/setter de Música com título vazio, artista vazio ou 
-duração menor ou igual a zero 
-Lança IllegalArgumentException 
-Construtor/setter de Usuário com nome vazio ou Email vazio 
-Lança IllegalArgumentException 
-Playlist.getNaPosicao(indice) ou removerNaPosicao(indice) 
-com índice fora da faixa 
-Lança IndexOutOfBoundsException 
-Playlist.adicionar(música) com a playlist cheia 
-Retorna false (fluxo normal, não é 
-exceção) 
-Plataforma.cadastrarMusica / cadastrarUsuario com 
-estrutura cheia 
-Plataforma.buscarMusica(...) / buscarMusicaPorId(...) sem 
-encontrar 
-Retorna false (fluxo normal) 
-Retorna null (fluxo normal) 
+Até agora o Sonora guardou tudo em vetores de tamanho fixo: a Playlist tem espaço para 100 músicas, a 
+Plataforma para 500 músicas e 500 usuários. Além disso, as relações entre as classes existiam de forma 
+implícita, escondidas dentro desses vetores e de atributos soltos. Nesta fase você vai fazer duas coisas que 
+andam juntas: primeiro desenhar, em UML, como as classes do Sonora se relacionam de verdade, com todos 
+os adornos(papel, nome, multiplicidade e navegabilidade) ; depois trocar os vetores por ArrayList, que é a 
+estrutura que o Java oferece para guardar uma quantidade que cresce sozinha. 
+O pulo do gato é perceber que as duas coisas conversam. Quando você modela um relacionamento como um 
+para muitos, aquele lado muitos vira, no código, uma coleção. É aí que o ArrayList entra. 
+Parte 1 - Modelar os relacionamentos do Sonora 
+Antes de mexer no código, você vai produzir o diagrama de classes do Sonora com as associações 
+devidamente detalhadas. Uma associação é o relacionamento que conecta duas classes e permite que os 
+objetos de uma naveguem até os da outra. Cada associação deve trazer os quatro adornos vistos em aula. 
+Os quatro adornos (revisão rápida) 
+• Papel. O nome do lado da associação, escrito junto da classe, dizendo qual papel aquela classe cumpre 
+no relacionamento (por exemplo, - dono, - faixas). 
+• Nome. Um verbo que descreve a natureza da ligação, com uma seta indicando a direção de leitura (por 
+exemplo, Usuario cria Playlist). 
+• Multiplicidade. Quantos objetos de um lado se ligam a um objeto do outro lado. 
+• Navegabilidade. De qual lado para qual lado é possível caminhar. Por padrão é bidirecional; uma seta na 
+ponta indica que a navegação vale só naquela direção. 
+Tabela de multiplicidades 
+Multiplicidade 
+Significado 
+0..1 
+Zero ou um objeto (relacionamento opcional, no máximo um do outro lado) 
+1 (ou 1..1) 
+Exatamente um objeto 
+0..* 
+Zero ou muitos (pode não haver nenhum) 
+1..* 
+Pelo menos um, podendo haver muitos 
+m..n 
+Entre m e n objetos (por exemplo, 3..5) 
+O que você vai entregar na modelagem 
+Desenhe o diagrama de classes do Sonora contendo, no mínimo, os quatro relacionamentos abaixo. Para cada 
+um, defina os papéis, o nome com a direção de leitura, a multiplicidade nas duas pontas (justificando com a 
+técnica acima) e a navegabilidade (justificando por que é bi ou unidirecional). O relacionamento entre Playlist 
+e Musica já está resolvido no exemplo; os demais são com você. 
+1. Plataforma e Musica (o acervo de músicas cadastradas). 
 UNIVERSIDADE REGIONAL DE BLUMENAU 
 CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
 DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
 PROFESSOR ANDRÉ FELIPE BÜRGER 
 PROGRAMAÇÃO ORIENTADA A OBJETOS 
-A ideia por trás da divisão: exceção e para uso indevido do programador (pedir uma posição que não existe, 
-criar objeto invalido). Situação normal de operação (uma playlist encher, uma busca não achar) continua 
-sinalizada por valor de retorno. 
-Parte 1 - Planos de teste 
-Antes de sair codando, você documenta o que vai testar. Cada linha de um plano de teste vira depois um 
-método de teste. O formato e este: um título identificando o plano e uma tabela com as colunas Caso, 
-Descrição, Entrada e Saida esperada. 
-Planos prontos (referência) 
-Estes dois já vem preenchidos. Use-os como modelo do nível de detalhe esperado e como base para 
-implementar na Parte 2. 
-Plano de testes PL01 - Validar Musica.getDuracaoFormatada() 
-Caso 
-Descrição 
-Entrada 
-Saida esperada 
-1 
-Duração com minutos e 
-segundos 
-Música de 125 segundos 
-Deve resultar em "02:05" 
-2 
-Duração redonda em minutos 
-Música de 90 segundos 
-3 
-Menos de um minuto, com 
-zero a esquerda 
-Música de 5 segundos 
-Deve resultar em "01:30" 
-Deve resultar em "00:05" 
-4 
-Dois dígitos nos minutos 
-Música de 600 segundos 
-5 
-Valor logo abaixo de dez 
-minutos 
-Música de 599 segundos 
-Deve resultar em "10:00" 
-Deve resultar em "09:59" 
-Plano de testes PL02 - Validar construtor de Música com dados invalidos 
-Caso 
-Descrição 
-Entrada 
-Saida esperada 
-1 
-Título vazio deve ser rejeitado 
-título "", artista "Queen", 
-duracao 355 
-Deve lançar 
-IllegalArgumentException 
-2 
-Título nulo deve ser rejeitado 
-título null, artista 
-"Queen", duracao 355 
-Deve lançar 
-IllegalArgumentException 
-3 
-Artista vazio deve ser rejeitado título "Bohemian 
-Rhapsody", artista "", 
-duração 355 
-Deve lançar 
-IllegalArgumentException 
-4 
-Duração zero deve ser 
-rejeitada 
-título valido, artista 
-valido, duracao 0 
-Deve lançar 
-IllegalArgumentException 
-5 
-Duração negativa deve ser 
-rejeitada 
-Deve lançar 
-IllegalArgumentException 
-título valido, artista 
-valido, duração -10 
-UNIVERSIDADE REGIONAL DE BLUMENAU 
-CENTRO DE CIÊNCIAS EXATAS E NATURAIS 
-DEPARTAMENTO DE SISTEMAS E COMPUTAÇÃO 
-PROFESSOR ANDRÉ FELIPE BÜRGER 
-PROGRAMAÇÃO ORIENTADA A OBJETOS 
-Caso 
-Descrição 
-Entrada 
-Saida esperada 
-6 
-Dados validos criam a música 
-Objeto criado, com id maior que 
-zero 
-título "Bohemian 
-Rhapsody", artista 
-"Queen", duração 355 
-Planos que você vai montar 
-Para cada plano abaixo eu te dou apenas o alvo (a classe, o método e os aspectos a cobrir). Você preenche a 
-tabela inteira: Caso, Descrição, Entrada e Saida esperada. Cubra tanto os casos que dão certo quanto os que 
-devem falhar. Pense em pelo menos 3 casos por plano. 
-• PL03 - Playlist.adicionar(música). Cobrir: adicionar em playlist com espaço (retorna true e a quantidade 
-sobe); adicionar até encher a playlist (o que ultrapassa a capacidade retorna false). 
-• PL04 - Playlist.getNaPosicao(indice). Cobrir: posição valida devolve a música certa; índice negativo e 
-índice além da quantidade. 
-• PL05 - Playlist.removerNaPosicao(indice). Cobrir: remoção de uma posição valida reorganiza sem deixar 
-buraco (a música seguinte assume a posição); índice invalido. 
-• PL06 - Plataforma: buscarMusica(título) e buscarMusicaPorId(id). Cobrir: música cadastrada e 
-encontrada; busca por título/id inexistente. 
-• PL07 - Musica.reproduzir(). Cobrir: cada chamada aumenta o contador de reproduções em um. 
-• PL08 (bônus) - Contadores de id. Cobrir: ids de Música saem sequenciais (1, 2, 3...) e são independentes 
-dos ids de Usuário. 
-Parte 2 - Implementação em JUnit 6 
-Cada caso dos seus planos vira um método de teste. Regras: 
-1. Use @Test em cada método e @DisplayName com a descrição do caso (o texto da coluna Descrição). 
-Assim o relatório de testes fica legível e amarra o código ao plano. 
-2. Casos normais: use assertEquals, assertTrue, assertFalse, assertNull ou assertNotNull, conforme o caso. 
-3. Casos de exceção: use assertThrows, verificando o tipo exato da exceção. Não basta estourar, tem que 
-estourar a exceção certa. 
-4. Use @BeforeEach para montar o cenário base que se repete (por exemplo, uma Plataforma já com 
-algumas músicas e um usuário cadastrados), em vez de repetir esse preparo em cada método. 
+2. Plataforma e Usuario (os usuários registrados). 
+3. Usuario e Playlist (o usuário é dono das playlists que cria). 
+4. Usuario e Usuario, uma associação reflexiva: um usuário pode seguir outros usuários. Pense nos papéis - 
+seguindo e - seguidores. 
+Sobre a associação reflexiva: ela conecta objetos de uma mesma classe. No Sonora, um Usuario se liga a 
+outros objetos Usuario pela relação de seguir. Trate os dois papéis com atenção, porque a mesma classe 
+aparece nas duas pontas. 
+Parte 2 - Trocar os arrays por ArrayList 
+Agora o código. Todo lugar onde hoje existe um array de tamanho fixo para guardar objetos vira um ArrayList. 
+Uma instância de ArrayList guarda vários objetos, não tem tamanho limitado e recupera os elementos pela 
+posição. Ela não guarda tipos primitivos, apenas objetos. 
+O que muda em cada classe 
+• Playlist. O array de músicas vira ArrayList<Musica>. Os métodos adicionar, getNaPosicao, 
+removerNaPosicao, getDuracaoTotalSegundos e reproduzirTudo passam a usar add, get, remove e size. 
+A contagem manual de quantidade sai de cena: quem responde isso agora é o size(). 
+• Plataforma. Os arrays de músicas e de usuários viram ArrayList<Musica> e ArrayList<Usuario>. As buscas 
+percorrem a lista com for ou for-each. 
+• Usuario. Ganha a coleção da associação reflexiva: um ArrayList<Usuario> com os usuários que este 
+usuário segue. 
+Parte 3 - Implementar a associação reflexiva 
+Dê vida à relação de seguir usuários. Na classe Usuario, implemente: 
+• seguir(Usuario outro) - adiciona outro à lista de seguindo. Um usuário não deve seguir a si mesmo nem 
+seguir duas vezes o mesmo usuário. 
+• deixarDeSeguir(Usuario outro) - remove outro da lista de seguindo. 
+• getQuantidadeSeguindo() - retorna quantos usuários este usuário segue. 
+No App, adicione ao menu as opções para um usuário seguir e deixar de seguir outro, e para listar quem um 
+usuário segue. Trate as entradas inválidas com o que você já aprendeu sobre exceções. 
+Entregáveis 
+1. Projeto sonora-fase05, clonado da fase anterior. 
+2. Diagrama de classes do Sonora com os quatro relacionamentos, cada um com papel, nome com direção, 
+multiplicidade nas duas pontas e navegabilidade. Entregue como imagem ou PDF dentro do projeto (por 
+exemplo, docs/diagrama-classes.png). 
+3. Código refatorado: arrays trocados por ArrayList em Playlist e Plataforma, e a coleção da associação 
+reflexiva em Usuario. 
+4. A funcionalidade de seguir e deixar de seguir usuários funcionando pelo menu do App. 

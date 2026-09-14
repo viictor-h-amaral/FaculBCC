@@ -1,0 +1,51 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+class Plataforma {
+  - nome: String
+  --
+  + cadastrarUsuario(usuario: Usuario): boolean
+  + cadastrarMusica(musica: Musica): boolean
+  + buscarMusicaPorId(id: int): Musica
+  + buscarUsuario(nome: String): Usuario
+}
+
+class Usuario {
+  - id: int
+  - nome: String
+  - email: String
+  --
+  + seguir(outro: Usuario): void
+  + deixarDeSeguir(outro: Usuario): void
+  + getQuantidadeSeguindo(): int
+}
+
+class Playlist {
+  - nome: String
+  --
+  + adicionar(musica: Musica): boolean
+  + getDuracaoTotalSegundos(): int
+  + reproduzirTudo(): void
+}
+
+class Musica {
+  - id: int
+  - titulo: String
+  - artista: String
+  - duracaoSegundos: int
+  - reproducoes: int
+  --
+  + reproduzir(): void
+}
+
+Plataforma "acervo" -- "musicasCadastradas" Musica : cataloga
+Plataforma "plataforma" -- "usuariosCadastrados" Usuario : registra
+
+Usuario "dono" -- "playlistsCriadas" Playlist : cria
+Playlist "playlist" -- "dono" Usuario : possui
+
+Playlist "faixas" -- "musicas" Musica : contem
+Usuario "seguindo" -- "seguidores" Usuario : segue
+
+@enduml
