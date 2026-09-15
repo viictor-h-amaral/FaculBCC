@@ -29,9 +29,12 @@ public class App {
             Writer.escreverNovaLinha("6 - Reproduzir uma música");
             Writer.escreverNovaLinha("7 - Listar acervo");
             Writer.escreverNovaLinha("8 - Listar usuários");
+            Writer.escreverNovaLinha("9 - Seguir usuário");
+            Writer.escreverNovaLinha("10 - Deixar de seguir usuário");
+            Writer.escreverNovaLinha("11 - Listar usuários seguidos");
             Writer.escreverNovaLinha("0 - Sair");
 
-            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 8);
+            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 11);
 
             switch (opcao) {
                 case 1:
@@ -57,6 +60,15 @@ public class App {
                     break;
                 case 8:
                     listarUsuarios();
+                    break;
+                case 9:
+                    seguirUsuario();
+                    break;
+                case 10:
+                    deixarDeSeguirUsuario();
+                    break;
+                case 11:
+                    listarUsuariosSeguidos();
                     break;
                 case 0:
                     Writer.escreverNovaLinha("Ok! Encerrando ... ");
@@ -276,6 +288,98 @@ public class App {
             }
         }
         Writer.escreverNovaLinha("== Fim da listagem com " + plataforma.getTotalUsuarios() + " usuários ==");
+    }
+
+    private static void seguirUsuario() {
+        try {
+            Writer.escreverNovaLinha("== Seguir usuário ==");
+            listarUsuarios();
+            Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário que seguirá: ");
+            Usuario outro = buscarUsuarioNaPlataformaPorId("ID do usuário a seguir: ");
+
+            if (usuario.getSeguindo().contains(outro)) {
+                Writer.escreverNovaLinha(usuario.getNome() + " já seguia " + outro.getNome() + ".");
+                return;
+            }
+
+            usuario.seguir(outro);
+            Writer.escreverNovaLinha(usuario.getNome() + " agora segue " + outro.getNome() + ".");
+
+        } catch (IllegalArgumentException e) {
+            Writer.escreverErro("Erro ao seguir usuário: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverErro("Erro inesperado: " + e.getMessage());
+        } finally {
+            Writer.escreverNovaLinha("Finalização do processo de seguir usuário.");
+        }
+    }
+
+    private static void deixarDeSeguirUsuario() {
+        try {
+            Writer.escreverNovaLinha("== Deixar de seguir usuário ==");
+            Writer.escreverNovaLinha("Usuário disponíveis para seleção:");
+            listarUsuarios();
+            Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário que deixará de seguir: ");
+
+            if(usuario.getQuantidadeSeguindo() == 0){
+                Writer.escreverNovaLinha(usuario.getNome() + " não segue nenhum usuário.");
+                return;
+            }
+
+            Writer.escreverNovaLinha("Usuários que " + usuario.getNome() + " está seguindo:");
+            for (Usuario seguido : usuario.getSeguindo()) {
+                Writer.escreverNovaLinha("(id" + seguido.getId() + ") " + seguido.getNome() + " com email " + seguido.getEmail());
+            }
+            Usuario outro = buscarUsuarioNaPlataformaPorId("ID do usuário a deixar de seguir: ");
+
+            if (!usuario.getSeguindo().contains(outro)) {
+                Writer.escreverNovaLinha(usuario.getNome() + " não seguia " + outro.getNome() + ".");
+                return;
+            }
+
+            usuario.deixarDeSeguir(outro);
+            Writer.escreverNovaLinha(usuario.getNome() + " deixou de seguir " + outro.getNome() + ".");
+
+        } catch (IllegalArgumentException e) {
+            Writer.escreverErro("Erro ao deixar de seguir usuário: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverErro("Erro inesperado: " + e.getMessage());
+        } finally {
+            Writer.escreverNovaLinha("Finalização do processo de deixar de seguir usuário.");
+        }
+    }
+
+    private static void listarUsuariosSeguidos() {
+        try {
+            Writer.escreverNovaLinha("== Usuários seguidos ==");
+            Writer.escreverNovaLinha("Usuário disponíveis para seleção:");
+            listarUsuarios();
+            Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário: ");
+
+            if (usuario.getQuantidadeSeguindo() == 0) {
+                Writer.escreverNovaLinha(usuario.getNome() + " não segue nenhum usuário.");
+                return;
+            }
+
+            for (Usuario seguido : usuario.getSeguindo()) {
+                Writer.escreverNovaLinha("(id" + seguido.getId() + ") " + seguido.getNome() + " com email " + seguido.getEmail());
+            }
+        } catch (IllegalArgumentException e) {
+            Writer.escreverErro("Erro ao listar usuários seguidos: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverErro("Erro inesperado: " + e.getMessage());
+        } finally {
+            Writer.escreverNovaLinha("Finalização da listagem de usuários seguidos.");
+        }
+    }
+
+    private static Usuario buscarUsuarioNaPlataformaPorId(String mensagem) {
+        int id = scannerHelper.lerInt(mensagem, 0);
+        Usuario usuario = plataforma.buscarUsuario(id);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário com id " + id + " não encontrado.");
+        }
+        return usuario;
     }
 
     private static boolean cadastrarMusicaNaPlataforma(Musica musica) throws IllegalArgumentException {

@@ -76,25 +76,32 @@ public class UsuarioTest {
     }
 
     @Test
-    @DisplayName("Usuário deve seguir outro sem duplicar a relação")
-    public void seguirUsuario_naoDeveDuplicarRelacao(){
+    @DisplayName("Seguir usuário repetido deve ser rejeitado")
+    public void seguirUsuarioRepetido_deveSerRejeitado(){
         var usuario = new Usuario("Usuario 1", "usuario1@gmail.com");
         var outro = new Usuario("Usuario 2", "usuario2@gmail.com");
 
         usuario.seguir(outro);
-        usuario.seguir(outro);
 
+        Assertions.assertThrows(IllegalArgumentException.class, () -> usuario.seguir(outro));
         Assertions.assertEquals(1, usuario.getQuantidadeSeguindo());
     }
 
     @Test
     @DisplayName("Usuário não deve seguir a si mesmo")
-    public void seguirASiMesmo_naoDeveCriarRelacao(){
+    public void seguirASiMesmo_deveSerRejeitado(){
         var usuario = new Usuario("Usuario", "usuario@ gmail.com".replace(" ", ""));
 
-        usuario.seguir(usuario);
-
+        Assertions.assertThrows(IllegalArgumentException.class, () -> usuario.seguir(usuario));
         Assertions.assertEquals(0, usuario.getQuantidadeSeguindo());
+    }
+
+    @Test
+    @DisplayName("Seguir usuário nulo deve ser rejeitado")
+    public void seguirUsuarioNulo_deveSerRejeitado(){
+        var usuario = new Usuario("Usuario", "usuario@gmail.com");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> usuario.seguir(null));
     }
 
     @Test
@@ -107,6 +114,14 @@ public class UsuarioTest {
         usuario.deixarDeSeguir(outro);
 
         Assertions.assertEquals(0, usuario.getQuantidadeSeguindo());
+    }
+
+    @Test
+    @DisplayName("Deixar de seguir usuário nulo deve ser rejeitado")
+    public void deixarDeSeguirUsuarioNulo_deveSerRejeitado(){
+        var usuario = new Usuario("Usuario", "usuario@gmail.com");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> usuario.deixarDeSeguir(null));
     }
 
     /// TESTES PARA GERACAO CORRETA DE IDS (fim)

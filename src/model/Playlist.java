@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Playlist {
 
     private static void validarParametrosPlaylist(String nome, Usuario dono) throws IllegalArgumentException {
@@ -30,18 +32,18 @@ public class Playlist {
         return nome;
     }
 
-    private Musica[] musicas = new Musica[100];
+    private ArrayList<Musica> musicas = new ArrayList<>();
 
-    public Musica[] getArrayMusicas(){ 
+    public ArrayList<Musica> getArrayMusicas(){ 
         return musicas; 
     }
 
     public Musica buscarMusicaPorId(int id){
         Musica musicaProcurada = null;
 
-        for(int i = 0; i < getQuantidade(); i++){
-            if(musicas[i] != null && musicas[i].getId() == id) {
-                musicaProcurada = musicas[i];
+        for (Musica musica : musicas) {
+            if (musica.getId() == id) {
+                musicaProcurada = musica;
                 break;
             }
         }
@@ -50,24 +52,15 @@ public class Playlist {
     }
 
     public int getQuantidade(){
-        int quantidadeElementosNaoNulos = 0;
-        for (Musica musica : musicas) {
-            if (musica != null) {
-                quantidadeElementosNaoNulos++;
-            }
-            else{
-                break;
-            }
-        }
-        return quantidadeElementosNaoNulos;
+        return musicas.size();
     }
 
     public Musica getNaPosicao(int indice){
-        if(indice < 0 || indice > getQuantidade() - 1){
+        if (indice < 0 || indice >= musicas.size()) {
             throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (getQuantidade() - 1) + ". Índice solicitado: " + indice);
         }
 
-        return musicas[indice];
+        return musicas.get(indice);
     }
 
     public boolean adicionar(Musica musica){
@@ -75,56 +68,28 @@ public class Playlist {
         if(musica == null)
             throw new IllegalArgumentException("Música inválida! A música não deve ser nula.");
 
-        int index = this.proximoIndexVazio();
-
-        if(index >= musicas.length)
-            return false;
-
-        musicas[index] = musica;
+        musicas.add(musica);
         return true;
     }
 
-    private int proximoIndexVazio(){
-        int proximoIndex = musicas.length;
-        for (int i = 0; i < musicas.length; i++){
-            if(musicas[i] == null){
-                proximoIndex = i;
-                break;
-            }
-        }
-        return proximoIndex;           
-    }
-
     public boolean removerNaPosicao(int indice){
-        int quantidade = getQuantidade();
-        if(indice < 0 || indice >= quantidade)
-            throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (quantidade - 1) + ". Índice solicitado: " + indice);
-
-        // reordena playlist E remove música na posição por meio de sobrescrita dos indices, indo até o penultimo
-        for (int i = indice; i < quantidade - 1; i++) {
-            musicas[i] = musicas[i + 1];
-        }
-
-        //finaliza anulando a musica da ultima posição
-        musicas[quantidade - 1] = null;
+        if (indice < 0 || indice >= musicas.size())
+            throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (getQuantidade() - 1) + ". Índice solicitado: " + indice);
+        musicas.remove(indice);
         return true;
     }
 
     public int getDuracaoTotalSegundos(){
         int duracaoTotal = 0;
-        for(Musica musica : musicas){
-            if(musica != null){
-                duracaoTotal += musica.getDuracaoSegundos();
-            }
+        for (Musica musica : musicas) {
+            duracaoTotal += musica.getDuracaoSegundos();
         }
         return duracaoTotal;
     }
 
     public void reproduzirTudo(){
-        for (Musica musica : musicas){
-            if(musica != null){
-                musica.reproduzir();
-            }
+        for (Musica musica : musicas) {
+            musica.reproduzir();
         }
     }
 }

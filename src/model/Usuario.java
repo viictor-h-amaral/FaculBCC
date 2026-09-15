@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Usuario {
 
     private static void validarParametrosUsuario(String nome, String email) throws IllegalArgumentException {
@@ -45,6 +47,36 @@ public class Usuario {
 
     public String getEmail() {
         return email;
+    }
+
+    private ArrayList<Usuario> seguindo = new ArrayList<>();
+
+    public void seguir(Usuario outro) {
+        if (outro == null) {
+            throw new IllegalArgumentException("Usuário inválido! O usuário não deve ser nulo.");
+        }
+        else if(outro == this){
+            throw new IllegalArgumentException("Usuário inválido! O usuário não pode seguir a si mesmo.");
+        }
+        else if (seguindo.contains(outro)) {
+            throw new IllegalArgumentException("Usuário inválido! O usuário já está seguindo o outro usuário.");
+        }
+        seguindo.add(outro);
+    }
+
+    public void deixarDeSeguir(Usuario outro) {
+        if (outro == null) {
+            throw new IllegalArgumentException("Usuário inválido! O usuário não deve ser nulo.");
+        }
+        seguindo.remove(outro);
+    }
+
+    public int getQuantidadeSeguindo() {
+        return seguindo.size();
+    }
+
+    public ArrayList<Usuario> getSeguindo() {
+        return seguindo;
     }
 
 }

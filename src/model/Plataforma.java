@@ -1,108 +1,65 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Plataforma {
 
-    private Usuario[] usuarios = new Usuario[500];
+    private ArrayList<Usuario> usuarios = new ArrayList<>();
 
-    private Musica[] musicas = new Musica[500];
+    private ArrayList<Musica> musicas = new ArrayList<>();
 
-    public Musica[] getMusicas() {
+    public ArrayList<Musica> getMusicas() {
         return musicas;
     }
 
-    public Usuario[] getUsuarios(){
+    public ArrayList<Usuario> getUsuarios(){
         return usuarios;
     }
 
     public int getTotalUsuarios() {
-        int quantidadeUsuarios = 0;
-        for(int i = 0; i < usuarios.length; i++){
-            if(usuarios[i] != null) quantidadeUsuarios++;
-            else break;
-        }
-        return quantidadeUsuarios;
+        return usuarios.size();
     }
 
     public boolean cadastrarUsuario(Usuario usuario) throws IllegalArgumentException {
         if(usuario == null) 
             throw new IllegalArgumentException("Usuário inválido! O usuário não deve ser nulo.");
 
-        int proximoIndexDisponivel = proximoIndexUsuariosVazio();
-        if(proximoIndexDisponivel >= usuarios.length) 
-            return false;
-
-        usuarios[proximoIndexDisponivel] = usuario;
+        usuarios.add(usuario);
         return true;
     }
 
-    public boolean cadastrarUsuarios(Usuario[] usuarios) throws IllegalArgumentException {
-        if (this.getTotalUsuarios() + usuarios.length > this.usuarios.length)
-            return false;
-
-        for(var usuario : usuarios){
+    public boolean cadastrarUsuarios(ArrayList<Usuario> usuarios) throws IllegalArgumentException {
+        for (Usuario usuario : usuarios) {
             cadastrarUsuario(usuario);
         }
         return true;
     }
 
-    private int proximoIndexUsuariosVazio(){
-        int proximoIndex = usuarios.length;
-        for (int i = 0; i < usuarios.length; i++){
-            if(usuarios[i] == null){
-                proximoIndex = i;
-                break;
-            }
-        }
-        return proximoIndex;           
-    }
-
     public int getTotalMusicas() {
-        int quantidadeMusicas = 0;
-        for(int i = 0; i < musicas.length; i++){
-            if(musicas[i] != null) quantidadeMusicas++;
-        }
-        return quantidadeMusicas;
+        return musicas.size();
     }
 
     public boolean cadastrarMusica(Musica musica) throws IllegalArgumentException {
         if(musica == null) 
             throw new IllegalArgumentException("Música inválida! A música não deve ser nula.");
 
-        int proximoIndexDisponivel = proximoIndexMusicasVazio();
-        if(proximoIndexDisponivel >= musicas.length) 
-            return false;
-
-        musicas[proximoIndexDisponivel] = musica;
+        musicas.add(musica);
         return true;
     }
 
-    public boolean cadastrarMusicas(Musica[] musicas) throws IllegalArgumentException {
-        if (this.getTotalMusicas() + musicas.length > this.musicas.length)
-            return false;
-
-        for(var musica : musicas){
+    public boolean cadastrarMusicas(ArrayList<Musica> musicas) throws IllegalArgumentException {
+        for (Musica musica : musicas) {
             cadastrarMusica(musica);
         }
         return true;
     }
 
-    private int proximoIndexMusicasVazio(){
-        int proximoIndex = musicas.length;
-        for (int i = 0; i < musicas.length; i++){
-            if(musicas[i] == null){
-                proximoIndex = i;
-                break;
-            }
-        }
-        return proximoIndex;           
-    }
-
     public Musica buscarMusicaPorId(int id){
         Musica musicaProcurada = null;
 
-        for(int i = 0; i < getTotalMusicas(); i++){
-            if(musicas[i] != null && musicas[i].getId() == id) {
-                musicaProcurada = musicas[i];
+        for (Musica musica : musicas) {
+            if (musica.getId() == id) {
+                musicaProcurada = musica;
                 break;
             }
         }
@@ -113,9 +70,9 @@ public class Plataforma {
     public Musica buscarMusica(String titulo){
         Musica musicaProcurada = null;
 
-        for(int i = 0; i < getTotalMusicas(); i++){
-            if(musicas[i] != null && musicas[i].getTitulo().equalsIgnoreCase(titulo)) {
-                musicaProcurada = musicas[i];
+        for (Musica musica : musicas) {
+            if (musica.getTitulo().equalsIgnoreCase(titulo)) {
+                musicaProcurada = musica;
                 break;
             }
         }
@@ -126,9 +83,9 @@ public class Plataforma {
     public Usuario buscarUsuario(int id){
         Usuario usuarioProcurado = null;
 
-        for(int i = 0; i < getTotalUsuarios(); i++){
-            if(usuarios[i] != null && usuarios[i].getId() == id) {
-                usuarioProcurado = usuarios[i];
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId() == id) {
+                usuarioProcurado = usuario;
                 break;
             }
         }
@@ -139,9 +96,9 @@ public class Plataforma {
     public Usuario buscarUsuario(String nome){
         Usuario usuarioProcurado = null;
 
-        for(int i = 0; i < getTotalUsuarios(); i++){
-            if(usuarios[i] != null && usuarios[i].getNome().equalsIgnoreCase(nome)) {
-                usuarioProcurado = usuarios[i];
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNome().equalsIgnoreCase(nome)) {
+                usuarioProcurado = usuario;
                 break;
             }
         }

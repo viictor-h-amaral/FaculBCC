@@ -106,6 +106,8 @@
 ## 14. Seguir e deixar de seguir usuários
 | descrição | contexto | saída esperada | feito |
 |:-|:-:|:-:|-:|
-| Usuário deve seguir outro sem duplicar a relação | usuário segue o mesmo usuário duas vezes | `Quantidade seguindo deve permanecer 1` | ✅ |
-| Usuário não deve seguir a si mesmo | usuário tenta seguir a própria instância | `Quantidade seguindo deve permanecer 0` | ✅ |
+| Seguir usuário repetido deve ser rejeitado | usuário já segue outro usuário e tenta segui-lo novamente | `Deve lançar IllegalArgumentException e manter quantidade em 1` | ✅ |
+| Usuário não deve seguir a si mesmo | usuário tenta seguir a própria instância | `Deve lançar IllegalArgumentException e manter quantidade em 0` | ✅ |
+| Seguir usuário nulo deve ser rejeitado | usuário tenta seguir `null` | `Deve lançar IllegalArgumentException` | ✅ |
 | Deixar de seguir deve remover a relação | usuário segue outro e depois deixa de seguir | `Quantidade seguindo deve retornar para 0` | ✅ |
+| Deixar de seguir usuário nulo deve ser rejeitado | usuário tenta deixar de seguir `null` | `Deve lançar IllegalArgumentException` | ✅ |
