@@ -1,5 +1,4 @@
 out/
-*.puml
 *.class
 .vscode/*
 !.vscode/settings.json

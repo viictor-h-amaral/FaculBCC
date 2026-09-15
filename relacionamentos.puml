@@ -1,6 +1,7 @@
 @startuml
 skinparam classAttributeIconSize 0
 hide circle
+left to right direction
 
 class Plataforma {
   - nome: String
@@ -39,13 +40,10 @@ class Musica {
   + reproduzir(): void
 }
 
-Plataforma "acervo" -- "musicasCadastradas" Musica : cataloga
-Plataforma "plataforma" -- "usuariosCadastrados" Usuario : registra
-
-Usuario "dono" -- "playlistsCriadas" Playlist : cria
-Playlist "playlist" -- "dono" Usuario : possui
-
-Playlist "faixas" -- "musicas" Musica : contem
-Usuario "seguindo" -- "seguidores" Usuario : segue
+Plataforma "1" --> "0..*" Musica : plataforma / cataloga / acervo
+Plataforma "1" --> "0..*" Usuario : plataforma / registra / usuarios
+Playlist "0..*" --> "1" Usuario : playlists / pertence a / dono
+Playlist "0..*" --> "0..*" Musica : playlists / contem / faixas
+Usuario "0..*" --> "0..*" Usuario : seguindo / segue / seguidores
 
 @enduml
