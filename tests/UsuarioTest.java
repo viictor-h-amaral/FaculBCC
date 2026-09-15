@@ -75,5 +75,39 @@ public class UsuarioTest {
         }
     }
 
+    @Test
+    @DisplayName("Usuário deve seguir outro sem duplicar a relação")
+    public void seguirUsuario_naoDeveDuplicarRelacao(){
+        var usuario = new Usuario("Usuario 1", "usuario1@gmail.com");
+        var outro = new Usuario("Usuario 2", "usuario2@gmail.com");
+
+        usuario.seguir(outro);
+        usuario.seguir(outro);
+
+        Assertions.assertEquals(1, usuario.getQuantidadeSeguindo());
+    }
+
+    @Test
+    @DisplayName("Usuário não deve seguir a si mesmo")
+    public void seguirASiMesmo_naoDeveCriarRelacao(){
+        var usuario = new Usuario("Usuario", "usuario@ gmail.com".replace(" ", ""));
+
+        usuario.seguir(usuario);
+
+        Assertions.assertEquals(0, usuario.getQuantidadeSeguindo());
+    }
+
+    @Test
+    @DisplayName("Deixar de seguir deve remover a relação")
+    public void deixarDeSeguir_deveRemoverRelacao(){
+        var usuario = new Usuario("Usuario 1", "usuario1@gmail.com");
+        var outro = new Usuario("Usuario 2", "usuario2@gmail.com");
+        usuario.seguir(outro);
+
+        usuario.deixarDeSeguir(outro);
+
+        Assertions.assertEquals(0, usuario.getQuantidadeSeguindo());
+    }
+
     /// TESTES PARA GERACAO CORRETA DE IDS (fim)
 }

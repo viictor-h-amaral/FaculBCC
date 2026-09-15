@@ -33,14 +33,14 @@ public class PlaylistTest {
     }
 
     @Test
-    @DisplayName("Playlist cheia não deve adicionar a música")
-    public void playlistCheia_naoDeveAdicionarMusica(){
+    @DisplayName("Playlist deve continuar aceitando músicas após 100 itens")
+    public void playlistDeveAceitarMaisDeCemMusicas(){
         carregarPlaylistComMusicas(100);
 
         var musica101 = new Musica("titulo101", "artista101", 101);
         int idMusica101 = musica101.getId();
-        Assertions.assertFalse(playlistBase.adicionar(musica101));
-        Assertions.assertNull(playlistBase.buscarMusicaPorId(idMusica101));
+        Assertions.assertTrue(playlistBase.adicionar(musica101));
+        Assertions.assertNotNull(playlistBase.buscarMusicaPorId(idMusica101));
     }
 
     @Test

@@ -2,6 +2,8 @@ import model.Musica;
 import model.Plataforma;
 import model.Usuario;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,19 +19,17 @@ public class PlataformaTest {
     public static void gerarObjetoPlataformaBase(){
         
         billieJean = new Musica("Billie Jean", "Michael Jackson", 294);
-        var musicas = new Musica[]{
-            new Musica("As It Was", "Harry Styles", 167),
-            billieJean,
-            new Musica("Hotel California", "Eagles", 390),
-            new Musica("Stayin' Alive", "Bee Gees", 285)
-        };
+        var musicas = new ArrayList<Musica>();
+        musicas.add(new Musica("As It Was", "Harry Styles", 167));
+        musicas.add(billieJean);
+        musicas.add(new Musica("Hotel California", "Eagles", 390));
+        musicas.add(new Musica("Stayin' Alive", "Bee Gees", 285));
 
         jose = new Usuario("Jose", "jose@gmail.com");
-        var usuarios = new Usuario[]{
-            new Usuario("Joao", "joao@gmail.com"),
-            new Usuario("Maria", "maria@gmail.com"),
-            jose
-        };
+        var usuarios = new ArrayList<Usuario>();
+        usuarios.add(new Usuario("Joao", "joao@gmail.com"));
+        usuarios.add(new Usuario("Maria", "maria@gmail.com"));
+        usuarios.add(jose);
 
         plataformaBase = new Plataforma();
         plataformaBase.cadastrarMusicas(musicas);
@@ -46,16 +46,16 @@ public class PlataformaTest {
     }
 
     @Test
-    @DisplayName("Plataforma cheia não deve cadastrar a música")
-    public void plataformaCheia_naoDeveCadastrarMusica(){
+    @DisplayName("Plataforma deve continuar aceitando mais de 500 músicas")
+    public void plataformaDeveAceitarMaisDeQuinhentasMusicas(){
         var plataforma = new Plataforma();
         for (int i = 1; i <= 500; i++){
             plataforma.cadastrarMusica(new Musica("musica " + i, "artista " + i, i + 30));
         }
 
         var musicaExtra = new Musica("musica extra", "artista extra", 120);
-        Assertions.assertFalse(plataforma.cadastrarMusica(musicaExtra));
-        Assertions.assertNull(plataforma.buscarMusica(musicaExtra.getTitulo()));
+        Assertions.assertTrue(plataforma.cadastrarMusica(musicaExtra));
+        Assertions.assertNotNull(plataforma.buscarMusica(musicaExtra.getTitulo()));
     }
 
     @Test
@@ -72,11 +72,10 @@ public class PlataformaTest {
     @DisplayName("Array de músicas com espaço deve cadastrar todas")
     public void arrayMusicasComEspaco_deveCadastrarTodas(){
         var plataforma = new Plataforma();
-        var musicas = new Musica[] {
-            new Musica("M1", "A1", 100),
-            new Musica("M2", "A2", 110),
-            new Musica("M3", "A3", 120)
-        };
+        var musicas = new ArrayList<Musica>();
+        musicas.add(new Musica("M1", "A1", 100));
+        musicas.add(new Musica("M2", "A2", 110));
+        musicas.add(new Musica("M3", "A3", 120));
 
         Assertions.assertTrue(plataforma.cadastrarMusicas(musicas));
         Assertions.assertEquals(3, plataforma.getTotalMusicas());
@@ -84,16 +83,16 @@ public class PlataformaTest {
     }
 
     @Test
-    @DisplayName("Array de músicas excedendo a capacidade deve ser rejeitado")
-    public void arrayMusicasExcedendoCapacidade_deveRetornarFalse(){
+    @DisplayName("Lista de músicas com mais de 500 itens deve ser aceita")
+    public void listaMusicasSemLimite_deveCadastrarTodas(){
         var plataforma = new Plataforma();
-        var musicas = new Musica[501];
-        for (int i = 0; i < 501; i++){ 
-            musicas[i] = new Musica("M" + i, "A" + i, 100 + i);
+        var musicas = new ArrayList<Musica>();
+        for (int i = 0; i < 501; i++){
+            musicas.add(new Musica("M" + i, "A" + i, 100 + i));
         }
 
-        Assertions.assertFalse(plataforma.cadastrarMusicas(musicas));
-        Assertions.assertEquals(0, plataforma.getTotalMusicas());
+        Assertions.assertTrue(plataforma.cadastrarMusicas(musicas));
+        Assertions.assertEquals(501, plataforma.getTotalMusicas());
     }
 
     /// TESTES PARA CADASTRAR MUSICA (fim)
@@ -107,16 +106,16 @@ public class PlataformaTest {
     }
 
     @Test
-    @DisplayName("Plataforma cheia não deve cadastrar o usuário")
-    public void plataformaCheia_naoDeveCadastrarUsuario(){
+    @DisplayName("Plataforma deve continuar aceitando mais de 500 usuários")
+    public void plataformaDeveAceitarMaisDeQuinhentosUsuarios(){
         var plataforma = new Plataforma();
         for (int i = 1; i <= 500; i++){
             plataforma.cadastrarUsuario(new Usuario("usuario " + i, "usuario" + i + "@gmail.com"));
         }
 
         var usuarioExtra = new Usuario("usuario extra", "usuarioextra@gmail.com");
-        Assertions.assertFalse(plataforma.cadastrarUsuario(usuarioExtra));
-        Assertions.assertNull(plataforma.buscarUsuario(usuarioExtra.getNome()));
+        Assertions.assertTrue(plataforma.cadastrarUsuario(usuarioExtra));
+        Assertions.assertNotNull(plataforma.buscarUsuario(usuarioExtra.getNome()));
     }
 
     @Test
@@ -133,11 +132,10 @@ public class PlataformaTest {
     @DisplayName("Array de usuários com espaço deve cadastrar todos")
     public void arrayUsuariosComEspaco_deveCadastrarTodos(){
         var plataforma = new Plataforma();
-        var usuarios = new Usuario[] {
-            new Usuario("U1", "u1@gmail.com"),
-            new Usuario("U2", "u2@gmail.com"),
-            new Usuario("U3", "u3@gmail.com")
-        };
+        var usuarios = new ArrayList<Usuario>();
+        usuarios.add(new Usuario("U1", "u1@gmail.com"));
+        usuarios.add(new Usuario("U2", "u2@gmail.com"));
+        usuarios.add(new Usuario("U3", "u3@gmail.com"));
 
         Assertions.assertTrue(plataforma.cadastrarUsuarios(usuarios));
         Assertions.assertEquals(3, plataforma.getTotalUsuarios());
@@ -145,16 +143,16 @@ public class PlataformaTest {
     }
 
     @Test
-    @DisplayName("Array de usuários excedendo a capacidade deve ser rejeitado")
-    public void arrayUsuariosExcedendoCapacidade_deveRetornarFalse(){
+    @DisplayName("Lista de usuários com mais de 500 itens deve ser aceita")
+    public void listaUsuariosSemLimite_deveCadastrarTodos(){
         var plataforma = new Plataforma();
-        var usuarios = new Usuario[501];
-        for (int i = 0; i < usuarios.length; i++){
-            usuarios[i] = new Usuario("U" + i, "u" + i + "@gmail.com");
+        var usuarios = new ArrayList<Usuario>();
+        for (int i = 0; i < 501; i++){
+            usuarios.add(new Usuario("U" + i, "u" + i + "@gmail.com"));
         }
 
-        Assertions.assertFalse(plataforma.cadastrarUsuarios(usuarios));
-        Assertions.assertEquals(0, plataforma.getTotalUsuarios());
+        Assertions.assertTrue(plataforma.cadastrarUsuarios(usuarios));
+        Assertions.assertEquals(501, plataforma.getTotalUsuarios());
     }
 
     /// TESTES PARA CADASTRAR USUARIO (fim)

@@ -23,23 +23,23 @@
 | descrição | contexto | saída esperada | feito |
 |:-|:-:|:-:|-:|
 | Parametro null deve ser rejeitado | parâmetro null | `Deve lançar IllegalArgumentException` | ✅ |
-| Playlist cheia não deve adicionar a música | parâmetro válido, playlist cheia | `Deve retornar False e não pode adicionar a música` | ✅ |
+| Playlist deve continuar aceitando músicas após 100 itens | 100 músicas já cadastradas e uma nova música válida | `Deve retornar True e adicionar a 101ª música` | ✅ |
 | Playlist com espaço deve adicionar a música | parâmetro válido, playlist livre | `Deve retornar True e deve adicionar a música` | ✅ |
 
 ## 4. Buscar música pelo index em uma playlist
 | descrição | contexto | saída esperada | feito |
 |:-|:-:|:-:|-:|
-| Index negativo deve ser rejeitado | parâmetro negativo | `Deve lançar IllegalArgumentException` | ✅ |
-| Index de posição não preenchida deve ser rejeitado | parâmetro entre `qnt musicas - 1` e 100 | `Deve lançar IllegalArgumentException` | ✅ |
-| Index maior que tamanho do array deve ser rejeitado | parâmetro maior que 100 | `Deve lançar IllegalArgumentException` | ✅ |
+| Index negativo deve ser rejeitado | parâmetro negativo | `Deve lançar IndexOutOfBoundsException` | ✅ |
+| Index de posição não preenchida deve ser rejeitado | parâmetro maior ou igual à quantidade de músicas | `Deve lançar IndexOutOfBoundsException` | ✅ |
+| Index fora da lista deve ser rejeitado | parâmetro maior que a quantidade de músicas | `Deve lançar IndexOutOfBoundsException` | ✅ |
 | Index válido deve retornar música esperada | parâmetro válido | `Deve retornar a música esperada` | ✅ |
 
 ## 5. Remover música pelo index em uma playlist
 | descrição | contexto | saída esperada | feito |
 |:-|:-:|:-:|-:|
-| Index negativo deve ser rejeitado | parâmetro negativo | `Deve lançar IllegalArgumentException` | ✅ |
-| Index de posição não preenchida (null) deve ser rejeitado | parâmetro entre `qnt musicas - 1` e 100 | `Deve lançar IllegalArgumentException` | ✅ |
-| Index maior que tamanho do array deve ser rejeitado | parâmetro maior ou igual a 100 | `Deve lançar IllegalArgumentException` | ✅ |
+| Index negativo deve ser rejeitado | parâmetro negativo | `Deve lançar IndexOutOfBoundsException` | ✅ |
+| Index fora da lista deve ser rejeitado | parâmetro maior ou igual à quantidade de músicas | `Deve lançar IndexOutOfBoundsException` | ✅ |
+| Index maior que o tamanho da lista deve ser rejeitado | parâmetro muito maior que a quantidade de músicas | `Deve lançar IndexOutOfBoundsException` | ✅ |
 | Index válido deve remover música esperada | parâmetro válido | `Deve remover a música esperada` | ✅ |
 | Remover música deve reordenar as outras, deixando nenhum 'buraco' | parâmetro válido | `Deve reordenar lista de músicas` | ✅ |
 
@@ -79,19 +79,19 @@
 | descrição | contexto | saída esperada | feito |
 |:-|:-:|:-:|-:|
 | Música nula deve ser rejeitada | parâmetro null | `Deve lançar IllegalArgumentException` | ✅ |
-| Plataforma cheia não deve cadastrar a música | parâmetro válido, plataforma cheia | `Deve retornar False e não pode adicionar a música` | ✅ |
+| Plataforma deve continuar aceitando mais de 500 músicas | 500 músicas já cadastradas e uma nova música válida | `Deve retornar True e cadastrar a música extra` | ✅ |
 | Plataforma com espaço deve cadastrar a música | parâmetro válido, plataforma livre | `Deve retornar True e deve adicionar a música` | ✅ |
-| Array de músicas com espaço deve cadastrar todas | matriz de músicas válidas | `Deve retornar True e inserir todas as músicas` | ✅ |
-| Array de músicas excedendo a capacidade deve ser rejeitado | matriz de músicas maior que a capacidade restante | `Deve retornar False e não inserir músicas extras` | ✅ |
+| ArrayList de músicas com espaço deve cadastrar todas | lista de músicas válidas | `Deve retornar True e inserir todas as músicas` | ✅ |
+| ArrayList com mais de 500 músicas deve ser aceita | lista com 501 músicas válidas | `Deve retornar True e cadastrar todas as 501 músicas` | ✅ |
 
 ## 12. Cadastrar usuário na plataforma
 | descrição | contexto | saída esperada | feito |
 |:-|:-:|:-:|-:|
 | Usuário nulo deve ser rejeitado | parâmetro null | `Deve lançar IllegalArgumentException` | ✅ |
-| Plataforma cheia não deve cadastrar o usuário | parâmetro válido, plataforma cheia | `Deve retornar False e não pode adicionar o usuário` | ✅ |
+| Plataforma deve continuar aceitando mais de 500 usuários | 500 usuários já cadastrados e um novo usuário válido | `Deve retornar True e cadastrar o usuário extra` | ✅ |
 | Plataforma com espaço deve cadastrar o usuário | parâmetro válido, plataforma livre | `Deve retornar True e deve adicionar o usuário` | ✅ |
-| Array de usuários com espaço deve cadastrar todos | matriz de usuários válidos | `Deve retornar True e inserir todos os usuários` | ✅ |
-| Array de usuários excedendo a capacidade deve ser rejeitado | matriz de usuários maior que a capacidade restante | `Deve retornar False e não inserir usuários extras` | ✅ |
+| ArrayList de usuários com espaço deve cadastrar todos | lista de usuários válidos | `Deve retornar True e inserir todos os usuários` | ✅ |
+| ArrayList com mais de 500 usuários deve ser aceita | lista com 501 usuários válidos | `Deve retornar True e cadastrar todos os 501 usuários` | ✅ |
 
 ## 13. Construtor da classe usuário
 | descrição | contexto | saída esperada | feito |
@@ -102,3 +102,10 @@
 | Email nulo deve ser rejeitado | nome "Usuario", email null | `Deve lançar IllegalArgumentException` | ✅ |
 | Email sem arroba deve ser rejeitado | nome "Usuario", email "usuariogmail.com" | `Deve lançar IllegalArgumentException` | ✅ |
 | Dados válidos criam o usuário | nome "Usuario", email "usuario@gmail.com" | `Objeto criado, com id maior que zero` | ✅ |
+
+## 14. Seguir e deixar de seguir usuários
+| descrição | contexto | saída esperada | feito |
+|:-|:-:|:-:|-:|
+| Usuário deve seguir outro sem duplicar a relação | usuário segue o mesmo usuário duas vezes | `Quantidade seguindo deve permanecer 1` | ✅ |
+| Usuário não deve seguir a si mesmo | usuário tenta seguir a própria instância | `Quantidade seguindo deve permanecer 0` | ✅ |
+| Deixar de seguir deve remover a relação | usuário segue outro e depois deixa de seguir | `Quantidade seguindo deve retornar para 0` | ✅ |
