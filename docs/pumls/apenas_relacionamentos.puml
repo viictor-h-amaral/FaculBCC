@@ -12,6 +12,14 @@ class Plataforma {
   + buscarUsuario(nome: String): Usuario
 }
 
+class Playlist {
+  - nome: String
+  --
+  + adicionar(musica: Musica): boolean
+  + getDuracaoTotalSegundos(): int
+  + reproduzirTudo(): void
+}
+
 class Usuario {
   - id: int
   - nome: String
@@ -20,14 +28,6 @@ class Usuario {
   + seguir(outro: Usuario): void
   + deixarDeSeguir(outro: Usuario): void
   + getQuantidadeSeguindo(): int
-}
-
-class Playlist {
-  - nome: String
-  --
-  + adicionar(musica: Musica): boolean
-  + getDuracaoTotalSegundos(): int
-  + reproduzirTudo(): void
 }
 
 class Musica {

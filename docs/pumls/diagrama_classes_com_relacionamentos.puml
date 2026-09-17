@@ -1,0 +1,88 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+left to right direction
+
+class Plataforma {
+  -usuarios: ArrayList<Usuario> = new ArrayList<>()
+  -musicas: ArrayList<Musica> = new ArrayList<>()
+  --
+  +getMusicas(): ArrayList<Musica>
+  +getUsuarios(): ArrayList<Usuario>
+  +getTotalUsuarios(): int
+  +cadastrarUsuario(usuario: Usuario): boolean
+  +cadastrarUsuarios(usuarios: ArrayList<Usuario>): boolean
+  +getTotalMusicas(): int
+  +cadastrarMusica(musica: Musica): boolean
+  +cadastrarMusicas(musicas: ArrayList<Musica>): boolean
+  +buscarMusicaPorId(id: int): Musica
+  +buscarMusica(titulo: String): Musica
+  +buscarUsuario(id: int): Usuario
+  +buscarUsuario(nome: String): Usuario
+}
+
+class Usuario {
+  -{static} proximoId: int = 1
+  -id: int
+  -nome: String
+  -email: String
+  -seguindo: ArrayList<Usuario> = new ArrayList<>()
+  --
+  +Usuario(nome: String, email: String)
+  -{static} validarParametrosUsuario(nome: String, email: String): void
+  +{static} getProximoId(): int
+  +getId(): int
+  +getNome(): String
+  +getEmail(): String
+  +seguir(outro: Usuario): void
+  +deixarDeSeguir(outro: Usuario): void
+  +getQuantidadeSeguindo(): int
+  +getSeguindo(): ArrayList<Usuario>
+}
+
+class Playlist {
+  -dono: Usuario
+  -nome: String
+  -musicas: ArrayList<Musica> = new ArrayList<>()
+  --
+  +Playlist(nome: String, dono: Usuario)
+  -{static} validarParametrosPlaylist(nome: String, dono: Usuario): void
+  +getDono(): Usuario
+  +getNome(): String
+  +getArrayMusicas(): ArrayList<Musica>
+  +buscarMusicaPorId(id: int): Musica
+  +getQuantidade(): int
+  +getNaPosicao(indice: int): Musica
+  +adicionar(musica: Musica): boolean
+  +removerNaPosicao(indice: int): boolean
+  +getDuracaoTotalSegundos(): int
+  +reproduzirTudo(): void
+}
+
+class Musica {
+  -{static} proximoId: int = 1
+  -id: int
+  -titulo: String
+  -artista: String
+  -duracaoSegundos: int
+  -reproducoes: int = 0
+  --
+  +Musica(titulo: String, artista: String, duracaoSegundos: int)
+  -{static} validarParametrosMusica(titulo: String, artista: String, duracaoSegundos: int): void
+  +{static} getProximoId(): int
+  +getId(): int
+  +getTitulo(): String
+  +getArtista(): String
+  +getDuracaoSegundos(): int
+  +getReproducoes(): int
+  +reproduzir(): void
+  +getDuracaoFormatada(): String
+}
+
+Plataforma "1" --> "0..*" Musica : plataforma / cataloga / acervo
+Plataforma "1" --> "0..*" Usuario : plataforma / registra / usuarios
+Playlist "0..*" --> "1" Usuario : playlists / pertence a / dono
+Playlist "0..*" --> "0..*" Musica : playlists / contem / faixas
+Usuario "0..*" --> "0..*" Usuario : seguindo / segue / seguidores
+
+@enduml

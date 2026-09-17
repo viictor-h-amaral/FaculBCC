@@ -63,7 +63,10 @@ java -cp bin App
 Os testes unitários estão na pasta `tests/`. Eles cobrem construtores e operações principais sobre `Musica`, `Usuario`, `Playlist` e `Plataforma`.
 
 ## Diagrama
-O diagrama de classes atualizado está em `diagrama_classes_fase03.png`.
+Os diagramas de classes atualizados estão em `docs/`. Lá você encontrada os .png e os arquivos de geração .puml
+Além disso, vale ressaltar as ferramentas de geração de puml utilizadas nesse projeto:
+1. Extensão do VsCode UML Generator for Java (conversão de .java em .puml). Link: https://marketplace.visualstudio.com/items?itemName=0SMA0.uml-generator
+2. Extensão do VsCode PlantUML (conversão de .puml em .png). Link: https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml
 
 ## Status
 Projeto em desenvolvimento. As mudanças recentes incluem refatoração para coleções dinâmicas (`ArrayList`), implementação do mecanismo de seguir usuários, e adição/ajuste de testes e diagramas.
