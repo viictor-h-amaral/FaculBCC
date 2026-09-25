@@ -1,8 +1,14 @@
+package contracts;
+
 public class Conteudo {
     private static int contador = 0; 
-    private int id; 
-    private String titulo; 
-    private int duracaoSegundos; 
+    public static int getProximoId() {
+        return contador + 1;
+    }
+
+    protected int id; 
+    protected String titulo; 
+    protected int duracaoSegundos; 
   
     public Conteudo(String titulo, int duracaoSegundos) { 
         this.id = ++contador; 
@@ -18,16 +24,41 @@ public class Conteudo {
         this.id = id; 
     } 
   
-    // getTitulo, setTitulo (valida vazio/nulo), 
-    // getDuracaoSegundos, setDuracaoSegundos (valida > 0) 
-  
+    public String getTitulo() { 
+        return titulo; 
+    }
+
+    public void setTitulo(String titulo) { 
+        if (titulo == null || titulo.isBlank()) { 
+            throw new IllegalArgumentException("Título inválido! O título não deve ser vazio."); 
+        } 
+        this.titulo = titulo; 
+    }
+
+    public int getDuracaoSegundos() { 
+        return duracaoSegundos; 
+    }
+
+    public void setDuracaoSegundos(int duracaoSegundos) { 
+        if (duracaoSegundos <= 0) { 
+            throw new IllegalArgumentException("Duração inválida! A duração deve ser um valor positivo."); 
+        } 
+        this.duracaoSegundos = duracaoSegundos; 
+    }
+
     public void reproduzir() { 
         System.out.println("Reproduzindo: " + toString()); 
     } 
   
+    public String getDuracaoFormatada(){
+        int minutos = getDuracaoSegundos() / 60;
+        int segundosResto = getDuracaoSegundos() % 60;
+        return String.format("%02d:%02d", minutos, segundosResto); //padronização de dois digitos
+    }
+
     @Override 
     public String toString() { 
-        return "[" + getId() + "] " + titulo 
-             + " (" + duracaoSegundos + "s)"; 
+        return "[id" + getId() + "] " + titulo 
+             + " (" + getDuracaoFormatada() + ")"; 
     }
 }
