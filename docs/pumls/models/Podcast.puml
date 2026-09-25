@@ -1,6 +1,6 @@
 ' UML da classe Podcast com herança de Conteudo
 
-@startuml
+@startuml "Podcast class"
 skinparam classAttributeIconSize 0
 hide circle
 
