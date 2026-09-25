@@ -5,6 +5,7 @@ import helpers.Writer;
 import model.Musica;
 import model.Plataforma;
 import model.Playlist;
+import model.Podcast;
 import model.Usuario;
 
 public class App {
@@ -13,7 +14,43 @@ public class App {
     private static Plataforma plataforma = new Plataforma();
 
     public static void main(String[] args) {
+        testesFase05();
         mostrarMenu();
+    }
+
+    private static void testesFase05() {
+        Writer.escreverNovaLinha("== Início dos testes da fase 05 ==");
+        try {
+            Musica musica1 = new Musica("Música 1", "Artista 1", 180);
+            Musica musica2 = new Musica("Música 2", "Artista 2", "Álbum 2", 240);
+
+            Podcast podcast = new Podcast("Podcast 1", "Apresentador 1", 30, 1, 'M');
+            
+            musica1.reproduzir();
+            musica1.reproduzir();
+            musica2.reproduzir();
+
+            podcast.reproduzir();
+
+            Writer.escreverNovaLinha("Músicas e podcast reproduzidos com sucesso.");
+
+            Writer.escreverNovaLinha("== Dados da Música 1 ==");
+            Writer.escreverNovaLinha("Música 1 reproduções: " + musica1.getReproducoes());
+            Writer.escreverNovaLinha("Música toString: " + musica1.toString());
+
+            Writer.escreverNovaLinha("== Dados da Música 2 ==");
+            Writer.escreverNovaLinha("Música 2 reproduções: " + musica2.getReproducoes());
+            Writer.escreverNovaLinha("Música toString: " + musica2.toString());
+
+            Writer.escreverNovaLinha("== Dados do Podcast 1 ==");
+            Writer.escreverNovaLinha("Número do edipisódio: " + podcast.getNumeroEpisodio());
+            Writer.escreverNovaLinha("Podcast toString: " + podcast.toString());
+
+        } catch (IllegalArgumentException e) {
+            Writer.escreverNovaLinha("Erro ao executar testes da fase 05: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverNovaLinha("Erro ao executar testes da fase 05: " + e.getMessage());
+        }
     }
 
     private static void mostrarMenu() {

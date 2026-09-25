@@ -1,68 +1,55 @@
 package model;
-public class Musica {
-    
-    private static void validarParametrosMusica(String titulo, String artista, int duracaoSegundos) throws IllegalArgumentException {
-        if (titulo == null || titulo.trim().isEmpty()) {
-            throw new IllegalArgumentException("Título inválido! O título não deve ser vazio.");
-        }
-        else if (artista == null || artista.trim().isEmpty()) {
-            throw new IllegalArgumentException("Artista inválido! O artista não deve ser vazio.");
-        }
-        else if (duracaoSegundos <= 0) {
-            throw new IllegalArgumentException("Duração inválida! A duração não deve ser negativa ou zero.");
-        }
-    }
+import contracts.Conteudo;
 
-    private static int proximoId = 1;
-    public static int getProximoId() {
-        return proximoId;
-    }
+public class Musica extends Conteudo {
 
-    public Musica(String titulo, String artista, int duracaoSegundos) throws IllegalArgumentException {
-        validarParametrosMusica(titulo, artista, duracaoSegundos);
-
-        this.id = proximoId;
-        Musica.proximoId++;
-
-        this.titulo = titulo;
-        this.artista = artista;
-        this.duracaoSegundos = duracaoSegundos;
+    public Musica(String titulo, String artista, int duracaoSegundos) {
+        super(titulo, duracaoSegundos);
+        setArtista(artista);
+        setAlbum(null);
         this.reproducoes = 0;
     }
 
-    private int id;
-    public int getId() {
-        return id;
+    public Musica(String titulo, String artista, String album, int duracaoSegundos) {
+        super(titulo, duracaoSegundos);
+        setArtista(artista);
+        setAlbum(album);
+        this.reproducoes = 0;
     }
 
-    private String titulo;
-    public String getTitulo() {
-        return titulo;
+    private String album;
+    public String getAlbum() {
+        return album;
+    }
+    public void setAlbum(String album) {
+        if (album != null && album.isBlank()) {
+            throw new IllegalArgumentException("Álbum inválido! Para álbuns não nulos, informe um nome válido.");
+        }
+        this.album = album;
     }
 
     private String artista;
     public String getArtista() {
         return artista;
     }
-
-    private int duracaoSegundos;
-    public int getDuracaoSegundos() {
-        return duracaoSegundos;
+    public void setArtista(String artista) {
+        if (artista == null || artista.isBlank()) {
+            throw new IllegalArgumentException("Artista inválido! O artista não deve ser vazio.");
+        }
+        this.artista = artista;
     }
 
     private int reproducoes = 0;
     public int getReproducoes() {
         return reproducoes;
     }
-
+    @Override 
     public void reproduzir() {
+        super.reproduzir();
         reproducoes++;
     }
 
-    public String getDuracaoFormatada(){
-        int minutos = duracaoSegundos / 60;
-        int segundosResto = duracaoSegundos % 60;
-        return String.format("%02d:%02d", minutos, segundosResto); //padronização de dois digitos
+    @Override public String toString() { 
+        return super.toString() + " do artista " + artista + " (" + album + ")"; 
     }
-
 }
