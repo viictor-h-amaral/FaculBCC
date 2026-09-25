@@ -1,0 +1,42 @@
+' UML da classe Podcast com herança de Conteudo
+
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+class Conteudo {
+  -{static} contador: int = 0
+  #id: int
+  #titulo: String
+  #duracaoSegundos: int
+  --
+  +Conteudo(titulo: String, duracaoSegundos: int)
+  +{static} getProximoId(): int
+  +getId(): int
+  #setId(id: int): void
+  +getTitulo(): String
+  +setTitulo(titulo: String): void
+  +getDuracaoSegundos(): int
+  +setDuracaoSegundos(duracaoSegundos: int): void
+  +reproduzir(): void
+  +getDuracaoFormatada(): String
+  +toString(): String
+}
+
+class Podcast extends Conteudo {
+  -apresentador: String
+  -generoApresentador: char
+  -numeroEpisodio: int
+  --
+  +Podcast(titulo: String, apresentador: String, duracaoMinutos: int, numeroEpisodio: int, generoApresentador: char)
+  +getDuracaoMinutos(): int
+  +getApresentador(): String
+  +setApresentador(apresentador: String): void
+  +getGeneroApresentador(): char
+  +setGeneroApresentador(generoApresentador: char): void
+  +getNumeroEpisodio(): int
+  +setNumeroEpisodio(numeroEpisodio: int): void
+  +toString(): String
+}
+
+@enduml

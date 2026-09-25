@@ -3,6 +3,57 @@ skinparam classAttributeIconSize 0
 hide circle
 left to right direction
 
+class Conteudo {
+  -{static} contador: int = 0
+  #id: int
+  #titulo: String
+  #duracaoSegundos: int
+  --
+  +Conteudo(titulo: String, duracaoSegundos: int)
+  +{static} getProximoId(): int
+  +getId(): int
+  #setId(id: int): void
+  +getTitulo(): String
+  +setTitulo(titulo: String): void
+  +getDuracaoSegundos(): int
+  +setDuracaoSegundos(duracaoSegundos: int): void
+  +reproduzir(): void
+  +getDuracaoFormatada(): String
+  +toString(): String
+}
+
+class Musica extends Conteudo {
+  -album: String
+  -artista: String
+  -reproducoes: int = 0
+  --
+  +Musica(titulo: String, artista: String, duracaoSegundos: int)
+  +Musica(titulo: String, artista: String, album: String, duracaoSegundos: int)
+  +getAlbum(): String
+  +setAlbum(album: String): void
+  +getArtista(): String
+  +setArtista(artista: String): void
+  +getReproducoes(): int
+  +reproduzir(): void
+  +toString(): String
+}
+
+class Podcast extends Conteudo {
+  -apresentador: String
+  -generoApresentador: char
+  -numeroEpisodio: int
+  --
+  +Podcast(titulo: String, apresentador: String, duracaoMinutos: int, numeroEpisodio: int, generoApresentador: char)
+  +getDuracaoMinutos(): int
+  +getApresentador(): String
+  +setApresentador(apresentador: String): void
+  +getGeneroApresentador(): char
+  +setGeneroApresentador(generoApresentador: char): void
+  +getNumeroEpisodio(): int
+  +setNumeroEpisodio(numeroEpisodio: int): void
+  +toString(): String
+}
+
 class Plataforma {
   -usuarios: ArrayList<Usuario> = new ArrayList<>()
   -musicas: ArrayList<Musica> = new ArrayList<>()
@@ -57,26 +108,6 @@ class Playlist {
   +removerNaPosicao(indice: int): boolean
   +getDuracaoTotalSegundos(): int
   +reproduzirTudo(): void
-}
-
-class Musica {
-  -{static} proximoId: int = 1
-  -id: int
-  -titulo: String
-  -artista: String
-  -duracaoSegundos: int
-  -reproducoes: int = 0
-  --
-  +Musica(titulo: String, artista: String, duracaoSegundos: int)
-  -{static} validarParametrosMusica(titulo: String, artista: String, duracaoSegundos: int): void
-  +{static} getProximoId(): int
-  +getId(): int
-  +getTitulo(): String
-  +getArtista(): String
-  +getDuracaoSegundos(): int
-  +getReproducoes(): int
-  +reproduzir(): void
-  +getDuracaoFormatada(): String
 }
 
 Plataforma "1" --> "0..*" Musica : plataforma / cataloga / acervo
