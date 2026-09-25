@@ -3,7 +3,7 @@
 ' URL: http://www.plantuml.com/plantuml/uml/ZL91JiCm4Bpx5NjCL2B1DOAgbU1G2Q6YY0SizYgiIEngRPT2rRzZjqsLm04kbdUydjaPU-43IeXzf_mxsmqAzg0xz7uPWl1h3BJIpZRyHN2jtjWGQ1RTaLB7BdZn4OKTx1L0jKzaWVK1Dk9stBkLgO5jW3kuoSTyAlFMkfvgQ9A4RNDDFN8t1ZoraQrnDIn5yFEHVRWzQyqJdwMFqS6yAFETAYspSrCnLhY22NyvcNMB7HkKTRPEGPp_3qCDMyScwrruMWhhmNPH3avd2VvPFoNYZ5pSPl0Xyq_HOmPIk9YcgeUaHzA6U8ToJyqVVOdzEQ8DoQOvDQTWfoEDqT-1guDImqExgXear8AiIL_d6m
 ' Generated on: 2026-09-17T20:29:40.776287800
 
-@startuml
+@startuml "Usuario class"
 skinparam classAttributeIconSize 0
 hide circle
 

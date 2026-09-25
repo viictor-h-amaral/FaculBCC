@@ -1,6 +1,6 @@
 ' UML da classe Musica com herança de Conteudo
 
-@startuml
+@startuml "Musica class"
 skinparam classAttributeIconSize 0
 hide circle
 

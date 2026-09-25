@@ -3,7 +3,7 @@
 ' URL: http://www.plantuml.com/plantuml/uml/ZL9DImCn4BtlhvZZ5YruNhIquAMWijBw0wR9K0UpcJ99ActfVpVPjR9I12yBUVC-vWqx3n4rfivLuOFz3XKxC0v3MCIel4cHbaRyYey4TzKxMmB3QXnLLS-2rk71SOXmgW2cLhmqy1OIAai1l7JKm2fR-MrvTocmmT30GXKFJrbu_zn3CtW0JvyZV5PFYcAQFpUNb7hiTmk_udhsATU9RCwmHySMjIs5AAg4Vraqi1Us9N5ByJ6FwicuJa5VihoWFvqAs6yz50bbUDMky3Of6DG1Q4MNjcRR0FkO1GFwxVQQqCUylUs3Ck4IdMM59ZLxouQknPXX5ezQ3uU-p39f8-88VM4fTR8d_Sjkn2nNI8gPivQ8RaNRvAs4qLfAEnMRZgphPFjpzHSyLzMSlCt_rHS
 ' Generated on: 2026-09-17T20:29:38.460368
 
-@startuml
+@startuml "Playlist class"
 skinparam classAttributeIconSize 0
 hide circle
 
