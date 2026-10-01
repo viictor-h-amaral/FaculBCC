@@ -8,6 +8,7 @@ skinparam classAttributeIconSize 0
 hide circle
 
 class Usuario {
+  -plano: Plano
   -{static} proximoId: int = 1
   -id: int
   -nome: String
@@ -20,6 +21,8 @@ class Usuario {
   +getId(): int
   +getNome(): String
   +getEmail(): String
+  +getPlano(): Plano
+  +assinar(novoPlano: Plano): void
   +seguir(outro: Usuario): void
   +deixarDeSeguir(outro: Usuario): void
   +getQuantidadeSeguindo(): int

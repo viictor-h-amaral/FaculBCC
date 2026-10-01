@@ -4,11 +4,12 @@
 skinparam classAttributeIconSize 0
 hide circle
 
-class Conteudo {
+abstract class Conteudo {
   -{static} contador: int = 0
   #id: int
   #titulo: String
   #duracaoSegundos: int
+  -reproducoes: int
   --
   +Conteudo(titulo: String, duracaoSegundos: int)
   +{static} getProximoId(): int
@@ -17,7 +18,9 @@ class Conteudo {
   +getTitulo(): String
   +setTitulo(titulo: String): void
   +getDuracaoSegundos(): int
+  +getReproducoes(): int
   +setDuracaoSegundos(duracaoSegundos: int): void
+  +getCreditos(): String
   +reproduzir(): void
   +getDuracaoFormatada(): String
   +toString(): String
@@ -36,6 +39,7 @@ class Podcast extends Conteudo {
   +setGeneroApresentador(generoApresentador: char): void
   +getNumeroEpisodio(): int
   +setNumeroEpisodio(numeroEpisodio: int): void
+  +getCreditos(): String
   +toString(): String
 }
 

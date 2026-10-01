@@ -4,11 +4,12 @@
 skinparam classAttributeIconSize 0
 hide circle
 
-class Conteudo {
+abstract class Conteudo {
   -{static} contador: int = 0
   #id: int
   #titulo: String
   #duracaoSegundos: int
+  -reproducoes: int
   --
   +Conteudo(titulo: String, duracaoSegundos: int)
   +{static} getProximoId(): int
@@ -17,25 +18,25 @@ class Conteudo {
   +getTitulo(): String
   +setTitulo(titulo: String): void
   +getDuracaoSegundos(): int
+  +getReproducoes(): int
   +setDuracaoSegundos(duracaoSegundos: int): void
+  +getCreditos(): String
   +reproduzir(): void
   +getDuracaoFormatada(): String
   +toString(): String
 }
 
 class Musica extends Conteudo {
-  -artista: String
   -album: String
-  -reproducoes: int = 0
+  -artista: String
   --
   +Musica(titulo: String, artista: String, duracaoSegundos: int)
   +Musica(titulo: String, artista: String, album: String, duracaoSegundos: int)
-  +getArtista(): String
-  +setArtista(artista: String): void
   +getAlbum(): String
   +setAlbum(album: String): void
-  +getReproducoes(): int
-  +reproduzir(): void
+  +getArtista(): String
+  +setArtista(artista: String): void
+  +getCreditos(): String
   +toString(): String
 }
 

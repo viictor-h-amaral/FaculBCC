@@ -3,11 +3,12 @@ skinparam classAttributeIconSize 0
 hide circle
 left to right direction
 
-class Conteudo {
+abstract class Conteudo {
   -{static} contador: int = 0
   #id: int
   #titulo: String
   #duracaoSegundos: int
+  -reproducoes: int = 0
   --
   +Conteudo(titulo: String, duracaoSegundos: int)
   +{static} getProximoId(): int
@@ -17,7 +18,9 @@ class Conteudo {
   +setTitulo(titulo: String): void
   +getDuracaoSegundos(): int
   +setDuracaoSegundos(duracaoSegundos: int): void
-  +reproduzir(): void
+  +getReproducoes(): int
+  +{abstract} getCreditos(): String
+  +{final} reproduzir(): void
   +getDuracaoFormatada(): String
   +toString(): String
 }
@@ -25,7 +28,6 @@ class Conteudo {
 class Musica extends Conteudo {
   -album: String
   -artista: String
-  -reproducoes: int = 0
   --
   +Musica(titulo: String, artista: String, duracaoSegundos: int)
   +Musica(titulo: String, artista: String, album: String, duracaoSegundos: int)
@@ -33,8 +35,7 @@ class Musica extends Conteudo {
   +setAlbum(album: String): void
   +getArtista(): String
   +setArtista(artista: String): void
-  +getReproducoes(): int
-  +reproduzir(): void
+  +getCreditos(): String
   +toString(): String
 }
 
@@ -51,7 +52,49 @@ class Podcast extends Conteudo {
   +setGeneroApresentador(generoApresentador: char): void
   +getNumeroEpisodio(): int
   +setNumeroEpisodio(numeroEpisodio: int): void
+  +getCreditos(): String
   +toString(): String
+}
+
+abstract class Plano {
+  -nome: String
+  -maxDispositivos: int
+  --
+  #Plano(nome: String, maxDispositivos: int)
+  +getNome(): String
+  +getMaxDispositivos(): int
+  +{abstract} temAnuncios(): boolean
+  +{abstract} calcularMensalidade(): double
+  +{final} resumo(): String
+}
+
+abstract class PlanoPago extends Plano {
+  -precoMensal: double
+  --
+  #PlanoPago(nome: String, maxDispositivos: int, precoMensal: double)
+  +getPrecoMensal(): double
+  +setPrecoMensal(precoMensal: double): void
+  +temAnuncios(): boolean
+}
+
+class PlanoGratuito <<final>> extends Plano {
+  +PlanoGratuito()
+  +temAnuncios(): boolean
+  +calcularMensalidade(): double
+}
+
+class PlanoIndividual extends PlanoPago {
+  +PlanoIndividual(precoMensal: double)
+  +calcularMensalidade(): double
+}
+
+class PlanoFamilia extends PlanoPago {
+  -quantidadeMembros: int
+  --
+  +PlanoFamilia(precoMensal: double, quantidadeMembros: int)
+  +getQuantidadeMembros(): int
+  +setQuantidadeMembros(quantidadeMembros: int): void
+  +calcularMensalidade(): double
 }
 
 class Plataforma {
@@ -77,6 +120,7 @@ class Usuario {
   -id: int
   -nome: String
   -email: String
+  -plano: Plano
   -seguindo: ArrayList<Usuario> = new ArrayList<>()
   --
   +Usuario(nome: String, email: String)
@@ -85,6 +129,8 @@ class Usuario {
   +getId(): int
   +getNome(): String
   +getEmail(): String
+  +getPlano(): Plano
+  +assinar(novoPlano: Plano): void
   +seguir(outro: Usuario): void
   +deixarDeSeguir(outro: Usuario): void
   +getQuantidadeSeguindo(): int
@@ -115,5 +161,6 @@ Plataforma "1" --> "0..*" Usuario : plataforma / registra / usuarios
 Playlist "0..*" --> "1" Usuario : playlists / pertence a / dono
 Playlist "0..*" --> "0..*" Musica : playlists / contem / faixas
 Usuario "0..*" --> "0..*" Usuario : seguindo / segue / seguidores
+Usuario "0..*" --> "1" Plano : usuarios / assina / plano
 
 @enduml
