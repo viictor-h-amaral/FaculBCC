@@ -1,10 +1,15 @@
 import java.util.Scanner;
 
+import contracts.Conteudo;
+import contracts.Plano;
 import helpers.ScannerHelper;
 import helpers.Writer;
 import model.Musica;
 import model.Plataforma;
 import model.Playlist;
+import model.PlanoFamilia;
+import model.PlanoGratuito;
+import model.PlanoIndividual;
 import model.Podcast;
 import model.Usuario;
 
@@ -14,12 +19,15 @@ public class App {
     private static Plataforma plataforma = new Plataforma();
 
     public static void main(String[] args) {
-        testesFase05();
+        testesFase06();
         mostrarMenu();
     }
 
-    private static void testesFase05() {
-        Writer.escreverNovaLinha("== Início dos testes da fase 05 ==");
+    private static void testesFase06() {
+        Writer.escreverNovaLinha("== Demonstração da fase 06 ==");
+        // Conteudo c = new Conteudo("Generico", 120); // Erro pois Conteudo é abstract, logo não pode ser instanciado.
+        // Plano p = new Plano("Generico", 1); // Erro pois Plano é abstract, logo não pode ser instanciado.
+        
         try {
             Musica musica1 = new Musica("Música 1", "Artista 1", 180);
             Musica musica2 = new Musica("Música 2", "Artista 2", "Álbum 2", 240);
@@ -29,10 +37,12 @@ public class App {
             musica1.reproduzir();
             musica1.reproduzir();
             musica2.reproduzir();
+            musica2.reproduzir();
 
             podcast.reproduzir();
+            podcast.reproduzir();
 
-            Writer.escreverNovaLinha("Músicas e podcast reproduzidos com sucesso.");
+            Writer.escreverNovaLinha("Músicas e podcast reproduzidos mais de uma vez.");
 
             Writer.escreverNovaLinha("== Dados da Música 1 ==");
             Writer.escreverNovaLinha("Música 1 reproduções: " + musica1.getReproducoes());
@@ -43,13 +53,14 @@ public class App {
             Writer.escreverNovaLinha("Música toString: " + musica2.toString());
 
             Writer.escreverNovaLinha("== Dados do Podcast 1 ==");
-            Writer.escreverNovaLinha("Número do edipisódio: " + podcast.getNumeroEpisodio());
+            Writer.escreverNovaLinha("Número do episódio: " + podcast.getNumeroEpisodio());
+            Writer.escreverNovaLinha("Podcast reproduções: " + podcast.getReproducoes());
             Writer.escreverNovaLinha("Podcast toString: " + podcast.toString());
 
         } catch (IllegalArgumentException e) {
-            Writer.escreverNovaLinha("Erro ao executar testes da fase 05: " + e.getMessage());
+            Writer.escreverNovaLinha("Erro ao executar demonstração da fase 06: " + e.getMessage());
         } catch (Exception e) {
-            Writer.escreverNovaLinha("Erro ao executar testes da fase 05: " + e.getMessage());
+            Writer.escreverNovaLinha("Erro ao executar demonstração da fase 06: " + e.getMessage());
         }
     }
 
@@ -69,9 +80,11 @@ public class App {
             Writer.escreverNovaLinha("9 - Seguir usuário");
             Writer.escreverNovaLinha("10 - Deixar de seguir usuário");
             Writer.escreverNovaLinha("11 - Listar usuários seguidos");
+            Writer.escreverNovaLinha("12 - Trocar plano de usuário");
+            Writer.escreverNovaLinha("13 - Exibir plano atual de usuário");
             Writer.escreverNovaLinha("0 - Sair");
 
-            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 11);
+            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 13);
 
             switch (opcao) {
                 case 1:
@@ -106,6 +119,12 @@ public class App {
                     break;
                 case 11:
                     listarUsuariosSeguidos();
+                    break;
+                case 12:
+                    trocarPlanoUsuario();
+                    break;
+                case 13:
+                    exibirPlanoUsuario();
                     break;
                 case 0:
                     Writer.escreverNovaLinha("Ok! Encerrando ... ");
@@ -407,6 +426,82 @@ public class App {
             Writer.escreverErro("Erro inesperado: " + e.getMessage());
         } finally {
             Writer.escreverNovaLinha("Finalização da listagem de usuários seguidos.");
+        }
+    }
+
+    private static void trocarPlanoUsuario() {
+        try {
+            if (plataforma.getTotalUsuarios() == 0) {
+                Writer.escreverNovaLinha("Cadastre um usuário antes de trocar o plano.");
+                return;
+            }
+
+            Writer.escreverNovaLinha("== Trocar plano de usuário ==");
+            listarUsuarios();
+            Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário: ");
+
+            Writer.escreverNovaLinha("1 - Gratuito");
+            Writer.escreverNovaLinha("2 - Individual");
+            Writer.escreverNovaLinha("3 - Família");
+            int opcaoPlano = scannerHelper.lerInt("Escolha o plano: ", 1, 3);
+
+            Plano novoPlano;
+            if (opcaoPlano == 1) {
+                novoPlano = new PlanoGratuito();
+            } else if (opcaoPlano == 2) {
+                novoPlano = new PlanoIndividual(lerPrecoPositivo("Preço mensal do plano individual: R$ "));
+            } else {
+                double preco = lerPrecoPositivo("Preço mensal do plano família: R$ ");
+                int membros = scannerHelper.lerInt("Quantidade de membros (1 a 6): ", 1, 6);
+                novoPlano = new PlanoFamilia(preco, membros);
+            }
+
+            usuario.assinar(novoPlano);
+            Writer.escreverNovaLinha("Plano atualizado para " + usuario.getNome() + ": " + novoPlano.resumo());
+        } catch (IllegalArgumentException e) {
+            Writer.escreverErro("Não foi possível trocar o plano: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverErro("Erro ao trocar plano: " + e.getMessage());
+        } finally {
+            Writer.escreverNovaLinha("Finalização da troca de plano.");
+        }
+    }
+
+    private static double lerPrecoPositivo(String mensagem) {
+        while (true) {
+            String entrada = scannerHelper.lerLinha(mensagem).trim().replace(',', '.');
+            try {
+                double preco = Double.parseDouble(entrada);
+                if (!Double.isFinite(preco) || preco <= 0) {
+                    throw new IllegalArgumentException("Informe um preço positivo e finito.");
+                }
+                return preco;
+            } catch (IllegalArgumentException e) {
+                Writer.escreverErro("Preço inválido. Informe um número positivo, por exemplo 19,90.");
+            }
+        }
+    }
+
+    private static void exibirPlanoUsuario() {
+        try {
+            if (plataforma.getTotalUsuarios() == 0) {
+                Writer.escreverNovaLinha("Ainda não há usuários cadastrados.");
+                return;
+            }
+
+            Writer.escreverNovaLinha("== Plano atual do usuário ==");
+            listarUsuarios();
+            Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário: ");
+            Plano plano = usuario.getPlano();
+
+            Writer.escreverNovaLinha(usuario.getNome() + " - " + plano.resumo());
+            Writer.escreverNovaLinha("Tem anúncios: " + (plano.temAnuncios() ? "sim" : "não"));
+        } catch (IllegalArgumentException e) {
+            Writer.escreverErro("Não foi possível exibir o plano: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverErro("Erro ao exibir plano: " + e.getMessage());
+        } finally {
+            Writer.escreverNovaLinha("Finalização da consulta de plano.");
         }
     }
 
