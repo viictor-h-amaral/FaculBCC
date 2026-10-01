@@ -2,7 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
+import contracts.Plano;
+
 public class Usuario {
+
+    private Plano plano;
 
     private static void validarParametrosUsuario(String nome, String email) throws IllegalArgumentException {
         if (nome == null || nome.trim().isEmpty()) {
@@ -29,6 +33,7 @@ public class Usuario {
 
         this.nome = nome;
         this.email = email;
+        this.plano = new PlanoGratuito();
     }
 
     private int id;
@@ -47,6 +52,17 @@ public class Usuario {
 
     public String getEmail() {
         return email;
+    }
+
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void assinar(Plano novoPlano) {
+        if (novoPlano == null) {
+            throw new IllegalArgumentException("Plano inválido! O plano não deve ser nulo.");
+        }
+        this.plano = novoPlano;
     }
 
     private ArrayList<Usuario> seguindo = new ArrayList<>();

@@ -3,6 +3,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import model.Usuario;
+import model.PlanoGratuito;
+import model.PlanoIndividual;
 
 public class UsuarioTest {
 
@@ -56,6 +58,8 @@ public class UsuarioTest {
         Assertions.assertEquals("Usuario", usuario.getNome());
         Assertions.assertEquals("usuario@gmail.com", usuario.getEmail());
         Assertions.assertTrue(usuario.getId() > 0);
+        //valida se o plano atrelado ao usuário recém criado é do tipo PlanoGratuito
+        Assertions.assertInstanceOf(PlanoGratuito.class, usuario.getPlano());
     }
 
     /// TESTES PARA CONSTRUTOR DE USUARIO (fim)
@@ -122,6 +126,24 @@ public class UsuarioTest {
         var usuario = new Usuario("Usuario", "usuario@gmail.com");
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> usuario.deixarDeSeguir(null));
+    }
+
+    @Test
+    @DisplayName("Assinar troca o plano")
+    public void assinar_trocaPlano() {
+        var usuario = new Usuario("Usuario", "usuario@gmail.com");
+        var plano = new PlanoIndividual(19.90);
+        usuario.assinar(plano);
+        Assertions.assertSame(plano, usuario.getPlano());
+    }
+
+    @Test
+    @DisplayName("Assinar plano rejeita plano nulo")
+    public void assinar_plano_rejeitaNulo() {
+        var usuario = new Usuario("Usuario", "usuario@gmail.com");
+        var plano = new PlanoIndividual(19.90);
+        usuario.assinar(plano);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> usuario.assinar(null));
     }
 
     /// TESTES PARA GERACAO CORRETA DE IDS (fim)
