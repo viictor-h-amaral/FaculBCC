@@ -94,6 +94,7 @@ public class MusicaTest {
         Assertions.assertEquals("Queen", musica.getArtista());
         Assertions.assertEquals(355, musica.getDuracaoSegundos());
         Assertions.assertEquals(musica.getReproducoes(), 0);
+        Assertions.assertEquals("Queen", musica.getCreditos());
     }
 
     /// TESTES PARA CONSTRUTOR DE MUSICA (fim)
@@ -109,6 +110,14 @@ public class MusicaTest {
             musica.reproduzir();
             Assertions.assertEquals(musica.getReproducoes(), i);
         }
+    }
+
+    @Test
+    @DisplayName("Créditos de música incluem álbum quando informado")
+    public void creditosComAlbum_incluemArtistaEAlbum() {
+        var musica = new Musica("Bohemian Rhapsody", "Queen", "A Night at the Opera", 355);
+
+        Assertions.assertEquals("Queen (A Night at the Opera)", musica.getCreditos());
     }
 
     /// TESTES PARA reproduzir MUSICA (fim)

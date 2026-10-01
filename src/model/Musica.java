@@ -7,14 +7,12 @@ public class Musica extends Conteudo {
         super(titulo, duracaoSegundos);
         setArtista(artista);
         setAlbum(null);
-        this.reproducoes = 0;
     }
 
     public Musica(String titulo, String artista, String album, int duracaoSegundos) {
         super(titulo, duracaoSegundos);
         setArtista(artista);
         setAlbum(album);
-        this.reproducoes = 0;
     }
 
     private String album;
@@ -39,14 +37,9 @@ public class Musica extends Conteudo {
         this.artista = artista;
     }
 
-    private int reproducoes = 0;
-    public int getReproducoes() {
-        return reproducoes;
-    }
-    @Override 
-    public void reproduzir() {
-        super.reproduzir();
-        reproducoes++;
+    @Override
+    public String getCreditos() {
+        return album == null ? artista : artista + " (" + album + ")";
     }
 
     @Override public String toString() { 

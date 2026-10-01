@@ -1,6 +1,6 @@
 package contracts;
 
-public class Conteudo {
+public abstract class Conteudo {
     private static int contador = 0; 
     public static int getProximoId() {
         return contador + 1;
@@ -9,6 +9,7 @@ public class Conteudo {
     protected int id; 
     protected String titulo; 
     protected int duracaoSegundos; 
+    private int reproducoes;
   
     public Conteudo(String titulo, int duracaoSegundos) { 
         this.id = ++contador; 
@@ -39,6 +40,10 @@ public class Conteudo {
         return duracaoSegundos; 
     }
 
+    public int getReproducoes() {
+        return reproducoes;
+    }
+
     public void setDuracaoSegundos(int duracaoSegundos) { 
         if (duracaoSegundos <= 0) { 
             throw new IllegalArgumentException("Duração inválida! A duração deve ser um valor positivo."); 
@@ -46,8 +51,11 @@ public class Conteudo {
         this.duracaoSegundos = duracaoSegundos; 
     }
 
-    public void reproduzir() { 
-        System.out.println("Reproduzindo: " + toString()); 
+    public abstract String getCreditos();
+
+    public final void reproduzir() {
+        reproducoes++;
+        System.out.println("Reproduzindo: " + titulo + " - " + getCreditos());
     } 
   
     public String getDuracaoFormatada(){

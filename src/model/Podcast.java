@@ -50,6 +50,11 @@ public class Podcast extends Conteudo {
         this.numeroEpisodio = numeroEpisodio;
     }
 
+    @Override
+    public String getCreditos() {
+        return "episódio " + numeroEpisodio + " - " + apresentador;
+    }
+
     @Override 
     public String toString() { 
         return super.toString() + " apresentado pel" 
