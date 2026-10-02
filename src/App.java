@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import contracts.Conteudo;
@@ -25,14 +27,14 @@ public class App {
 
     private static void testesFase06() {
         Writer.escreverNovaLinha("== Demonstração da fase 06 ==");
-        // Conteudo c = new Conteudo("Generico", 120); // Erro pois Conteudo é abstract, logo não pode ser instanciado.
-        // Plano p = new Plano("Generico", 1); // Erro pois Plano é abstract, logo não pode ser instanciado.
+        // Conteudo c = new Conteudo("Teste", 120); // Erro pois Conteudo é abstract, logo não pode ser instanciado.
+        // Plano p = new Plano("Plano geral", 1); // Erro pois Plano é abstract, logo não pode ser instanciado.
         
         try {
             Musica musica1 = new Musica("Música 1", "Artista 1", 180);
             Musica musica2 = new Musica("Música 2", "Artista 2", "Álbum 2", 240);
 
-            Podcast podcast = new Podcast("Podcast 1", "Apresentador 1", 30, 1, 'M');
+            Podcast podcast = new Podcast("Podcast 1", "Apresentadora 1", 30, 1, 'F');
             
             musica1.reproduzir();
             musica1.reproduzir();
@@ -42,7 +44,7 @@ public class App {
             podcast.reproduzir();
             podcast.reproduzir();
 
-            Writer.escreverNovaLinha("Músicas e podcast reproduzidos mais de uma vez.");
+            Writer.escreverNovaLinha("Músicas e podcast reproduzidos várias vezes.");
 
             Writer.escreverNovaLinha("== Dados da Música 1 ==");
             Writer.escreverNovaLinha("Música 1 reproduções: " + musica1.getReproducoes());
@@ -440,15 +442,27 @@ public class App {
             listarUsuarios();
             Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário: ");
 
-            Writer.escreverNovaLinha("1 - Gratuito");
-            Writer.escreverNovaLinha("2 - Individual");
-            Writer.escreverNovaLinha("3 - Família");
-            int opcaoPlano = scannerHelper.lerInt("Escolha o plano: ", 1, 3);
+            var planoAtualUsuario = usuario.getPlano();
+            var planosPlataforma = new ArrayList<String>(Arrays.asList("Gratuito", "Individual", "Família"));
+
+            // fiz desse jeito (abaixo) pois não podia usar dicionários (map/hashmap)
+            int contador = 1;
+            int codigoPlanoGratuito = 0;
+            int codigoPlanoIndividual = 0;
+            for (var plano : planosPlataforma){
+                if (plano.equals(planoAtualUsuario.getNome())) continue;
+                Writer.escreverNovaLinha(contador + " - " + plano);
+                if (plano.equals("Gratuito")) { codigoPlanoGratuito = contador ; }
+                else if (plano.equals("Individual")) { codigoPlanoIndividual = contador ; }
+                contador++;
+            }
+
+            int opcaoPlano = scannerHelper.lerInt("Escolha o plano: ", 1, 2);
 
             Plano novoPlano;
-            if (opcaoPlano == 1) {
+            if (opcaoPlano == codigoPlanoGratuito) {
                 novoPlano = new PlanoGratuito();
-            } else if (opcaoPlano == 2) {
+            } else if (opcaoPlano == codigoPlanoIndividual) {
                 novoPlano = new PlanoIndividual(lerPrecoPositivo("Preço mensal do plano individual: R$ "));
             } else {
                 double preco = lerPrecoPositivo("Preço mensal do plano família: R$ ");
