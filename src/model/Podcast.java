@@ -3,18 +3,16 @@ import contracts.Conteudo;
 
 public class Podcast extends Conteudo {
     private String apresentador;
-    private char generoApresentador;
     private int numeroEpisodio;
 
     public int getDuracaoMinutos() {
         return Math.round(getDuracaoSegundos() / 60.0f);
     }
 
-    public Podcast(String titulo, String apresentador, int duracaoMinutos, int numeroEpisodio, char generoApresentador) {
+    public Podcast(String titulo, String apresentador, int duracaoMinutos, int numeroEpisodio) {
         super(titulo, (duracaoMinutos * 60));
         setApresentador(apresentador);
         setNumeroEpisodio(numeroEpisodio);
-        setGeneroApresentador(generoApresentador);
     }
 
     public String getApresentador() {
@@ -26,17 +24,6 @@ public class Podcast extends Conteudo {
             throw new IllegalArgumentException("Apresentador inválido! O apresentador não deve ser vazio.");
         }
         this.apresentador = apresentador;
-    }
-
-    public char getGeneroApresentador() {
-        return generoApresentador;
-    }
-
-    public void setGeneroApresentador(char generoApresentador) {
-        if (generoApresentador != 'M' && generoApresentador != 'F' && generoApresentador != 'O') {
-            throw new IllegalArgumentException("Gênero do apresentador inválido! Deve ser 'M', 'F' ou 'O'.");
-        }
-        this.generoApresentador = generoApresentador;
     }
 
     public int getNumeroEpisodio() {
@@ -57,8 +44,7 @@ public class Podcast extends Conteudo {
 
     @Override 
     public String toString() { 
-        return super.toString() + " apresentado pel" 
-            + (generoApresentador == 'M' ? "o" : (generoApresentador == 'F' ? "a" : "x")) 
+        return super.toString() + " apresentado pelo(a)"  
             + " ilustre " + apresentador + " (episódio " + numeroEpisodio + ")";
     }
 }
