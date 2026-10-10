@@ -5,6 +5,9 @@ import model.Usuario;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
+
+import contracts.Conteudo;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +22,7 @@ public class PlataformaTest {
     public static void gerarObjetoPlataformaBase(){
         
         billieJean = new Musica("Billie Jean", "Michael Jackson", 294);
-        var musicas = new ArrayList<Musica>();
+        var musicas = new ArrayList<Conteudo>();
         musicas.add(new Musica("As It Was", "Harry Styles", 167));
         musicas.add(billieJean);
         musicas.add(new Musica("Hotel California", "Eagles", 390));
@@ -32,7 +35,7 @@ public class PlataformaTest {
         usuarios.add(jose);
 
         plataformaBase = new Plataforma();
-        plataformaBase.cadastrarMusicas(musicas);
+        plataformaBase.cadastrarConteudos(musicas);
         plataformaBase.cadastrarUsuarios(usuarios);
     }
 
@@ -42,7 +45,7 @@ public class PlataformaTest {
     @DisplayName("Música nula deve ser rejeitada")
     public void cadastrarMusicaNula_deveLancarExcecao(){
         var plataforma = new Plataforma();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> plataforma.cadastrarMusica(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> plataforma.cadastrarConteudo(null));
     }
 
     @Test
@@ -50,12 +53,12 @@ public class PlataformaTest {
     public void plataformaDeveAceitarMaisDeQuinhentasMusicas(){
         var plataforma = new Plataforma();
         for (int i = 1; i <= 500; i++){
-            plataforma.cadastrarMusica(new Musica("musica " + i, "artista " + i, i + 30));
+            plataforma.cadastrarConteudo(new Musica("musica " + i, "artista " + i, i + 30));
         }
 
         var musicaExtra = new Musica("musica extra", "artista extra", 120);
-        Assertions.assertTrue(plataforma.cadastrarMusica(musicaExtra));
-        Assertions.assertNotNull(plataforma.buscarMusica(musicaExtra.getTitulo()));
+        Assertions.assertTrue(plataforma.cadastrarConteudo(musicaExtra));
+        Assertions.assertNotNull(plataforma.buscarConteudo(musicaExtra.getTitulo()));
     }
 
     @Test
@@ -64,35 +67,35 @@ public class PlataformaTest {
         var plataforma = new Plataforma();
         var musica = new Musica("titulo", "artista", 180);
 
-        Assertions.assertTrue(plataforma.cadastrarMusica(musica));
-        Assertions.assertNotNull(plataforma.buscarMusicaPorId(musica.getId()));
+        Assertions.assertTrue(plataforma.cadastrarConteudo(musica));
+        Assertions.assertNotNull(plataforma.buscarConteudoPorId(musica.getId()));
     }
 
     @Test
     @DisplayName("Array de músicas com espaço deve cadastrar todas")
     public void arrayMusicasComEspaco_deveCadastrarTodas(){
         var plataforma = new Plataforma();
-        var musicas = new ArrayList<Musica>();
+        var musicas = new ArrayList<Conteudo>();
         musicas.add(new Musica("M1", "A1", 100));
         musicas.add(new Musica("M2", "A2", 110));
         musicas.add(new Musica("M3", "A3", 120));
 
-        Assertions.assertTrue(plataforma.cadastrarMusicas(musicas));
-        Assertions.assertEquals(3, plataforma.getTotalMusicas());
-        Assertions.assertNotNull(plataforma.buscarMusica("M2"));
+        Assertions.assertTrue(plataforma.cadastrarConteudos(musicas));
+        Assertions.assertEquals(3, plataforma.getTotalConteudos());
+        Assertions.assertNotNull(plataforma.buscarConteudo("M2"));
     }
 
     @Test
     @DisplayName("Lista de músicas com mais de 500 itens deve ser aceita")
     public void listaMusicasSemLimite_deveCadastrarTodas(){
         var plataforma = new Plataforma();
-        var musicas = new ArrayList<Musica>();
+        var musicas = new ArrayList<Conteudo>();
         for (int i = 0; i < 501; i++){
             musicas.add(new Musica("M" + i, "A" + i, 100 + i));
         }
 
-        Assertions.assertTrue(plataforma.cadastrarMusicas(musicas));
-        Assertions.assertEquals(501, plataforma.getTotalMusicas());
+        Assertions.assertTrue(plataforma.cadastrarConteudos(musicas));
+        Assertions.assertEquals(501, plataforma.getTotalConteudos());
     }
 
     /// TESTES PARA CADASTRAR MUSICA (fim)
@@ -162,33 +165,35 @@ public class PlataformaTest {
     @Test
     @DisplayName("id inexistente deve retornar null e não deve lançar exceção")
     public void buscarIdInexistente_deveRetornarNull(){
-        Assertions.assertNull(plataformaBase.buscarMusicaPorId(Integer.MAX_VALUE));
+        Assertions.assertNull(plataformaBase.buscarConteudoPorId(Integer.MAX_VALUE));
     }
 
     @Test
     @DisplayName("título inexistente deve retornar null não deve lançar exceção")
     public void buscarTituloInexistente_deveRetornarNull(){
-        Assertions.assertNull(plataformaBase.buscarMusica("Esse titulo não existe!"));
+        Assertions.assertNull(plataformaBase.buscarConteudo("Esse titulo não existe!"));
     }
 
     @Test
-    @DisplayName("id existente deve retornar a música correta")
-    public void buscarIdExistente_deveRetornarMusicaCorreta(){
-        var musicaEncontrada = plataformaBase.buscarMusicaPorId(billieJean.getId());
-        Assertions.assertEquals(billieJean.getId(), musicaEncontrada.getId());
-        Assertions.assertEquals(billieJean.getArtista(), musicaEncontrada.getArtista());
-        Assertions.assertEquals(billieJean.getTitulo(), musicaEncontrada.getTitulo());
-        Assertions.assertEquals(billieJean.getDuracaoSegundos(), musicaEncontrada.getDuracaoSegundos());
+    @DisplayName("id existente deve retornar o conteúdo correto")
+    public void buscarIdExistente_deveRetornarConteudoCorreto(){
+        var conteudoEncontrado = plataformaBase.buscarConteudoPorId(billieJean.getId());
+        Assertions.assertTrue(conteudoEncontrado instanceof Musica);
+        Assertions.assertEquals(billieJean.getId(), conteudoEncontrado.getId());
+        Assertions.assertEquals(billieJean.getArtista(), ((Musica)conteudoEncontrado).getArtista());
+        Assertions.assertEquals(billieJean.getTitulo(), conteudoEncontrado.getTitulo());
+        Assertions.assertEquals(billieJean.getDuracaoSegundos(), conteudoEncontrado.getDuracaoSegundos());
     }
 
     @Test
-    @DisplayName("título existente deve retornar a música correta")
-    public void buscarTituloExistente_deveRetornarMusicaCorreta(){
-        var musicaEncontrada = plataformaBase.buscarMusica(billieJean.getTitulo());
-        Assertions.assertEquals(billieJean.getId(), musicaEncontrada.getId());
-        Assertions.assertEquals(billieJean.getArtista(), musicaEncontrada.getArtista());
-        Assertions.assertEquals(billieJean.getTitulo(), musicaEncontrada.getTitulo());
-        Assertions.assertEquals(billieJean.getDuracaoSegundos(), musicaEncontrada.getDuracaoSegundos());
+    @DisplayName("título existente deve retornar o conteúdo correto")
+    public void buscarTituloExistente_deveRetornarConteudoCorreto(){
+        var conteudoEncontrado = plataformaBase.buscarConteudo(billieJean.getTitulo());
+        Assertions.assertTrue(conteudoEncontrado instanceof Musica);
+        Assertions.assertEquals(billieJean.getId(), conteudoEncontrado.getId());
+        Assertions.assertEquals(billieJean.getArtista(), ((Musica)conteudoEncontrado).getArtista());
+        Assertions.assertEquals(billieJean.getTitulo(), conteudoEncontrado.getTitulo());
+        Assertions.assertEquals(billieJean.getDuracaoSegundos(), conteudoEncontrado.getDuracaoSegundos());
     }
 
     /// TESTES PARA BUSCAR MUSICA POR ID E TITULO (fim)

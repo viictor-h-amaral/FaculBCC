@@ -40,7 +40,7 @@ public class PlaylistTest {
         var musica101 = new Musica("titulo101", "artista101", 101);
         int idMusica101 = musica101.getId();
         Assertions.assertTrue(playlistBase.adicionar(musica101));
-        Assertions.assertNotNull(playlistBase.buscarMusicaPorId(idMusica101));
+        Assertions.assertNotNull(playlistBase.buscarConteudoPorId(idMusica101));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class PlaylistTest {
         var novaMusica = new Musica("titulo11", "artista11", 11);
         int idNovaMusica = novaMusica.getId();
         Assertions.assertTrue(playlistBase.adicionar(novaMusica));
-        Assertions.assertNotNull(playlistBase.buscarMusicaPorId(idNovaMusica));
+        Assertions.assertNotNull(playlistBase.buscarConteudoPorId(idNovaMusica));
     }
 
     /// TESTES PARA ADICIONAR MUSICA (fim)
@@ -86,10 +86,12 @@ public class PlaylistTest {
         var musicaProcurada = new Musica("titulo musica $#*", "artista musica $#*", 321);
         playlistBase.adicionar(musicaProcurada);
         carregarPlaylistComMusicas(qntMusicasCarregarPorLote);
-
         var musicaEncontrada = playlistBase.getNaPosicao(indiceProcurado);
+
+        Assertions.assertNotNull(musicaEncontrada);
+        Assertions.assertTrue(musicaEncontrada instanceof Musica);
         Assertions.assertEquals(musicaProcurada.getId(), musicaEncontrada.getId());
-        Assertions.assertEquals(musicaProcurada.getArtista(), musicaEncontrada.getArtista());
+        Assertions.assertEquals(musicaProcurada.getArtista(), ((Musica)musicaEncontrada).getArtista());
         Assertions.assertEquals(musicaProcurada.getTitulo(), musicaEncontrada.getTitulo());
         Assertions.assertEquals(musicaProcurada.getDuracaoSegundos(), musicaEncontrada.getDuracaoSegundos());
     }
@@ -130,12 +132,12 @@ public class PlaylistTest {
 
         Assertions.assertNotNull(musicaDeveRemover);
         playlistBase.removerNaPosicao(indiceRemover);
-        Assertions.assertNull(playlistBase.buscarMusicaPorId(idMusicaDeveRemover));
+        Assertions.assertNull(playlistBase.buscarConteudoPorId(idMusicaDeveRemover));
     }
 
     public boolean validarSePlaylistOrdenada(Playlist playlist){
         boolean jaEncontrouIndiceNull = false;
-        for (var musica : playlist.getArrayMusicas()){
+        for (var musica : playlist.getArrayConteudos()){
 
             if(!jaEncontrouIndiceNull && musica == null){
                 jaEncontrouIndiceNull = true;

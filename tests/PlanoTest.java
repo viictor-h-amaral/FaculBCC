@@ -43,7 +43,7 @@ public class PlanoTest {
     @Test
     @DisplayName("Podcast usa créditos e contador herdados de Conteudo")
     public void podcast_reproduzEContaNaSuperclasse() {
-        var podcast = new Podcast("Episódio", "Apresentador", 30, 2, 'M');
+        var podcast = new Podcast("Episódio", "Apresentador", 30, 2);
 
         Assertions.assertEquals("episódio 2 - Apresentador", podcast.getCreditos());
         Assertions.assertEquals(0, podcast.getReproducoes());
