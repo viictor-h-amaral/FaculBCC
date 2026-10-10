@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import contracts.Conteudo;
+
 public class Playlist {
 
     private static void validarParametrosPlaylist(String nome, Usuario dono) throws IllegalArgumentException {
@@ -32,64 +34,67 @@ public class Playlist {
         return nome;
     }
 
-    private ArrayList<Musica> musicas = new ArrayList<>();
+    private ArrayList<Conteudo> conteudos = new ArrayList<>();
 
-    public ArrayList<Musica> getArrayMusicas(){ 
-        return musicas; 
+    public ArrayList<Conteudo> getArrayConteudos(){ 
+        return conteudos; 
     }
 
-    public Musica buscarMusicaPorId(int id){
-        Musica musicaProcurada = null;
+    public Conteudo buscarConteudoPorId(int id){
+        Conteudo conteudoProcurado = null;
 
-        for (Musica musica : musicas) {
-            if (musica.getId() == id) {
-                musicaProcurada = musica;
+        for (Conteudo conteudo : conteudos) {
+            if (conteudo.getId() == id) {
+                conteudoProcurado = conteudo;
                 break;
             }
         }
 
-        return musicaProcurada;
+        return conteudoProcurado;
     }
 
     public int getQuantidade(){
-        return musicas.size();
+        return conteudos.size();
     }
 
-    public Musica getNaPosicao(int indice){
-        if (indice < 0 || indice >= musicas.size()) {
+    public Conteudo getNaPosicao(int indice){
+        if (indice < 0 || indice >= conteudos.size()) {
             throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (getQuantidade() - 1) + ". Índice solicitado: " + indice);
         }
 
-        return musicas.get(indice);
+        return conteudos.get(indice);
     }
 
-    public boolean adicionar(Musica musica){
+    public boolean adicionar(Conteudo conteudo){
+        if(conteudo == null)
+            throw new IllegalArgumentException("Conteúdo inválido! O conteúdo não deve ser nulo.");
 
-        if(musica == null)
-            throw new IllegalArgumentException("Música inválida! A música não deve ser nula.");
+        if (conteudos.contains(conteudo)) {
+            throw new IllegalArgumentException("Conteúdo inválido! O conteúdo já está presente na playlist.");
+        }
 
-        musicas.add(musica);
+        conteudos.add(conteudo);
         return true;
     }
 
     public boolean removerNaPosicao(int indice){
-        if (indice < 0 || indice >= musicas.size())
+        if (indice < 0 || indice >= conteudos.size())
             throw new IndexOutOfBoundsException("Índice inválido! O índice deve estar entre 0 e " + (getQuantidade() - 1) + ". Índice solicitado: " + indice);
-        musicas.remove(indice);
+        conteudos.remove(indice);
         return true;
     }
 
     public int getDuracaoTotalSegundos(){
         int duracaoTotal = 0;
-        for (Musica musica : musicas) {
-            duracaoTotal += musica.getDuracaoSegundos();
+        for (Conteudo conteudo : conteudos) {
+            duracaoTotal += conteudo.getDuracaoSegundos();
         }
         return duracaoTotal;
     }
 
     public void reproduzirTudo(){
-        for (Musica musica : musicas) {
-            musica.reproduzir();
+        for (Conteudo conteudo : conteudos) {
+            conteudo.reproduzir();
         }
     }
 }

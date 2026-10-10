@@ -1,15 +1,15 @@
 package model;
-
 import java.util.ArrayList;
+import contracts.Conteudo;
 
 public class Plataforma {
 
     private ArrayList<Usuario> usuarios = new ArrayList<>();
 
-    private ArrayList<Musica> musicas = new ArrayList<>();
+    private ArrayList<Conteudo> conteudos = new ArrayList<>();
 
-    public ArrayList<Musica> getMusicas() {
-        return musicas;
+    public ArrayList<Conteudo> getConteudos() {
+        return conteudos;
     }
 
     public ArrayList<Usuario> getUsuarios(){
@@ -35,49 +35,49 @@ public class Plataforma {
         return true;
     }
 
-    public int getTotalMusicas() {
-        return musicas.size();
+    public int getTotalConteudos() {
+        return conteudos.size();
     }
 
-    public boolean cadastrarMusica(Musica musica) throws IllegalArgumentException {
-        if(musica == null) 
-            throw new IllegalArgumentException("Música inválida! A música não deve ser nula.");
+    public boolean cadastrarConteudo(Conteudo conteudo) throws IllegalArgumentException {
+        if(conteudo == null) 
+            throw new IllegalArgumentException("Conteúdo inválido! O conteúdo não deve ser nulo.");
 
-        musicas.add(musica);
+        conteudos.add(conteudo);
         return true;
     }
 
-    public boolean cadastrarMusicas(ArrayList<Musica> musicas) throws IllegalArgumentException {
-        for (Musica musica : musicas) {
-            cadastrarMusica(musica);
+    public boolean cadastrarConteudos(ArrayList<Conteudo> conteudos) throws IllegalArgumentException {
+        for (Conteudo conteudo : conteudos) {
+            cadastrarConteudo(conteudo);
         }
         return true;
     }
 
-    public Musica buscarMusicaPorId(int id){
-        Musica musicaProcurada = null;
+    public Conteudo buscarConteudoPorId(int id){
+        Conteudo conteudoProcurado = null;
 
-        for (Musica musica : musicas) {
-            if (musica.getId() == id) {
-                musicaProcurada = musica;
+        for (Conteudo conteudo : conteudos) {
+            if (conteudo.getId() == id) {
+                conteudoProcurado = conteudo;
                 break;
             }
         }
 
-        return musicaProcurada;
+        return conteudoProcurado;
     }
 
-    public Musica buscarMusica(String titulo){
-        Musica musicaProcurada = null;
+    public Conteudo buscarConteudo(String titulo){
+        Conteudo conteudoProcurado = null;
 
-        for (Musica musica : musicas) {
-            if (musica.getTitulo().equalsIgnoreCase(titulo)) {
-                musicaProcurada = musica;
+        for (Conteudo conteudo : conteudos) {
+            if (conteudo.getTitulo().equalsIgnoreCase(titulo)) {
+                conteudoProcurado = conteudo;
                 break;
             }
         }
 
-        return musicaProcurada;
+        return conteudoProcurado;
     }
 
     public Usuario buscarUsuario(int id){
