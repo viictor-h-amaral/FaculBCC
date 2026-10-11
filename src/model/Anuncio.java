@@ -1,8 +1,9 @@
 package model;
 
+import contracts.Faturavel;
 import helpers.Writer;
 
-public class Anuncio {
+public class Anuncio implements Faturavel {
     private String anunciante;
     public String getAnunciante() {
         return anunciante;
@@ -64,7 +65,7 @@ public class Anuncio {
         Writer.escreverNovaLinha("[Anúncio] " + titulo + " oferecimento de " + anunciante);
     }
 
-    public double calcularValorVeiculacao(){
+    public double calcularMensalidade(){
         return ( getImpressoes() / 1000.0 ) * getValorPorMilImpressoes() ;
     }
 }

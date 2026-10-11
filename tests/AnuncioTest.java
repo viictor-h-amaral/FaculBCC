@@ -49,4 +49,26 @@ public class AnuncioTest {
         Assertions.assertEquals(100, anuncio.getValorPorMilImpressoes());
         Assertions.assertEquals(0, anuncio.getImpressoes());
     }
+
+    @Test
+    @DisplayName("Reproduzir anúncio deve incrementar contador de impressões")
+    public void reproduzirAnuncio_incrementaContadorImpressao() {
+        var anuncio = new Anuncio("Anunciante", "Título do Anúncio", 30, 100);
+
+        Assertions.assertEquals(0, anuncio.getImpressoes());
+
+        anuncio.reproduzir();
+
+        Assertions.assertEquals(1, anuncio.getImpressoes());
+    }
+
+    @Test 
+    @DisplayName("Valor de veiculacao deve calcular corretamente o valor com base nas impressões")
+    public void valorDeVeiculacao_deveCalcularCorretamente() {
+        var anuncio = new Anuncio("Anunciante", "Título do Anúncio", 30, 2000);
+        anuncio.reproduzir();
+        anuncio.reproduzir();
+
+        Assertions.assertEquals(4, anuncio.calcularMensalidade(), 0.01);
+    }
 }
