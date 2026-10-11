@@ -1,3 +1,4 @@
+import model.Anuncio;
 import model.Musica;
 import model.PlanoIndividual;
 import model.Plataforma;
@@ -160,8 +161,7 @@ public class PlataformaTest {
     }
 
     /// TESTES PARA CADASTRAR USUARIO (fim)
-
-    /// TESTES PARA BUSCAR MUSICA POR ID E TITULO 
+    /// TESTES PARA BUSCAR CONTEUDO POR ID E TITULO 
 
     @Test
     @DisplayName("id inexistente deve retornar null e não deve lançar exceção")
@@ -197,7 +197,8 @@ public class PlataformaTest {
         Assertions.assertEquals(billieJean.getDuracaoSegundos(), conteudoEncontrado.getDuracaoSegundos());
     }
 
-    /// TESTES PARA BUSCAR MUSICA POR ID E TITULO (fim)
+    /// TESTES PARA BUSCAR CONTEUDO POR ID E TITULO (fim)
+    /// TESTES PARA BUSCAR USUARIO POR ID E TITULO
 
     @Test
     @DisplayName("id inexistente de usuário deve retornar null e não deve lançar exceção")
@@ -229,6 +230,10 @@ public class PlataformaTest {
         Assertions.assertEquals(jose.getEmail(), usuarioEncontrado.getEmail());
     }
 
+    /// TESTES PARA BUSCAR USUARIO POR ID E TITULO (fim)
+    /// TESTES PARA CALCULO DE RECEITA TOTAL DA PLATAFORMA
+
+
     @Test 
     @DisplayName ("Plataforma calcula receita mensal corretamente")
     public void calcularReceitaMensal_deveRetornarValorCorreto() {
@@ -247,5 +252,19 @@ public class PlataformaTest {
         var receitaCalculada = plataforma.calcularReceitaMensal();
 
         Assertions.assertEquals(receitaEsperada, receitaCalculada, 0.01);
+    }
+
+    /// TESTES PARA CALCULO DE RECEITA TOTAL DA PLATAFORMA (fim)
+    /// TESTES PARA CADASTRO DE ANUNCIO
+
+    @Test 
+    @DisplayName ("Plataforma deve cadastrar anúncio corretamente")
+    public void cadastrarAnuncio_deveCadastrarCorretamente() {
+        var plataforma = new Plataforma();
+        String tituloAnuncio = "Título do Anúncio";
+        var anuncio = new Anuncio("Anunciante 1", tituloAnuncio, 30, 100);
+
+        Assertions.assertTrue(plataforma.cadastrarAnuncio(anuncio));
+        Assertions.assertNotNull(plataforma.buscarAnuncio(tituloAnuncio));
     }
 }

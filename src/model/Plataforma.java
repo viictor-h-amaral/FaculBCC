@@ -6,12 +6,8 @@ import helpers.Writer;
 public class Plataforma {
 
     private ArrayList<Usuario> usuarios = new ArrayList<>();
-
     private ArrayList<Conteudo> conteudos = new ArrayList<>();
-
-    public ArrayList<Conteudo> getConteudos() {
-        return conteudos;
-    }
+    private ArrayList<Anuncio> anuncios = new ArrayList<>();
 
     public ArrayList<Usuario> getUsuarios(){
         return usuarios;
@@ -34,6 +30,46 @@ public class Plataforma {
             cadastrarUsuario(usuario);
         }
         return true;
+    }
+
+    public Usuario buscarUsuario(int id){
+        Usuario usuarioProcurado = null;
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId() == id) {
+                usuarioProcurado = usuario;
+                break;
+            }
+        }
+
+        return usuarioProcurado;
+    }
+
+    public Usuario buscarUsuario(String nome){
+        Usuario usuarioProcurado = null;
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNome().equalsIgnoreCase(nome)) {
+                usuarioProcurado = usuario;
+                break;
+            }
+        }
+
+        return usuarioProcurado;
+    }
+
+    public double calcularReceitaMensal() {
+        double receitaTotal = 0.0;
+
+        for (Usuario usuario : usuarios) {
+            receitaTotal += usuario.getPlano().calcularMensalidade();
+        }
+
+        return receitaTotal;
+    }
+    
+    public ArrayList<Conteudo> getConteudos() {
+        return conteudos;
     }
 
     public int getTotalConteudos() {
@@ -81,42 +117,6 @@ public class Plataforma {
         return conteudoProcurado;
     }
 
-    public Usuario buscarUsuario(int id){
-        Usuario usuarioProcurado = null;
-
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                usuarioProcurado = usuario;
-                break;
-            }
-        }
-
-        return usuarioProcurado;
-    }
-
-    public Usuario buscarUsuario(String nome){
-        Usuario usuarioProcurado = null;
-
-        for (Usuario usuario : usuarios) {
-            if (usuario.getNome().equalsIgnoreCase(nome)) {
-                usuarioProcurado = usuario;
-                break;
-            }
-        }
-
-        return usuarioProcurado;
-    }
-
-    public double calcularReceitaMensal() {
-        double receitaTotal = 0.0;
-
-        for (Usuario usuario : usuarios) {
-            receitaTotal += usuario.getPlano().calcularMensalidade();
-        }
-
-        return receitaTotal;
-    }
-
     public void listarEpisodiosDe(String nomeApresentador){
         for (Conteudo conteudo : conteudos) {
             if (!(conteudo instanceof Podcast)){
@@ -127,5 +127,33 @@ public class Plataforma {
                 Writer.escreverNovaLinha(podcast.toString());
             }
         }
+    }
+
+    public boolean cadastrarAnuncio(Anuncio anuncio) throws IllegalArgumentException {
+        if(anuncio == null) 
+            throw new IllegalArgumentException("Anúncio inválido! O anúncio não deve ser nulo.");
+
+        anuncios.add(anuncio);
+        return true;
+    }
+
+    public boolean cadastrarAnuncios(ArrayList<Anuncio> anuncios) throws IllegalArgumentException {
+        for (Anuncio anuncio : anuncios) {
+            cadastrarAnuncio(anuncio);
+        }
+        return true;
+    }
+
+    public Anuncio buscarAnuncio(String titulo){
+        Anuncio anuncioProcurado = null;
+
+        for (Anuncio anuncio : anuncios) {
+            if (anuncio.getTitulo().equalsIgnoreCase(titulo)) {
+                anuncioProcurado = anuncio;
+                break;
+            }
+        }
+
+        return anuncioProcurado;
     }
 }
