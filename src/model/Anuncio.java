@@ -1,9 +1,10 @@
 package model;
 
 import contracts.Faturavel;
+import contracts.Reproduzivel;
 import helpers.Writer;
 
-public class Anuncio implements Faturavel {
+public class Anuncio implements Faturavel, Reproduzivel {
     private String anunciante;
     public String getAnunciante() {
         return anunciante;

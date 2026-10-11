@@ -1,6 +1,6 @@
 package contracts;
 
-public abstract class Conteudo {
+public abstract class Conteudo implements Reproduzivel {
     private static int contador = 0; 
     public static int getProximoId() {
         return contador + 1;
@@ -58,6 +58,7 @@ public abstract class Conteudo {
         System.out.println("Reproduzindo: " + titulo + " - " + getCreditos());
     } 
   
+    @Override
     public String getDuracaoFormatada(){
         int minutos = getDuracaoSegundos() / 60;
         int segundosResto = getDuracaoSegundos() % 60;
