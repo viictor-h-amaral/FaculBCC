@@ -20,6 +20,11 @@ public class App {
     private static Plataforma plataforma = new Plataforma();
 
     public static void main(String[] args) {
+        //Tipo Estático: Conteudo. Tipo Dinamico: Podcast
+        Conteudo c = new Podcast("Episódio", "Apresentador", 30, 2);
+
+        //c.getApresentador(); // Erro de compilação! O getApresentador() não apenas existe na classe Podcast, não na classe Conteudo. E o tipo estático de 'c' é Conteudo
+
         mostrarMenu();
     }
 

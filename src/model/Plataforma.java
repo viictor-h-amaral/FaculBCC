@@ -1,6 +1,7 @@
 package model;
 import java.util.ArrayList;
 import contracts.Conteudo;
+import helpers.Writer;
 
 public class Plataforma {
 
@@ -104,5 +105,27 @@ public class Plataforma {
         }
 
         return usuarioProcurado;
+    }
+
+    public double calcularReceitaMensal() {
+        double receitaTotal = 0.0;
+
+        for (Usuario usuario : usuarios) {
+            receitaTotal += usuario.getPlano().calcularMensalidade();
+        }
+
+        return receitaTotal;
+    }
+
+    public void listarEpisodiosDe(String nomeApresentador){
+        for (Conteudo conteudo : conteudos) {
+            if (!(conteudo instanceof Podcast)){
+                continue;
+            }
+            Podcast podcast = (Podcast) conteudo;
+            if (podcast.getApresentador().equalsIgnoreCase(nomeApresentador)) {
+                Writer.escreverNovaLinha(podcast.toString());
+            }
+        }
     }
 }

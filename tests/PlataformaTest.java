@@ -1,4 +1,5 @@
 import model.Musica;
+import model.PlanoIndividual;
 import model.Plataforma;
 import model.Usuario;
 
@@ -228,4 +229,23 @@ public class PlataformaTest {
         Assertions.assertEquals(jose.getEmail(), usuarioEncontrado.getEmail());
     }
 
+    @Test 
+    @DisplayName ("Plataforma calcula receita mensal corretamente")
+    public void calcularReceitaMensal_deveRetornarValorCorreto() {
+        var plataforma = new Plataforma();
+
+        var usuario1 = new Usuario("Usuario 1", "usuario1@email.com");
+        usuario1.assinar(new PlanoIndividual(19.99));
+
+        var usuario2 = new Usuario("Usuario 2", "usuario2@email.com");
+        usuario2.assinar(new PlanoIndividual(29.99));
+
+        plataforma.cadastrarUsuario(usuario1);
+        plataforma.cadastrarUsuario(usuario2);
+
+        var receitaEsperada = 49.98;
+        var receitaCalculada = plataforma.calcularReceitaMensal();
+
+        Assertions.assertEquals(receitaEsperada, receitaCalculada, 0.01);
+    }
 }
