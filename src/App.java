@@ -5,6 +5,7 @@ import contracts.Conteudo;
 import contracts.Plano;
 import helpers.ScannerHelper;
 import helpers.Writer;
+import model.Anuncio;
 import model.Musica;
 import model.Plataforma;
 import model.Playlist;
@@ -18,14 +19,45 @@ public class App {
     
     private static ScannerHelper scannerHelper = new ScannerHelper(new Scanner(System.in));
     private static Plataforma plataforma = new Plataforma();
+    private static ArrayList<Playlist> playlists = new ArrayList<>();
 
     public static void main(String[] args) {
+
+        demonstracaoFase7();
+
         //Tipo Estático: Conteudo. Tipo Dinamico: Podcast
         Conteudo c = new Podcast("Episódio", "Apresentador", 30, 2);
-
         //c.getApresentador(); // Erro de compilação! O getApresentador() não apenas existe na classe Podcast, não na classe Conteudo. E o tipo estático de 'c' é Conteudo
 
         mostrarMenu();
+    }
+
+    private static void demonstracaoFase7() {
+        //deve mostrar que a receita mensal aumenta conforme anuncios sao exibidos por meio de reprodução da playlist
+
+        var anuncios = new ArrayList<Anuncio>(Arrays.asList(
+            new Anuncio("Anunciante 1", "Anúncio 1", 30, 10),
+            new Anuncio("Anunciante 2", "Anúncio 2", 45, 20)
+        ));
+
+        plataforma.cadastrarAnuncios(anuncios);
+
+        Writer.escreverNovaLinha("Receita mensal da plataforma antes de reproduzir playlist: R$ " + String.format("%.2f", plataforma.calcularReceitaMensal()));
+
+        var usuario = new Usuario("Usuário Teste", "usuario@teste.com");
+        plataforma.cadastrarUsuario(usuario);  
+
+        var playlist = new Playlist("Playlist Teste", usuario);
+        playlist.adicionar(
+            new Musica("m1", "a1", 1), 
+            new Musica("m2", "a2", 2),
+            new Podcast("p1", "ap1", 3, 1),
+            new Podcast("p2", "ap2", 3, 2)
+        );
+
+        plataforma.tocarPlaylist(usuario, playlist);
+
+        Writer.escreverNovaLinha("Receita mensal da plataforma após reproduzir playlist: R$ " + String.format("%.2f", plataforma.calcularReceitaMensal()));
     }
 
     private static void mostrarMenu() {
@@ -35,7 +67,7 @@ public class App {
             Writer.escreverNovaLinha("===== Sonora =====");
             Writer.escreverNovaLinha("1 - Cadastrar conteúdo manualmente");
             Writer.escreverNovaLinha("2 - Cadastrar usuário");
-            Writer.escreverNovaLinha("3 - Criar playlist e adicionar conteúdos");
+            Writer.escreverNovaLinha("3 - Criar playlist");
             Writer.escreverNovaLinha("4 - Buscar conteúdo por id");
             Writer.escreverNovaLinha("5 - Buscar conteúdo por título");
             Writer.escreverNovaLinha("6 - Reproduzir um conteúdo");
@@ -46,9 +78,14 @@ public class App {
             Writer.escreverNovaLinha("11 - Listar usuários seguidos");
             Writer.escreverNovaLinha("12 - Trocar plano de usuário");
             Writer.escreverNovaLinha("13 - Exibir plano atual de usuário");
+            Writer.escreverNovaLinha("14 - Cadastrar anúncio");
+            Writer.escreverNovaLinha("15 - Adicionar conteúdo a uma playlist");
+            Writer.escreverNovaLinha("16 - Tocar playlist para usuário");
+            Writer.escreverNovaLinha("17 - Listar episódios de um apresentador (podcast)");
+            Writer.escreverNovaLinha("18 - Exibir receita mensal da plataforma");
             Writer.escreverNovaLinha("0 - Sair");
 
-            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 13);
+            opcao = scannerHelper.lerInt("Escolha uma opção: ", 0, 18);
 
             switch (opcao) {
                 case 1:
@@ -89,6 +126,21 @@ public class App {
                     break;
                 case 13:
                     exibirPlanoUsuario();
+                    break;
+                case 14:
+                    cadastrarAnuncioManual();
+                    break;
+                case 15:
+                    adicionarConteudoAPlaylist();
+                    break;
+                case 16:
+                    tocarPlaylist();
+                    break;
+                case 17:
+                    listarEpisodiosPorApresentador();
+                    break;
+                case 18:
+                    exibirReceitaMensal();
                     break;
                 case 0:
                     Writer.escreverNovaLinha("Ok! Encerrando ... ");
@@ -174,6 +226,7 @@ public class App {
             Playlist playlist = new Playlist(nome, dono);
 
             cadastrarConteudosNaPlaylist(playlist);
+            playlists.add(playlist);
 
             Writer.escreverNovaLinha("Playlist " + playlist.getNome() + " de " + playlist.getDono().getNome() + " criada com " + playlist.getQuantidade() + " conteúdos.");
             Writer.escreverNovaLinha("Conteúdos na playlist:");
@@ -236,13 +289,8 @@ public class App {
                     return;
                 }         
 
-                if (playlist.adicionar(conteudo)) {
-                    Writer.escreverNovaLinha("Conteúdo adicionado: " + conteudo.getTitulo());
-                } 
-                else {
-                    Writer.escreverNovaLinha("Não é possível adicionar mais conteúdos nesta playlist.");
-                    break;
-                }
+                playlist.adicionar(conteudo);
+                Writer.escreverNovaLinha("Conteúdo adicionado: " + conteudo.getTitulo());
             } catch (IllegalArgumentException e) {
                 Writer.escreverErro("Algum valor informado estava inválido! Detalhamento: " + e.getMessage());
             }
@@ -526,5 +574,112 @@ public class App {
 
     private static Conteudo buscarConteudoNaPlataformaPorTitulo(String titulo) {
         return plataforma.buscarConteudo(titulo);
+    }
+
+    private static void cadastrarAnuncioManual() {
+        Writer.escreverNovaLinha("== Início do cadastro de anúncio ==");
+        String anunciante = scannerHelper.lerLinha("Anunciante: ");
+        String titulo = scannerHelper.lerLinha("Título do anúncio: ");
+        int duracaoSegundos = scannerHelper.lerInt("Duração em segundos: ", 0);
+        int valorPorMilImpressoes = scannerHelper.lerInt("Valor por mil impressões (em reais): ", 0);
+
+        try {
+            Anuncio anuncio = new Anuncio(anunciante, titulo, duracaoSegundos, valorPorMilImpressoes);
+            plataforma.cadastrarAnuncio(anuncio);
+            Writer.escreverNovaLinha("Anúncio cadastrado com sucesso");
+        } catch (IllegalArgumentException e) {
+            Writer.escreverErro("Erro ao cadastrar anúncio: " + e.getMessage());
+        } catch (Exception e) {
+            Writer.escreverErro("Erro! Stack em: " + e.getMessage());
+        }
+    }
+
+    private static void adicionarConteudoAPlaylist() {
+        Writer.escreverNovaLinha("== Início do processo de adição de conteúdo a uma playlist ==");
+
+        if (playlists.isEmpty()) {
+            Writer.escreverNovaLinha("Não há playlists cadastradas. Crie uma playlist antes de adicionar conteúdos.");
+            return;
+        }
+
+        Writer.escreverNovaLinha("Playlists disponíveis:");
+        for (int i = 0; i < playlists.size(); i++) {
+            Playlist playlist = playlists.get(i);
+            Writer.escreverNovaLinha((i + 1) + " - " + playlist.getNome() + " (Dono: " + playlist.getDono().getNome() + ")");
+        }
+
+        int indicePlaylist = scannerHelper.lerInt("Escolha o número da playlist: ", 1, playlists.size()) - 1;
+        Playlist playlistSelecionada = playlists.get(indicePlaylist);
+
+        cadastrarConteudosNaPlaylist(playlistSelecionada);
+    }
+
+    private static void tocarPlaylist() {
+        Writer.escreverNovaLinha("== Início do processo de tocar playlist para usuário ==");
+
+        if (playlists.isEmpty()) {
+            Writer.escreverNovaLinha("Não há playlists cadastradas. Crie uma playlist antes de tocar.");
+            return;
+        }
+        else if (plataforma.getTotalUsuarios() == 0) {
+            Writer.escreverNovaLinha("Não há usuários cadastrados. Cadastre um usuário antes de tocar uma playlist.");
+            return;
+        }
+
+        Writer.escreverNovaLinha("Playlists disponíveis:");
+        for (int i = 0; i < playlists.size(); i++) {
+            Playlist playlist = playlists.get(i);
+            Writer.escreverNovaLinha((i + 1) + " - " + playlist.getNome() + " (Dono: " + playlist.getDono().getNome() + ")");
+        }
+
+        try{
+            int indicePlaylist = scannerHelper.lerInt("Escolha o número da playlist: ", 1, playlists.size()) - 1;
+            Playlist playlistSelecionada = playlists.get(indicePlaylist);
+
+            listarUsuarios();
+            Usuario usuario = buscarUsuarioNaPlataformaPorId("ID do usuário que irá ouvir a playlist: ");
+
+            plataforma.tocarPlaylist(usuario, playlistSelecionada);
+        }
+        catch (Exception e){
+            Writer.escreverErro("Erro! Stack em: " + e.getMessage());
+        }
+        finally {
+            Writer.escreverNovaLinha("== Finalizando processo de tocar playlist. ==");
+        }
+    }
+
+    private static void listarEpisodiosPorApresentador() {
+        Writer.escreverNovaLinha("== Início do processo de listagem de episódios por apresentador ==");
+
+        var apresentadores = plataforma.listarApresentadoresDePodcast();
+
+        if (apresentadores.isEmpty()) {
+            Writer.escreverNovaLinha("Não há apresentadores de podcast cadastrados na plataforma.");
+            return;
+        }
+
+        for (String apresentador : plataforma.listarApresentadoresDePodcast()) {
+            Writer.escreverNovaLinha("- " + apresentador);
+        }
+        String apresentador = scannerHelper.lerLinha("Digite o nome do apresentador: ");
+        ArrayList<Podcast> episodios = plataforma.listarEpisodiosDe(apresentador);
+
+        if (episodios.isEmpty()) {
+            Writer.escreverNovaLinha("Não há episódios de podcast cadastrados para o apresentador " + apresentador + ".");
+            return;
+        }
+
+        for (Podcast episodio : episodios) {
+            Writer.escreverNovaLinha(episodio.toString());
+        }
+        Writer.escreverNovaLinha("== Finalizando processo de listagem de episódios. ==");
+    }
+
+    private static void exibirReceitaMensal() {
+        Writer.escreverNovaLinha("== Receita mensal da plataforma ==");
+        double receitaMensal = plataforma.calcularReceitaMensal();
+        Writer.escreverNovaLinha("Receita mensal: R$ " + String.format("%.2f", receitaMensal));
+        Writer.escreverNovaLinha("== Finalizando exibição de receita mensal. ==");
     }
 }
