@@ -1,6 +1,7 @@
 package model;
 import java.util.ArrayList;
 import contracts.Conteudo;
+import contracts.Faturavel;
 import helpers.Writer;
 
 public class Plataforma {
@@ -60,9 +61,16 @@ public class Plataforma {
 
     public double calcularReceitaMensal() {
         double receitaTotal = 0.0;
+        ArrayList<Faturavel> faturaveis = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
-            receitaTotal += usuario.getPlano().calcularMensalidade();
+            faturaveis.add(usuario.getPlano());
+        }
+
+        faturaveis.addAll(anuncios);
+
+        for (Faturavel faturavel : faturaveis) {
+            receitaTotal += faturavel.calcularMensalidade();
         }
 
         return receitaTotal;
