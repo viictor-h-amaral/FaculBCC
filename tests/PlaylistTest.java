@@ -39,7 +39,7 @@ public class PlaylistTest {
 
         var musica101 = new Musica("titulo101", "artista101", 101);
         int idMusica101 = musica101.getId();
-        Assertions.assertTrue(playlistBase.adicionar(musica101));
+        Assertions.assertDoesNotThrow(() -> playlistBase.adicionar(musica101));
         Assertions.assertNotNull(playlistBase.buscarConteudoPorId(idMusica101));
     }
 
@@ -50,7 +50,7 @@ public class PlaylistTest {
 
         var novaMusica = new Musica("titulo11", "artista11", 11);
         int idNovaMusica = novaMusica.getId();
-        Assertions.assertTrue(playlistBase.adicionar(novaMusica));
+        Assertions.assertDoesNotThrow(() -> playlistBase.adicionar(novaMusica));
         Assertions.assertNotNull(playlistBase.buscarConteudoPorId(idNovaMusica));
     }
 

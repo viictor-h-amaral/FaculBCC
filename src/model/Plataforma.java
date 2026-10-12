@@ -2,6 +2,7 @@ package model;
 import java.util.ArrayList;
 import contracts.Conteudo;
 import contracts.Faturavel;
+import contracts.Reproduzivel;
 import helpers.Writer;
 
 public class Plataforma {
@@ -125,24 +126,42 @@ public class Plataforma {
         return conteudoProcurado;
     }
 
-    public void listarEpisodiosDe(String nomeApresentador){
+    public ArrayList<String> listarApresentadoresDePodcast() {
+        ArrayList<String> apresentadores = new ArrayList<>();
+
+        for (Conteudo conteudo : conteudos) {
+            if (!(conteudo instanceof Podcast)){
+                continue;
+            }
+            Podcast podcast = (Podcast) conteudo;
+            String apresentador = podcast.getApresentador();
+            if (!apresentadores.contains(apresentador)) {
+                apresentadores.add(apresentador);
+            }
+        }
+
+        return apresentadores;
+    }
+
+    public ArrayList<Podcast> listarEpisodiosDe(String nomeApresentador){
+        ArrayList<Podcast> episodios = new ArrayList<>();
         for (Conteudo conteudo : conteudos) {
             if (!(conteudo instanceof Podcast)){
                 continue;
             }
             Podcast podcast = (Podcast) conteudo;
             if (podcast.getApresentador().equalsIgnoreCase(nomeApresentador)) {
-                Writer.escreverNovaLinha(podcast.toString());
+                episodios.add(podcast);
             }
         }
+        return episodios;
     }
 
-    public boolean cadastrarAnuncio(Anuncio anuncio) throws IllegalArgumentException {
+    public void cadastrarAnuncio(Anuncio anuncio) throws IllegalArgumentException {
         if(anuncio == null) 
             throw new IllegalArgumentException("Anúncio inválido! O anúncio não deve ser nulo.");
 
         anuncios.add(anuncio);
-        return true;
     }
 
     public boolean cadastrarAnuncios(ArrayList<Anuncio> anuncios) throws IllegalArgumentException {
@@ -164,4 +183,36 @@ public class Plataforma {
 
         return anuncioProcurado;
     }
+
+    public void tocarPlaylist(Usuario ouvinte, Playlist playlist) {
+        Writer.escreverNovaLinha("Tocando playlist: " + playlist.getNome() + " criada por " + playlist.getDono().getNome());
+
+        ArrayList<Reproduzivel> reproduziveis = new ArrayList<>();
+        reproduziveis.addAll(playlist.getArrayConteudos());
+
+        if(ouvinte.getPlano().temAnuncios() && !anuncios.isEmpty()){
+            int proxIndiceAnuncioIncluir = 0;
+            int qntAnunciosIncluidos = 0; 
+
+            while(true){
+                var anuncio = anuncios.get(proxIndiceAnuncioIncluir);
+                proxIndiceAnuncioIncluir++;
+                if (proxIndiceAnuncioIncluir >= anuncios.size()){
+                    proxIndiceAnuncioIncluir = 0;
+                }
+                qntAnunciosIncluidos++;
+                int indiceAIncluirAnuncio = ( 3 * qntAnunciosIncluidos ) - 1; // a cada dois conteudos deve haver um indice
+                if (indiceAIncluirAnuncio >= reproduziveis.size()){ 
+                    reproduziveis.addLast(anuncio); //adicionar o ultimo anuncio no final da playlist
+                    break;
+                }
+                reproduziveis.add(indiceAIncluirAnuncio, anuncio);
+            }
+        }
+
+        for (Reproduzivel reproduzivel : reproduziveis) {
+            reproduzivel.reproduzir();
+        }
+    }
+
 }

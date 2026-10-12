@@ -264,7 +264,7 @@ public class PlataformaTest {
         String tituloAnuncio = "Título do Anúncio";
         var anuncio = new Anuncio("Anunciante 1", tituloAnuncio, 30, 100);
 
-        Assertions.assertTrue(plataforma.cadastrarAnuncio(anuncio));
+        Assertions.assertDoesNotThrow(() -> plataforma.cadastrarAnuncio(anuncio));
         Assertions.assertNotNull(plataforma.buscarAnuncio(tituloAnuncio));
     }
 }

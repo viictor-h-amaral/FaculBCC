@@ -65,16 +65,17 @@ public class Playlist {
         return conteudos.get(indice);
     }
 
-    public boolean adicionar(Conteudo conteudo){
+    public void adicionar(Conteudo... conteudos){
+        for (Conteudo conteudo : conteudos){
+            this.adicionar(conteudo);
+        }
+    }
+
+    public void adicionar(Conteudo conteudo){
         if(conteudo == null)
             throw new IllegalArgumentException("Conteúdo inválido! O conteúdo não deve ser nulo.");
 
-        if (conteudos.contains(conteudo)) {
-            throw new IllegalArgumentException("Conteúdo inválido! O conteúdo já está presente na playlist.");
-        }
-
         conteudos.add(conteudo);
-        return true;
     }
 
     public boolean removerNaPosicao(int indice){
