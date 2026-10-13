@@ -28,9 +28,12 @@ public class Anuncio implements Faturavel, Reproduzivel {
     }
 
     private int duracaoSegundos;
+
+    @Override 
     public int getDuracaoSegundos() {
         return duracaoSegundos;
     }
+
     public void setDuracaoSegundos(int duracaoSegundos) {
         if (duracaoSegundos <= 0) {
             throw new IllegalArgumentException("Duração inválida! A duração deve ser um valor positivo.");
@@ -61,12 +64,18 @@ public class Anuncio implements Faturavel, Reproduzivel {
         setValorPorMilImpressoes(valorPorMilImpressoes);
     }
 
+    @Override 
     public void reproduzir() {
         impressoes++;
         Writer.escreverNovaLinha("[Anúncio] " + titulo + " oferecimento de " + anunciante);
     }
 
+    public double calcularValorVeiculacao() {
+        return (getImpressoes() / 1000.0) * getValorPorMilImpressoes();
+    }
+
+    @Override
     public double calcularMensalidade(){
-        return ( getImpressoes() / 1000.0 ) * getValorPorMilImpressoes() ;
+        return this.calcularValorVeiculacao();
     }
 }
