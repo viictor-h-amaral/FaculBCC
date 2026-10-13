@@ -3,7 +3,20 @@ skinparam classAttributeIconSize 0
 hide circle
 left to right direction
 
-abstract class Conteudo {
+interface Reproduzivel <<interface>> extends Cronometravel {
+  ~reproduzir(): void
+}
+
+interface Faturavel <<interface>> {
+  ~calcularMensalidade(): double
+}
+
+interface Cronometravel <<interface>> {
+  ~getDuracaoSegundos(): int
+  ~getDuracaoFormatada(): String
+}
+
+abstract class Conteudo implements Reproduzivel {
   -{static} contador: int = 0
   #id: int
   #titulo: String
@@ -41,22 +54,19 @@ class Musica extends Conteudo {
 
 class Podcast extends Conteudo {
   -apresentador: String
-  -generoApresentador: char
   -numeroEpisodio: int
   --
-  +Podcast(titulo: String, apresentador: String, duracaoMinutos: int, numeroEpisodio: int, generoApresentador: char)
+  +Podcast(titulo: String, apresentador: String, duracaoMinutos: int, numeroEpisodio: int)
   +getDuracaoMinutos(): int
   +getApresentador(): String
   +setApresentador(apresentador: String): void
-  +getGeneroApresentador(): char
-  +setGeneroApresentador(generoApresentador: char): void
   +getNumeroEpisodio(): int
   +setNumeroEpisodio(numeroEpisodio: int): void
   +getCreditos(): String
   +toString(): String
 }
 
-abstract class Plano {
+abstract class Plano implements Faturavel {
   -nome: String
   -maxDispositivos: int
   --
@@ -99,20 +109,28 @@ class PlanoFamilia extends PlanoPago {
 
 class Plataforma {
   -usuarios: ArrayList<Usuario> = new ArrayList<>()
-  -musicas: ArrayList<Musica> = new ArrayList<>()
+  -conteudos: ArrayList<Conteudo> = new ArrayList<>()
+  -anuncios: ArrayList<Anuncio> = new ArrayList<>()
   --
-  +getMusicas(): ArrayList<Musica>
   +getUsuarios(): ArrayList<Usuario>
   +getTotalUsuarios(): int
   +cadastrarUsuario(usuario: Usuario): boolean
   +cadastrarUsuarios(usuarios: ArrayList<Usuario>): boolean
-  +getTotalMusicas(): int
-  +cadastrarMusica(musica: Musica): boolean
-  +cadastrarMusicas(musicas: ArrayList<Musica>): boolean
-  +buscarMusicaPorId(id: int): Musica
-  +buscarMusica(titulo: String): Musica
   +buscarUsuario(id: int): Usuario
   +buscarUsuario(nome: String): Usuario
+  +calcularReceitaMensal(): double
+  +getConteudos(): ArrayList<Conteudo>
+  +getTotalConteudos(): int
+  +cadastrarConteudo(conteudo: Conteudo): boolean
+  +cadastrarConteudos(conteudos: ArrayList<Conteudo>): boolean
+  +buscarConteudoPorId(id: int): Conteudo
+  +buscarConteudo(titulo: String): Conteudo
+  +listarApresentadoresDePodcast(): ArrayList<String>
+  +listarEpisodiosDe(nomeApresentador: String): ArrayList<Podcast>
+  +cadastrarAnuncio(anuncio: Anuncio): void
+  +cadastrarAnuncios(anuncios: ArrayList<Anuncio>): boolean
+  +buscarAnuncio(titulo: String): Anuncio
+  +tocarPlaylist(ouvinte: Usuario, playlist: Playlist): void
 }
 
 class Usuario {
@@ -140,26 +158,50 @@ class Usuario {
 class Playlist {
   -dono: Usuario
   -nome: String
-  -musicas: ArrayList<Musica> = new ArrayList<>()
+  -conteudos: ArrayList<Conteudo> = new ArrayList<>()
   --
   +Playlist(nome: String, dono: Usuario)
   -{static} validarParametrosPlaylist(nome: String, dono: Usuario): void
   +getDono(): Usuario
   +getNome(): String
-  +getArrayMusicas(): ArrayList<Musica>
-  +buscarMusicaPorId(id: int): Musica
+  +getArrayConteudos(): ArrayList<Conteudo>
+  +buscarConteudoPorId(id: int): Conteudo
   +getQuantidade(): int
-  +getNaPosicao(indice: int): Musica
-  +adicionar(musica: Musica): boolean
+  +getNaPosicao(indice: int): Conteudo
+  +adicionar(conteudos: Conteudo): void
+  +adicionar(conteudo: Conteudo): void
   +removerNaPosicao(indice: int): boolean
   +getDuracaoTotalSegundos(): int
   +reproduzirTudo(): void
 }
 
-Plataforma "1" --> "0..*" Musica : plataforma / cataloga / acervo
+class Anuncio implements Reproduzivel, Faturavel {
+  -anunciante: String
+  -titulo: String
+  -duracaoSegundos: int
+  -valorPorMilImpressoes: int
+  -impressoes: int = 0
+  --
+  +Anuncio(anunciante: String, titulo: String, duracaoSegundos: int, valorPorMilImpressoes: int)
+  +getAnunciante(): String
+  +setAnunciante(anunciante: String): void
+  +getTitulo(): String
+  +setTitulo(titulo: String): void
+  +getDuracaoSegundos(): int
+  +setDuracaoSegundos(duracaoSegundos: int): void
+  +getValorPorMilImpressoes(): int
+  +setValorPorMilImpressoes(valorPorMilImpressoes: int): void
+  +getImpressoes(): int
+  +reproduzir(): void
+  +calcularValorVeiculacao(): double
+  +calcularMensalidade(): double
+}
+
+Plataforma "1" --> "0..*" Conteudo : plataforma / cataloga / acervo
 Plataforma "1" --> "0..*" Usuario : plataforma / registra / usuarios
+Plataforma "1" --> "0..*" Anuncio : plataforma / exibe / anuncios
 Playlist "0..*" --> "1" Usuario : playlists / pertence a / dono
-Playlist "0..*" --> "0..*" Musica : playlists / contem / faixas
+Playlist "0..*" --> "0..*" Conteudo : playlists / contem / faixas
 Usuario "0..*" --> "0..*" Usuario : seguindo / segue / seguidores
 Usuario "0..*" --> "1" Plano : usuarios / assina / plano
 

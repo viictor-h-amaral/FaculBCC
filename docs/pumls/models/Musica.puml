@@ -4,7 +4,11 @@
 skinparam classAttributeIconSize 0
 hide circle
 
-abstract class Conteudo {
+interface Reproduzivel <<interface>> {
+  ~reproduzir(): void
+}
+
+abstract class Conteudo implements Reproduzivel {
   -{static} contador: int = 0
   #id: int
   #titulo: String

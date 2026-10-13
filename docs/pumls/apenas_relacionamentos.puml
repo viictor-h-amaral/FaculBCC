@@ -30,20 +30,35 @@ class Usuario {
   + getQuantidadeSeguindo(): int
 }
 
-class Musica {
-  - id: int
-  - titulo: String
-  - artista: String
-  - duracaoSegundos: int
-  - reproducoes: int
+abstract class Conteudo {
+  #id: int
+  #titulo: String
+  #duracaoSegundos: int
+  -reproducoes: int = 0
   --
-  + reproduzir(): void
+  +{abstract} getCreditos(): String
+  +{final} reproduzir(): void
+  +getDuracaoFormatada(): String
+  +toString(): String
 }
 
-Plataforma "1" --> "0..*" Musica : plataforma / cataloga / acervo
+class Anuncio {
+  -anunciante: String
+  -titulo: String
+  -duracaoSegundos: int
+  -valorPorMilImpressoes: int
+  -impressoes: int = 0
+  --
+  +reproduzir(): void
+  +calcularValorVeiculacao(): double
+  +calcularMensalidade(): double
+}
+
+Plataforma "1" --> "0..*" Conteudo : plataforma / cataloga / acervo
 Plataforma "1" --> "0..*" Usuario : plataforma / registra / usuarios
+Plataforma "1" --> "0..*" Anuncio : plataforma / exibe / anuncios
 Playlist "0..*" --> "1" Usuario : playlists / pertence a / dono
-Playlist "0..*" --> "0..*" Musica : playlists / contem / faixas
+Playlist "0..*" --> "0..*" Conteudo : playlists / contem / faixas
 Usuario "0..*" --> "0..*" Usuario : seguindo / segue / seguidores
 
 @enduml
