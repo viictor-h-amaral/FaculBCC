@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": ["rangoja/src", "rangoja/test"],
+    "java.project.outputPath": "rangoja/bin",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.project.referencedLibraries": [
+        "rangoja/lib/**/*.jar"
+    ]
+}
