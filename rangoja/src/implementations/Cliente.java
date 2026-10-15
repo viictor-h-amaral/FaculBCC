@@ -22,12 +22,11 @@ public class Cliente {
     }
 
     public Cliente(String nome, String email, int idade, Cliente indicadoPor){
+        this(nome, email, idade);
 
         if (indicadoPor == null) {
             throw new IllegalArgumentException("Cliente indicado não pode ser nulo");
-        }
-
-        this(nome, email, idade);
+        }        
         this.indicadoPor = indicadoPor;
         indicadoPor.creditarCashback(10.0);
     }

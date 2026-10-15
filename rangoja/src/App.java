@@ -7,7 +7,7 @@ import java.util.Scanner;
 import contracts.abstractions.ItemCardapio;
 import exceptions.SaldoInsuficienteException;
 import implementations.AssinaturaClube;
-import implementations.CentralCobrancas;
+import implementations.CentralCobranca;
 import implementations.Cliente;
 import implementations.Pedido;
 import implementations.ItensCardapio.Bebida;
@@ -21,7 +21,7 @@ public class App {
 
         ItemCardapio prato = new Prato("Feijoada", 25.0, 'G');
         ItemCardapio sobremesa = new Sobremesa("Pudim", 10.0, 150);
-        ItemCardapio bebida = new Bebida("Cerveja", 8.0, 500, true);
+        ItemCardapio bebida = new Bebida("Chopp", 8.0, 500, true);
 
         cardapio.add(prato);
         cardapio.add(sobremesa);
@@ -36,23 +36,22 @@ public class App {
 
         imprimir(String.format("Saldo de cashback de Ana: R$ %.2f", ana.getSaldoCashback()));
 
-        while(true){
-            try{
-                int quantidade = lerInt("Digite a quantidade de feijoadas para o pedido do Beto:");
-                Pedido pedidoBeto = new Pedido(beto);
+        Pedido pedidoBeto = new Pedido(beto);
+        while (true) {
+            int quantidade = lerInt("Digite a quantidade de feijoadas para o pedido do Beto:");
+            try {
                 pedidoBeto.adicionarItem(prato, quantidade);
                 break;
             }
-            catch (Exception e){
+            catch (IllegalArgumentException e) {
                 imprimirErro(e.getMessage());
             }
         }
 
-        try{
-            Pedido pedido2Beto = new Pedido(beto);
-            pedido2Beto.adicionarItem(bebida);
+        try {
+            pedidoBeto.adicionarItem(bebida);
         }
-        catch (Exception e){
+        catch (IllegalArgumentException e) {
             imprimirErro(e.getMessage());
         }
 
@@ -92,7 +91,7 @@ public class App {
         
 
         AssinaturaClube assinaturaAna = new AssinaturaClube(ana, 120, 24);
-        CentralCobrancas centralCobrancas = new CentralCobrancas();
+        CentralCobranca centralCobrancas = new CentralCobranca();
 
         try{
             centralCobrancas.registrar(pedidoAna);

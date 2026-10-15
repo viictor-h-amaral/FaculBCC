@@ -6,7 +6,7 @@ public class Bebida extends ItemCardapio {
     
     public Bebida(String nome, double precoBase, int volumeMl, boolean alcoolica){
         super(nome, precoBase);
-        ValidarPositivo(volumeMl);
+        validarPositivo(volumeMl);
         this.volumeMl = volumeMl;
         this.alcoolica = alcoolica;
     }
@@ -35,7 +35,7 @@ public class Bebida extends ItemCardapio {
     @Override 
     public String toString() {
         return super.toString() 
-            + String.format(" (%dml)", this.volumeMl)
+            + String.format(" (%d ml)", this.volumeMl)
             + (this.alcoolica ? " [alcoólica]" : "");
     }
 

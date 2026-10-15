@@ -6,14 +6,14 @@ public abstract class ItemCardapio {
         if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
         }
-        ValidarPositivo(precoBase);
+        validarPositivo(precoBase);
         this.nome = nome;
         this.precoBase = precoBase;
     }
 
-    protected void ValidarPositivo(double valor){
-        if (valor < 0){
-            throw new IllegalArgumentException("Valor informado é negativo!");
+    protected void validarPositivo(double valor){
+        if (valor <= 0){
+            throw new IllegalArgumentException("Valor informado é negativo ou zero!");
         }
     }
 
@@ -30,16 +30,15 @@ public abstract class ItemCardapio {
     }
 
     public void setPrecoBase(double precoBase) {
-        ValidarPositivo(precoBase);
+        validarPositivo(precoBase);
         this.precoBase = precoBase;
     }
 
     public abstract double calcularPreco();
 
     public final double calcularPrecoComDesconto(double percentual){
-        ValidarPositivo(percentual);
-        if (percentual > 100){
-            throw new IllegalArgumentException("Percentual de desconto não pode ser maior que 100%");
+        if (percentual < 0 || percentual > 100) {
+            throw new IllegalArgumentException("Percentual de desconto deve estar entre 0% e 100%");
         }
         double percentualComplementar = 100 - percentual;
         return calcularPreco() * (percentualComplementar / 100);

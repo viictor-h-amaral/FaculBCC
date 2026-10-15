@@ -6,7 +6,7 @@ public class Sobremesa extends ItemCardapio {
     
     public Sobremesa(String nome, double precoPor100g, int pesoGramas){
         super(nome, precoPor100g);
-        ValidarPositivo(pesoGramas);
+        validarPositivo(pesoGramas);
         this.pesoGramas = pesoGramas;
     }
 
@@ -24,7 +24,7 @@ public class Sobremesa extends ItemCardapio {
 
     @Override 
     public String toString() {
-        return super.toString() + String.format(" (%dg)", this.pesoGramas);
+        return super.toString() + String.format(" (%d g)", this.pesoGramas);
     }
 
 }

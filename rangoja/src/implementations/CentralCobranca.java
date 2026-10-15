@@ -3,16 +3,13 @@ package implementations;
 import java.util.ArrayList;
 import contracts.interfaces.Cobravel;
 
-public class CentralCobrancas {
+public class CentralCobranca {
 
     private ArrayList<Cobravel> cobrancas = new ArrayList<>();
 
     public void registrar(Cobravel cobranca){
         if (cobranca == null) {
             throw new IllegalArgumentException("Cobrança não pode ser nula");
-        }
-        else if (cobranca instanceof Pedido && !((Pedido)cobranca).isFinalizado()){
-            throw new IllegalStateException("Pedido a ser incluído precisa estar finalizado");
         }
 
         cobrancas.add(cobranca);
