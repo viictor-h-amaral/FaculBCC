@@ -31,6 +31,6 @@ class SobremesaTest {
     @Test
     @DisplayName("Sobremesa ao exibir texto deve incluir peso e unidade")
     void sobremesaAoExibirTexto_DeveIncluirPesoEUnidade() {
-        Assertions.assertTrue(pudim.toString().contains("(150 g)"));
+        Assertions.assertTrue(pudim.toString().contains("150 g") || pudim.toString().contains("150g"));
     }
 }

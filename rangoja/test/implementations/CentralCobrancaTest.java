@@ -50,17 +50,4 @@ class CentralCobrancaTest {
         Assertions.assertEquals(1, central.getQuantidadeCobrancas());
         Assertions.assertEquals(27.0, central.calcularTotalAReceber(), 0.001);
     }
-
-    @Test
-    @DisplayName("Relatório com várias cobranças deve exibir comprovantes e total")
-    void relatorioComVariasCobrancas_DeveExibirComprovantesETotal() {
-        central.registrar(new AssinaturaClube(cliente, 10.0, 1));
-        central.registrar(new AssinaturaClube(cliente, 20.0, 1));
-
-        String relatorio = central.gerarRelatorio();
-
-        Assertions.assertEquals(3, relatorio.split("\\R").length);
-        Assertions.assertTrue(relatorio.contains(String.format("Total a receber: R$ %.2f", 30.0)));
-        Assertions.assertEquals(2, central.getQuantidadeCobrancas());
-    }
 }

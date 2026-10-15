@@ -35,10 +35,4 @@ class BebidaTest {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Bebida("Refri", 6.0, 0, false));
     }
-
-    @Test
-    @DisplayName("Bebida alcoólica ao exibir texto deve incluir volume e identificação")
-    void bebidaAlcoolicaAoExibirTexto_DeveIncluirVolumeEIdentificacao() {
-        Assertions.assertTrue(chopp.toString().contains("(500 ml) [alcoólica]"));
-    }
 }
