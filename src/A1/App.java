@@ -1,4 +1,5 @@
-import implementations.Senha;
+package A1;
+import A1.implementation.Senha;
 
 public class App {
     public static void main(String[] args) throws Exception {
